@@ -759,18 +759,25 @@ body.light-theme .vis-opt-btn.active {
 @media (max-width: 768px) {
     .app-container {
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr auto;
+        grid-template-rows: 1fr 64px; /* Explicit row limits */
         height: 100vh;
         overflow: hidden;
     }
 
+    .main-content {
+        grid-row: 1; /* Renders at the top */
+        grid-template-rows: auto 1fr 100px; /* Make space for smaller visualizer */
+        height: calc(100vh - 64px);
+        overflow: hidden;
+    }
+
     .sidebar {
+        grid-row: 2; /* Renders at the bottom */
         flex-direction: row;
         height: 64px;
-        padding: 0 12px;
+        padding: 0 8px;
         border-right: none;
         border-top: 1px solid var(--border-color);
-        order: 2;
         justify-content: space-around;
         align-items: center;
         background: var(--bg-sidebar);
@@ -785,6 +792,8 @@ body.light-theme .vis-opt-btn.active {
         flex-direction: row;
         width: 100%;
         justify-content: space-between;
+        margin: 0;
+        gap: 0;
     }
 
     .nav-item {
@@ -792,51 +801,112 @@ body.light-theme .vis-opt-btn.active {
         align-items: center;
         justify-content: center;
         font-size: 10px;
-        padding: 6px 2px;
+        padding: 6px 0;
         gap: 2px;
+        flex: 1;
+        text-align: center;
     }
 
-    .ad-placeholder-sidebar {
-        display: none;
+    .nav-item .icon {
+        font-size: 16px;
     }
 
-    .main-content {
-        grid-template-rows: auto 1fr auto;
-        height: calc(100vh - 64px);
+    .ad-sidebar-container {
+        display: none; /* Hide entire sidebar ad container on mobile to maximize space */
     }
 
     .top-bar {
-        padding: 12px 16px;
+        padding: 8px 16px;
+        height: 52px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .active-title-container h2 {
+        font-size: 14px;
+    }
+
+    .active-title-container p {
+        display: none; /* Hide tool description on mobile headers to save vertical space */
+    }
+
+    .audio-status {
+        font-size: 10px;
+        padding: 3px 8px;
     }
 
     .tool-stage {
-        padding: 20px 14px;
+        padding: 16px 12px;
+        overflow-y: auto;
     }
 
     .controls-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 12px;
     }
 
     .control-card {
         padding: 16px;
     }
 
+    .freq-display {
+        font-size: 36px;
+    }
+
     .quick-presets {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .tapper-layout {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .tap-area-card {
+        height: 140px;
+    }
+
+    .bpm-large-display {
+        font-size: 56px;
     }
 
     .tuner-dial-card {
         width: 100%;
-        padding: 20px;
+        padding: 16px;
+    }
+
+    .tuner-meter {
+        width: 180px;
+        height: 80px;
+    }
+
+    .tuner-needle {
+        height: 65px;
+    }
+
+    .note-val {
+        font-size: 40px;
     }
 
     .visualizer-bar {
-        padding: 8px 16px;
-        grid-template-rows: auto 60px;
+        padding: 6px 16px;
+        grid-template-rows: 24px 1fr;
+        height: 100px;
+    }
+
+    .visualizer-header h3 {
+        font-size: 10px;
+    }
+
+    .vis-opt-btn {
+        font-size: 9px;
+        padding: 1px 6px;
+    }
+
+    .tool-info-section {
+        margin-top: 20px;
+        padding-top: 16px;
+        font-size: 11px;
     }
 }
