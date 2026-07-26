@@ -1,0 +1,36 @@
+{
+  "api-catalog": [
+    {
+      "name": "AudioMultiTool Web Audio Suite",
+      "description": "Client-side web utilities for audio: metronome, tuner, BPM tapper, tone generator, frequency sweeps, and audio recorders.",
+      "homepage": "https://audiomultitool.com",
+      "apis": [
+        {
+          "name": "Tone Generator",
+          "description": "Interactive Web Audio oscillator generator.",
+          "documentation": "https://audiomultitool.com/generator/"
+        },
+        {
+          "name": "Speaker Sweep",
+          "description": "Logarithmic frequency sweep generator.",
+          "documentation": "https://audiomultitool.com/sweep/"
+        },
+        {
+          "name": "BPM Tapper",
+          "description": "Beats per minute manual tap tempo counter.",
+          "documentation": "https://audiomultitool.com/tapper/"
+        },
+        {
+          "name": "Chromatic Instrument Tuner",
+          "description": "Mic input auto-correlation pitch tracker.",
+          "documentation": "https://audiomultitool.com/tuner/"
+        },
+        {
+          "name": "Audio Recorder",
+          "description": "Audio mic and system loopback sound recorder.",
+          "documentation": "https://audiomultitool.com/recorder/"
+        }
+      ]
+    }
+  ]
+}
