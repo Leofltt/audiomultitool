@@ -17,7 +17,6 @@ const App = {
         this.setupNavigation();
         this.setupVisualizerOptions();
         this.setupTheme();
-        this.setupCookieBanner();
         this.startVisualizer();
 
         // Initialize sub-tools
@@ -26,30 +25,6 @@ const App = {
         if (window.TapperTool) window.TapperTool.init(this);
         if (window.TunerTool) window.TunerTool.init(this);
         if (window.RecorderTool) window.RecorderTool.init(this);
-    },
-
-    setupCookieBanner() {
-        const banner = document.getElementById('cookie-banner');
-        const acceptBtn = document.getElementById('cookie-accept');
-        const declineBtn = document.getElementById('cookie-decline');
-
-        if (!banner || !acceptBtn || !declineBtn) return;
-
-        const choice = localStorage.getItem('cookie-consent');
-        
-        if (!choice) {
-            banner.style.display = 'block';
-        }
-
-        acceptBtn.addEventListener('click', () => {
-            localStorage.setItem('cookie-consent', 'accepted');
-            banner.style.display = 'none';
-        });
-
-        declineBtn.addEventListener('click', () => {
-            localStorage.setItem('cookie-consent', 'declined');
-            banner.style.display = 'none';
-        });
     },
 
     setupTheme() {
