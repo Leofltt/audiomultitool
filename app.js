@@ -17,6 +17,26 @@ const App = {
         this.setupNavigation();
         this.setupVisualizerOptions();
         this.setupTheme();
+
+        // Dynamically detect active tool from starting HTML state
+        const activeNav = document.querySelector('.nav-item.active');
+        if (activeNav) {
+            this.activeTool = activeNav.dataset.tool;
+            const titleEl = document.getElementById('active-tool-title');
+            const descEl = document.getElementById('active-tool-desc');
+            const descriptions = {
+                generator: 'Generate pure audio frequencies with custom wave types.',
+                sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
+                tapper: 'Tap tempo calculator to find the beats per minute of any song.',
+                tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
+                recorder: 'Online voice & system audio recorder.'
+            };
+            if (titleEl && descEl) {
+                titleEl.textContent = activeNav.textContent.trim();
+                descEl.textContent = descriptions[this.activeTool] || '';
+            }
+        }
+
         this.startVisualizer();
 
         // Initialize sub-tools

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Chromatic Instrument Tuner (Mic Input) - AudioMultiTool</title>
+    <meta name="description" content="Free chromatic tuner using your microphone to tune guitars, violins, ukuleles, and more.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388027993518928"
+         crossorigin="anonymous"></script>
+
+    <!-- Structured Data Schema for Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Online Chromatic Instrument Tuner (Mic Input)",
+      "operatingSystem": "All",
+      "applicationCategory": "MultimediaApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Online Tone Generator",
+        "Speaker Bass Sweep Tester",
+        "BPM Tap Tempo Calculator",
+        "Chromatic Instrument Tuner",
+        "Online Audio Recorder"
+      ]
+    }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-icon">🎛️</span>
+                <h1>AudioMultiTool</h1>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item" data-tool="generator">
+                    <span class="icon">🔊</span> Tone Generator
+                </button>
+                <button class="nav-item" data-tool="sweep">
+                    <span class="icon">📈</span> Speaker Sweep
+                </button>
+                <button class="nav-item" data-tool="tapper">
+                    <span class="icon">⏱️</span> BPM Tapper
+                </button>
+                <button class="nav-item" data-tool="tuner" class="nav-item active">
+                    <span class="icon">🎯</span> Chromatic Tuner
+                </button>
+                <button class="nav-item" data-tool="recorder">
+                    <span class="icon">🔴</span> Audio Recorder
+                </button>
+            </nav>
+            <div class="ad-sidebar-container">
+                <div class="ad-placeholder-sidebar">
+                    <div class="ad-label">Sponsor / Advertisement</div>
+                    <!-- Interactive placeholder or standard 250x250 slot -->
+                </div>
+                <div class="legal-footer-links" style="margin-top: 15px; font-size: 11px; text-align: center; color: var(--text-secondary);">
+                    <a href="../privacy.html" style="color: var(--text-secondary); text-decoration: none; margin-right: 10px;">Privacy Policy</a>
+                    <a href="../terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Panel -->
+            <header class="top-bar">
+                <div class="active-title-container">
+                    <h2 id="active-tool-title">Tone Generator</h2>
+                    <p id="active-tool-desc">Generate pure audio frequencies with custom wave types.</p>
+                </div>
+                <div class="top-bar-actions">
+                    <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
+                        <span class="theme-icon">☀️</span>
+                    </button>
+                    <div class="audio-status" id="audio-status">
+                        <span class="status-dot"></span> Audio Engine Ready
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tool Stage -->
+            <section class="tool-stage">
+                <!-- Tone Generator Tool Pane -->
+                <div class="tool-pane" id="pane-generator">
+                    <div class="controls-grid">
+                        <div class="control-card frequency-card">
+                            <h3>Frequency</h3>
+                            <div class="dial-container">
+                                <div class="freq-display"><span id="generator-freq-val">440</span><span class="unit">Hz</span></div>
+                            </div>
+                            <input type="range" id="generator-freq-slider" min="20" max="20000" value="440" step="1" class="slider">
+                            <div class="quick-presets">
+                                <button class="preset-btn" data-freq="100">100 Hz</button>
+                                <button class="preset-btn" data-freq="440">440 Hz</button>
+                                <button class="preset-btn" data-freq="1000">1 kHz</button>
+                                <button class="preset-btn" data-freq="10000">10 kHz</button>
+                            </div>
+                        </div>
+
+                        <div class="control-card waveform-card">
+                            <h3>Waveform</h3>
+                            <div class="wave-buttons">
+                                <button class="wave-btn active" data-wave="sine">Sine</button>
+                                <button class="wave-btn" data-wave="square">Square</button>
+                                <button class="wave-btn" data-wave="sawtooth">Sawtooth</button>
+                                <button class="wave-btn" data-wave="triangle">Triangle</button>
+                            </div>
+                            <div class="volume-container">
+                                <h3>Volume</h3>
+                                <input type="range" id="generator-vol" min="0" max="1" value="0.5" step="0.01" class="slider">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-bar" style="margin-bottom: 40px;">
+                        <button id="generator-toggle" class="btn btn-primary">Start Oscillator</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is an Online Tone Generator?</h3>
+                        <p style="margin-bottom: 12px;">An online tone generator is a client-side audio utility designed to produce specific audio frequencies using four primary geometric waveforms: Sine, Square, Sawtooth, and Triangle. It operates via the browser-native HTML5 Web Audio API, calculating audio waveforms locally without uploading any data to external servers.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Common Applications:</h4>
+                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
+                            <li><strong>Auditory Testing:</strong> Mapping personal hearing range limits, including tracking frequency cutoff thresholds.</li>
+                            <li><strong>Equipment Calibration:</strong> Aligning input and output levels on analog mixers, digital audio workstations (DAWs), and interface hardware.</li>
+                            <li><strong>Room Acoustics:</strong> Detecting room resonance frequencies and acoustic standing waves by outputting continuous sine waves.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Speaker Sweep Tool Pane -->
+                <div class="tool-pane" id="pane-sweep">
+                    <div class="controls-grid">
+                        <div class="control-card">
+                            <h3>Frequency Range</h3>
+                            <div class="range-inputs">
+                                <div class="input-group">
+                                    <label>Start (Hz)</label>
+                                    <input type="number" id="sweep-start" value="20" min="20" max="20000">
+                                </div>
+                                <div class="input-group">
+                                    <label>End (Hz)</label>
+                                    <input type="number" id="sweep-end" value="20000" min="20" max="20000">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-card">
+                            <h3>Duration</h3>
+                            <div class="slider-group">
+                                <div class="slider-label">
+                                    <span>Sweep Time</span>
+                                    <span id="sweep-time-val">10s</span>
+                                </div>
+                                <input type="range" id="sweep-duration" min="2" max="30" value="10" step="1" class="slider">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sweep-progress-container">
+                        <div class="sweep-progress-bar" id="sweep-progress"></div>
+                        <div class="sweep-current-freq" id="sweep-current-freq">Ready to Sweep</div>
+                    </div>
+                    <div class="action-bar" style="margin-bottom: 40px;">
+                        <button id="sweep-toggle" class="btn btn-primary">Begin Sweep</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is a Speaker Frequency Sweep?</h3>
+                        <p style="margin-bottom: 12px;">A speaker frequency sweep plays a sliding audio pitch that shifts logarithmically between a chosen starting frequency (typically sub-bass at 20 Hz) and ending frequency (treble range up to 20,000 Hz). The sweep duration determines how fast the frequency changes.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">How to Test Subwoofers & Speakers:</h4>
+                        <p style="margin-bottom: 12px;">To test a subwoofer's bass response, set the sweep range from 20 Hz to 120 Hz. Watch for sudden volume drops or physical rattle sounds from the speaker casing, which helps diagnose physical structure defects or speaker cabinet vibrations.</p>
+                    </div>
+                </div>
+
+                <!-- BPM Tapper Tool Pane -->
+                <div class="tool-pane" id="pane-tapper">
+                    <div class="tapper-layout">
+                        <div class="tap-area-card" id="tap-trigger-btn">
+                            <span class="tap-instruction">Click here or tap Spacebar</span>
+                            <div class="bpm-large-display" id="tapper-bpm-val">--</div>
+                            <span class="bpm-label">BPM</span>
+                        </div>
+                        <div class="tapper-stats">
+                            <div class="stat-card">
+                                <h4>Average BPM</h4>
+                                <p id="tapper-avg">--</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Est. Genre</h4>
+                                <p id="tapper-genre">Tap to calculate</p>
+                            </div>
+                            <button id="tapper-reset" class="btn btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+                    <div class="tap-history" style="margin-bottom: 40px;">
+                        <h3>Tap History</h3>
+                        <ul class="history-list" id="tapper-history">
+                            <li class="empty-state">No taps recorded yet</li>
+                        </ul>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">How does the BPM Tap Tempo Calculator work?</h3>
+                        <p style="margin-bottom: 12px;">Our BPM (Beats Per Minute) tapper measures the intervals between successive keystrokes or mouse clicks. It averages the last twelve tap intervals to display a stable and accurate tempo measurement. This manual counter is crucial for DJs, live musicians, and music producers trying to identify the tempo of an audio track without automated waveform detection tools.</p>
+                    </div>
+                </div>
+
+                <!-- Chromatic Tuner Tool Pane -->
+                <div class="tool-pane active" id="pane-tuner">
+                    <div class="tuner-layout">
+                        <div class="tuner-dial-card">
+                            <div class="tuner-meter">
+                                <div class="tuner-needle" id="tuner-needle"></div>
+                                <div class="tuner-center-mark"></div>
+                            </div>
+                            <div class="pitch-display">
+                                <div class="note-val" id="tuner-note">--</div>
+                                <div class="cents-val" id="tuner-cents">0.0 Hz</div>
+                            </div>
+                        </div>
+                        <div class="mic-controls" style="margin-bottom: 40px;">
+                            <button id="tuner-toggle" class="btn btn-primary">Enable Microphone</button>
+                            <p class="mic-status-label" id="tuner-status">Requires mic permission to listen to audio pitch.</p>
+                        </div>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Chromatic Tuner Pitch Tracking</h3>
+                        <p style="margin-bottom: 12px;">This chromatic instrument tuner uses an **auto-correlation algorithm** to analyze microphone audio streams in real-time. Auto-correlation isolates the fundamental frequency of single voice or acoustic instrument pitches (like guitar, bass, or violin) by searching for repeating signal cycles in the time domain, calculating offset cents from target standard pitch scales.</p>
+                    </div>
+                </div>
+
+                <!-- Audio Recorder Tool Pane -->
+                <div class="tool-pane" id="pane-recorder">
+                    <div class="controls-grid">
+                        <div class="control-card">
+                            <h3>Recording Source</h3>
+                            <div class="input-group">
+                                <label for="recorder-source">Select Input Channel</label>
+                                <select id="recorder-source" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="mic">Microphone Input</option>
+                                    <option value="system">Computer / System Audio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-card">
+                            <h3>Status & Timer</h3>
+                            <div class="recorder-status-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                                <div class="timer-display" id="recorder-timer" style="font-size: 28px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary); margin-bottom: 8px;">00:00</div>
+                                <span class="status-badge" id="recorder-badge" style="background: var(--border-color); padding: 4px 10px; border-radius: 4px; font-size: 11px; text-transform: uppercase;">Idle</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recorder-preview-container" id="recorder-preview-card" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 24px; margin-bottom: 30px; display: none; text-align: center;">
+                        <h3 style="font-size: 13px; margin-bottom: 12px; color: var(--text-secondary);">Recording Preview</h3>
+                        <audio id="recorder-audio-preview" controls style="width: 100%; margin-bottom: 16px; border-radius: 4px;"></audio>
+                        <div>
+                            <a id="recorder-download-btn" class="btn btn-secondary" style="display: inline-block; text-decoration: none;">Download Audio File</a>
+                        </div>
+                    </div>
+
+                    <div class="action-bar" style="margin-bottom: 40px;">
+                        <button id="recorder-toggle" class="btn btn-primary">Start Recording</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Voice & System Audio Recorder</h3>
+                        <p style="margin-bottom: 12px;">Our online recorder lets you capture audio directly from your microphone or record computer system sound loopbacks (e.g. video soundtracks or backing beats playing in other tabs) using browser-native APIs. The recorded streams are encoded locally into a WebM container, generating a safe, instant local download link.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Persistent Visualization Stage -->
+            <footer class="visualizer-bar">
+                <div class="visualizer-header">
+                    <h3>Live Waveform Analysis</h3>
+                    <div class="visualizer-options">
+                        <button class="vis-opt-btn active" data-type="oscilloscope">Oscilloscope</button>
+                        <button class="vis-opt-btn" data-type="frequency">Spectrum</button>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="visualizer-canvas"></canvas>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+
+
+    <!-- Tool Scripts -->
+    <script src="../tools/generator.js"></script>
+    <script src="../tools/sweep.js"></script>
+    <script src="../tools/tapper.js"></script>
+    <script src="../tools/tuner.js"></script>
+    <script src="../tools/recorder.js"></script>
+
+    <!-- Global App Entry -->
+    <script src="../app.js"></script>
+</body>
+</html>
