@@ -96,9 +96,10 @@ window.GeneratorTool = {
         const vol = document.getElementById('generator-vol').value;
         this.gainNode.gain.setValueAtTime(vol, ctx.currentTime);
 
-        // Routing: Oscillator -> Gain -> Global Analyser
+        // Routing: Oscillator -> Gain -> Global Analyser & Audio Destination
         this.oscillator.connect(this.gainNode);
         this.gainNode.connect(this.app.analyserNode);
+        this.gainNode.connect(ctx.destination);
 
         this.oscillator.start();
         this.isPlaying = true;

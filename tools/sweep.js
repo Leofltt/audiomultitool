@@ -51,9 +51,10 @@ window.SweepTool = {
         const endFreq = parseFloat(document.getElementById('sweep-end').value) || 20000;
         this.duration = parseFloat(document.getElementById('sweep-duration').value) || 10;
 
-        // Routing: Oscillator -> Gain -> Global Analyser
+        // Routing: Oscillator -> Gain -> Global Analyser & Audio Destination
         this.oscillator.connect(this.gainNode);
         this.gainNode.connect(this.app.analyserNode);
+        this.gainNode.connect(ctx.destination);
 
         // Constant full gain of 0.5 (safe volume)
         this.gainNode.gain.setValueAtTime(0.5, ctx.currentTime);

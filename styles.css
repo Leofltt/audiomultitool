@@ -819,10 +819,15 @@ body.light-theme .mobile-nav-item:hover {
 
 /* Responsive Mobile Layout */
 @media (max-width: 768px) {
+    body {
+        height: 100dvh;
+        overflow: hidden;
+    }
+
     .app-container {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr; /* Single viewport, no bottom nav bar */
-        height: 100vh;
+        height: 100dvh;
         overflow: hidden;
     }
 
@@ -833,7 +838,7 @@ body.light-theme .mobile-nav-item:hover {
     .main-content {
         grid-row: 1;
         grid-template-rows: 52px 1fr 100px; /* Fixed header, body stage, and visualizer */
-        height: 100vh;
+        height: 100dvh;
         overflow: hidden;
         position: relative;
     }

@@ -81,7 +81,6 @@ const App = {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             this.analyserNode = this.audioCtx.createAnalyser();
             this.analyserNode.fftSize = 2048;
-            this.analyserNode.connect(this.audioCtx.destination);
             
             const statusEl = document.getElementById('audio-status');
             statusEl.innerHTML = '<span class="status-dot"></span> Engine Active';
