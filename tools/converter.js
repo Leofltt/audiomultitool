@@ -55,12 +55,19 @@ window.ConverterTool = {
         // Trigger conversion
         startBtn.addEventListener('click', () => this.startConversion());
 
-        // Toggle bitrate settings visibility based on output format
+        // Toggle Settings dropdown visibility based on format
         if (formatSelect) {
             formatSelect.addEventListener('change', (e) => {
+                const format = e.target.value;
                 const bitrateGroup = document.getElementById('converter-bitrate-group');
-                if (bitrateGroup) {
-                    bitrateGroup.style.display = e.target.value === 'mp3' ? 'block' : 'none';
+                const bitdepthGroup = document.getElementById('converter-bitdepth-group');
+                
+                if (format === 'wav') {
+                    if (bitrateGroup) bitrateGroup.style.display = 'none';
+                    if (bitdepthGroup) bitdepthGroup.style.display = 'block';
+                } else {
+                    if (bitrateGroup) bitrateGroup.style.display = 'block';
+                    if (bitdepthGroup) bitdepthGroup.style.display = 'none';
                 }
             });
         }
@@ -95,8 +102,12 @@ window.ConverterTool = {
         const progressBar = document.getElementById('converter-progress-bar');
         const statusLabel = document.getElementById('converter-status-label');
         const downloadBtn = document.getElementById('converter-download-btn');
+        
         const targetFormat = document.getElementById('converter-format-select').value;
         const bitrate = parseInt(document.getElementById('converter-bitrate-select').value);
+        const bitDepth = parseInt(document.getElementById('converter-bitdepth-select').value);
+        const sampleRateSelect = document.getElementById('converter-samplerate-select').value;
+        const channelsSelect = document.getElementById('converter-channels-select').value;
 
         this.isConverting = true;
         startBtn.disabled = true;
@@ -106,36 +117,63 @@ window.ConverterTool = {
         statusLabel.textContent = 'Loading File...';
 
         try {
-            // If output format is MP3, make sure Lamejs is loaded first
             if (targetFormat === 'mp3' && !this.lameLoaded) {
                 statusLabel.textContent = 'Initializing Encoders...';
                 await this.loadLamejs();
             }
 
-            statusLabel.textContent = 'Reading...';
+            statusLabel.textContent = 'Reading file...';
             const arrayBuffer = await this.readFileAsArrayBuffer(this.selectedFile);
 
             statusLabel.textContent = 'Decoding...';
-            // Use browser offline / regular audio context to decode PCM
             const ctx = this.app.getAudioContext();
-            const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+            const sourceBuffer = await ctx.decodeAudioData(arrayBuffer);
+
+            // Determine Target Settings
+            let targetSampleRate = sourceBuffer.sampleRate;
+            if (sampleRateSelect !== 'source') {
+                targetSampleRate = parseInt(sampleRateSelect);
+            }
+
+            let targetChannels = sourceBuffer.numberOfChannels;
+            if (channelsSelect === 'stereo') {
+                targetChannels = 2;
+            } else if (channelsSelect === 'mono') {
+                targetChannels = 1;
+            }
+
+            statusLabel.textContent = 'Resampling...';
+            // Perform high-speed offline context rendering to resample rates and mix channels
+            const offlineCtx = new OfflineAudioContext(targetChannels, sourceBuffer.duration * targetSampleRate, targetSampleRate);
+            const bufferSource = offlineCtx.createBufferSource();
+            bufferSource.buffer = sourceBuffer;
+            bufferSource.connect(offlineCtx.destination);
+            bufferSource.start(0);
+
+            const decodedBuffer = await offlineCtx.startRendering();
 
             statusLabel.textContent = 'Transcoding...';
-            
             let outputBlob;
+
             if (targetFormat === 'wav') {
-                outputBlob = this.encodeWav(audioBuffer);
-            } else {
-                outputBlob = await this.encodeMp3(audioBuffer, bitrate, (percent) => {
+                outputBlob = this.encodeWav(decodedBuffer, bitDepth);
+            } else if (targetFormat === 'mp3') {
+                outputBlob = await this.encodeMp3(decodedBuffer, bitrate, (percent) => {
                     progressBar.style.width = `${percent}%`;
                     statusLabel.textContent = `Encoding: ${percent}%`;
+                });
+            } else if (targetFormat === 'ogg' || targetFormat === 'webm') {
+                // For OGG / WebM we can record the output stream using browser MediaRecorder
+                outputBlob = await this.encodeViaMediaRecorder(decodedBuffer, targetFormat, bitrate, (percent) => {
+                    progressBar.style.width = `${percent}%`;
+                    statusLabel.textContent = `Rendering: ${percent}%`;
                 });
             }
 
             progressBar.style.width = '100%';
             statusLabel.textContent = 'Done!';
 
-            // Generate Local Download Link
+            // Generate Link
             const outputUrl = URL.createObjectURL(outputBlob);
             const inputBaseName = this.selectedFile.name.substring(0, this.selectedFile.name.lastIndexOf('.'));
             
@@ -147,7 +185,7 @@ window.ConverterTool = {
         } catch (err) {
             console.error('Conversion error:', err);
             statusLabel.textContent = 'Error!';
-            alert('An error occurred during decoding/transcoding. Check if your browser supports this file format.');
+            alert('An error occurred during transcoding. Verify that your browser supports input audio formats.');
         } finally {
             this.isConverting = false;
             startBtn.disabled = false;
@@ -176,12 +214,11 @@ window.ConverterTool = {
         });
     },
 
-    // 100% Client-Side Pure-JS Lossless WAV Encoder
-    encodeWav(audioBuffer) {
+    // Flexible WAV encoder supporting 8-bit, 16-bit, 24-bit, and 32-bit Float PCM formats
+    encodeWav(audioBuffer, bitDepth) {
         const numOfChan = audioBuffer.numberOfChannels;
         const sampleRate = audioBuffer.sampleRate;
-        const format = 1; // 1 = raw 16-bit PCM integer
-        const bitDepth = 16;
+        const bytesPerSample = bitDepth / 8;
         
         let result;
         if (numOfChan === 2) {
@@ -190,40 +227,66 @@ window.ConverterTool = {
             result = audioBuffer.getChannelData(0);
         }
         
-        const buffer = new ArrayBuffer(44 + result.length * 2);
+        const buffer = new ArrayBuffer(44 + result.length * bytesPerSample);
         const view = new DataView(buffer);
         
-        /* RIFF identifier */
+        // 1. RIFF Identifier
         this.writeString(view, 0, 'RIFF');
-        /* file length */
-        view.setUint32(4, 36 + result.length * 2, true);
-        /* RIFF type */
+        view.setUint32(4, 36 + result.length * bytesPerSample, true);
         this.writeString(view, 8, 'WAVE');
-        /* format chunk identifier */
-        this.writeString(view, 12, 'fmt ');
-        /* format chunk length */
-        view.setUint32(16, 16, true);
-        /* sample format (raw PCM) */
-        view.setUint16(20, format, true);
-        /* channel count */
-        view.setUint16(22, numOfChan, true);
-        /* sample rate */
-        view.setUint32(24, sampleRate, true);
-        /* byte rate (sample rate * block align) */
-        view.setUint32(28, sampleRate * numOfChan * (bitDepth / 8), true);
-        /* block align (channel count * bytes per sample) */
-        view.setUint16(32, numOfChan * (bitDepth / 8), true);
-        /* bits per sample */
-        view.setUint16(34, bitDepth, true);
-        /* data chunk identifier */
-        this.writeString(view, 36, 'data');
-        /* chunk length */
-        view.setUint32(40, result.length * 2, true);
         
-        // Write PCM samples into dataview bounds
-        this.floatTo16BitPCM(view, 44, result);
+        // 2. Format Chunk
+        this.writeString(view, 12, 'fmt ');
+        view.setUint32(16, 16, true);
+        
+        // Sample format code (3 for Float, 1 for Integer PCM)
+        const sampleFormat = bitDepth === 32 ? 3 : 1;
+        view.setUint16(20, sampleFormat, true);
+        view.setUint16(22, numOfChan, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * numOfChan * bytesPerSample, true);
+        view.setUint16(32, numOfChan * bytesPerSample, true);
+        view.setUint16(34, bitDepth, true);
+        
+        // 3. Data Chunk
+        this.writeString(view, 36, 'data');
+        view.setUint32(40, result.length * bytesPerSample, true);
+        
+        // 4. Write audio data matching bit depths
+        this.writePCMData(view, 44, result, bitDepth);
         
         return new Blob([view], { type: 'audio/wav' });
+    },
+
+    writePCMData(view, offset, input, bitDepth) {
+        if (bitDepth === 8) {
+            // 8-bit unsigned PCM
+            for (let i = 0; i < input.length; i++, offset++) {
+                const s = Math.max(-1, Math.min(1, input[i]));
+                const unsignedVal = Math.round((s + 1) * 127.5);
+                view.setUint8(offset, unsignedVal);
+            }
+        } else if (bitDepth === 16) {
+            // 16-bit signed PCM
+            for (let i = 0; i < input.length; i++, offset += 2) {
+                const s = Math.max(-1, Math.min(1, input[i]));
+                view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            }
+        } else if (bitDepth === 24) {
+            // 24-bit signed PCM
+            for (let i = 0; i < input.length; i++, offset += 3) {
+                const s = Math.max(-1, Math.min(1, input[i]));
+                const pcmVal = Math.max(-8388608, Math.min(8388607, Math.round(s * 8388607)));
+                view.setUint8(offset, pcmVal & 0xFF);
+                view.setUint8(offset + 1, (pcmVal >> 8) & 0xFF);
+                view.setUint8(offset + 2, (pcmVal >> 16) & 0xFF);
+            }
+        } else if (bitDepth === 32) {
+            // 32-bit Float PCM
+            for (let i = 0; i < input.length; i++, offset += 4) {
+                view.setFloat32(offset, input[i], true);
+            }
+        }
     },
 
     interleave(inputL, inputR) {
@@ -241,13 +304,6 @@ window.ConverterTool = {
         return result;
     },
 
-    floatTo16BitPCM(output, offset, input) {
-        for (let i = 0; i < input.length; i++, offset += 2) {
-            const s = Math.max(-1, Math.min(1, input[i]));
-            output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-        }
-    },
-
     writeString(view, offset, string) {
         for (let i = 0; i < string.length; i++) {
             view.setUint8(offset + i, string.charCodeAt(i));
@@ -260,17 +316,13 @@ window.ConverterTool = {
             const channels = audioBuffer.numberOfChannels;
             const sampleRate = audioBuffer.sampleRate;
             
-            // Create MP3 encoder instance
             const mp3encoder = new lamejs.Mp3Encoder(channels, sampleRate, bitrate);
             const mp3Data = [];
+            const sampleBlockSize = 576;
             
-            const sampleBlockSize = 576; // LAME standard audio processing block size
-            
-            // Fetch PCM arrays
             const left = audioBuffer.getChannelData(0);
             const right = channels > 1 ? audioBuffer.getChannelData(1) : null;
             
-            // Convert Float32 PCM to Int16 PCM arrays (lamejs expects Int16)
             const leftInt16 = new Int16Array(left.length);
             for (let i = 0; i < left.length; i++) {
                 const s = Math.max(-1, Math.min(1, left[i]));
@@ -292,18 +344,15 @@ window.ConverterTool = {
             const encodeChunk = () => {
                 const remaining = totalSamples - index;
                 if (remaining <= 0) {
-                    // Flush encoder buffers
                     const mp3buf = mp3encoder.flush();
                     if (mp3buf.length > 0) {
                         mp3Data.push(mp3buf);
                     }
-                    
                     const blob = new Blob(mp3Data, { type: 'audio/mp3' });
                     resolve(blob);
                     return;
                 }
 
-                // Slice a chunk of samples
                 const size = Math.min(remaining, sampleBlockSize);
                 const leftChunk = leftInt16.subarray(index, index + size);
                 
@@ -320,16 +369,74 @@ window.ConverterTool = {
                 }
 
                 index += size;
-                
-                // Fire progress updates
                 const percent = Math.round((index / totalSamples) * 100);
                 progressCallback(percent);
 
-                // Use setTimeout to yield execution back to browser thread, keeping page responsive
                 setTimeout(encodeChunk, 0);
             };
 
             encodeChunk();
+        });
+    },
+
+    // High-speed real-time bounce recording for Ogg / WebM formats using browser MediaRecorder
+    encodeViaMediaRecorder(audioBuffer, format, bitrate, progressCallback) {
+        return new Promise((resolve, reject) => {
+            const ctx = this.app.getAudioContext();
+            
+            // Setup source playback node
+            const source = ctx.createBufferSource();
+            source.buffer = audioBuffer;
+
+            // Route to standard stream destination
+            const dest = ctx.createMediaStreamDestination();
+            source.connect(dest);
+
+            const mimeType = format === 'ogg' ? 'audio/ogg' : 'audio/webm';
+            
+            let options = { audioBitsPerSecond: bitrate * 1000 };
+            if (MediaRecorder.isTypeSupported(mimeType)) {
+                options.mimeType = mimeType;
+            } else if (format === 'ogg' && MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                // Fallback to WebM/Opus if Ogg is not natively supported
+                options.mimeType = 'audio/webm;codecs=opus';
+            }
+
+            const mediaRecorder = new MediaRecorder(dest.stream, options);
+            const chunks = [];
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) {
+                    chunks.push(e.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: mimeType });
+                resolve(blob);
+            };
+
+            // Calculate progress updates based on playback intervals
+            const duration = audioBuffer.duration;
+            const startTime = Date.now();
+            
+            const timer = setInterval(() => {
+                const elapsed = (Date.now() - startTime) / 1000;
+                const percent = Math.round(Math.min((elapsed / duration) * 100, 99));
+                progressCallback(percent);
+                
+                if (elapsed >= duration) {
+                    clearInterval(timer);
+                }
+            }, 100);
+
+            source.onended = () => {
+                mediaRecorder.stop();
+                clearInterval(timer);
+            };
+
+            mediaRecorder.start();
+            source.start(0);
         });
     },
 
@@ -342,6 +449,6 @@ window.ConverterTool = {
     },
 
     stop() {
-        // No active running timers or streams to dispose of for converter
+        // No active running state to clear
     }
 };

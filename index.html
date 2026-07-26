@@ -332,23 +332,58 @@
                     <!-- File Details & Options (Hidden until loaded) -->
                     <div id="converter-options-card" class="control-card" style="margin-top: 20px; display: none;">
                         <h3 style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Selected File: <span id="converter-file-name" style="color: var(--text-primary); font-weight: 600;"></span></h3>
-                        <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                        
+                        <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
                             <div class="input-group">
-                                <label for="converter-format-select">Convert To</label>
+                                <label for="converter-format-select">Format</label>
                                 <select id="converter-format-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
                                     <option value="mp3">MP3 (MPEG Layer 3)</option>
                                     <option value="wav">WAV (Waveform Audio / PCM)</option>
+                                    <option value="ogg">OGG (Ogg Vorbis)</option>
+                                    <option value="webm">WEBM (WebM Audio)</option>
                                 </select>
                             </div>
                             <div class="input-group" id="converter-bitrate-group">
                                 <label for="converter-bitrate-select">Bitrate Quality</label>
                                 <select id="converter-bitrate-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="96">96 kbps (Low)</option>
                                     <option value="128">128 kbps (Standard)</option>
                                     <option value="192">192 kbps (Medium)</option>
+                                    <option value="256">256 kbps (Good)</option>
                                     <option value="320" selected>320 kbps (High Quality)</option>
                                 </select>
                             </div>
+                            <div class="input-group" id="converter-bitdepth-group" style="display: none;">
+                                <label for="converter-bitdepth-select">Bit Depth</label>
+                                <select id="converter-bitdepth-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="8">8-bit PCM (Lofi)</option>
+                                    <option value="16" selected>16-bit PCM (CD Quality)</option>
+                                    <option value="24">24-bit PCM (Hi-Res)</option>
+                                    <option value="32">32-bit Float (Precision)</option>
+                                </select>
+                            </div>
                         </div>
+
+                        <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                            <div class="input-group">
+                                <label for="converter-samplerate-select">Sample Rate</label>
+                                <select id="converter-samplerate-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="source" selected>Keep Source Rate</option>
+                                    <option value="44100">44.1 kHz</option>
+                                    <option value="48000">48 kHz</option>
+                                    <option value="96000">96 kHz (Ultra)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="converter-channels-select">Channels</label>
+                                <select id="converter-channels-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="source" selected>Keep Source Channels</option>
+                                    <option value="stereo">Stereo (2 Channels)</option>
+                                    <option value="mono">Mono (1 Channel)</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="action-bar" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
                             <button id="converter-start-btn" class="btn btn-primary">Start Conversion</button>
                             
