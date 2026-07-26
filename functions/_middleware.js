@@ -1,12 +1,14 @@
 export async function onRequest(context) {
   const { request } = context;
   const acceptHeader = request.headers.get("Accept") || "";
+  const url = new URL(request.url);
+  const path = url.pathname;
 
-  // If the requesting agent explicitly requests markdown
-  if (acceptHeader.includes("text/markdown")) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    
+  // Bypass assets (css, js, images, metadata)
+  const isAsset = /\.(css|js|png|jpg|jpeg|gif|svg|ico|json|xml|txt|webmanifest)$/i.test(path);
+
+  // If the requesting agent explicitly requests markdown and it's not an asset
+  if (acceptHeader.includes("text/markdown") && !isAsset) {
     let title = "AudioMultiTool Web Audio Suite";
     let body = "Welcome to AudioMultiTool. This is a client-side suite of browser audio calibration and utility tools.";
 
@@ -80,7 +82,7 @@ Discover all available APIs and tools at: https://audiomultitool.com/.well-known
 
     return new Response(markdown.trim(), {
       headers: {
-        "Content-Type": "text/markdown; charset=utf-8",
+        "Content-Type": "text/markdown",
         "x-markdown-tokens": tokenEstimate.toString(),
         "Cache-Control": "public, max-age=86400"
       }
