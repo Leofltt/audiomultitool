@@ -76,9 +76,12 @@ ${body}
 Discover all available APIs and tools at: https://audiomultitool.com/.well-known/api-catalog.json
 `;
 
+    const tokenEstimate = Math.ceil(markdown.trim().length / 4);
+
     return new Response(markdown.trim(), {
       headers: {
         "Content-Type": "text/markdown; charset=utf-8",
+        "x-markdown-tokens": tokenEstimate.toString(),
         "Cache-Control": "public, max-age=86400"
       }
     });
