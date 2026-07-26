@@ -68,6 +68,17 @@ This tool provides decibel volume level tracking and white, pink, and brown nois
 - Live min/max dB peak counters.
 - Procedural audio buffer generation for white, pink, and brownian sound noise.
 `;
+    } else if (path.includes("/converter")) {
+      title = "Online Client-Side Audio Converter - AudioMultiTool";
+      body = `
+# Online Client-Side Audio Converter - AudioMultiTool
+This tool provides secure, browser-native audio transcoding to MP3 and WAV without server uploads.
+
+## Specifications:
+- Local browser file decoding (AudioContext PCM unpack).
+- 100% private processing (no remote uploads).
+- Fast WAV byte writer and chunk-encoded LAME MP3 conversion.
+`;
     } else {
       title = "Tone Generator & Oscillator - AudioMultiTool";
       body = `

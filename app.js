@@ -30,6 +30,7 @@ const App = {
                 tapper: 'Tap tempo calculator to find the beats per minute of any song.',
                 tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
                 noise: 'Calibrate monitors with a dB sound level meter and generate white, pink, or brownian noise.',
+                converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
                 recorder: 'Online voice & system audio recorder.'
             };
             if (titleEl && descEl) {
@@ -46,6 +47,7 @@ const App = {
         if (window.TapperTool) window.TapperTool.init(this);
         if (window.TunerTool) window.TunerTool.init(this);
         if (window.NoiseTool) window.NoiseTool.init(this);
+        if (window.ConverterTool) window.ConverterTool.init(this);
         if (window.RecorderTool) window.RecorderTool.init(this);
     },
 
@@ -189,6 +191,9 @@ const App = {
         }
         if (window.NoiseTool && typeof window.NoiseTool.stop === 'function') {
             window.NoiseTool.stop();
+        }
+        if (window.ConverterTool && typeof window.ConverterTool.stop === 'function') {
+            window.ConverterTool.stop();
         }
         if (window.RecorderTool && typeof window.RecorderTool.stop === 'function') {
             window.RecorderTool.stop();

@@ -32,6 +32,7 @@
         "Chromatic Instrument Tuner",
         "Decibel Sound Level Meter",
         "Noise Color Generator",
+        "Client-side Audio Converter",
         "Online Audio Recorder"
       ]
     }
@@ -60,6 +61,9 @@
                 </button>
                 <button class="nav-item active" data-tool="noise">
                     <span class="icon">🎚️</span> Noise & dB
+                </button>
+                <button class="nav-item" data-tool="converter">
+                    <span class="icon">🔄</span> Audio Converter
                 </button>
                 <button class="nav-item" data-tool="recorder">
                     <span class="icon">🔴</span> Audio Recorder
@@ -105,6 +109,7 @@
                 <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
                 <button class="mobile-nav-item" data-tool="tuner">🎯 Chromatic Tuner</button>
                 <button class="mobile-nav-item active" data-tool="noise">🎚️ Noise & dB</button>
+                <button class="mobile-nav-item" data-tool="converter">🔄 Audio Converter</button>
                 <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
             </div>
 
@@ -311,6 +316,65 @@
                     </div>
                 </div>
 
+                <!-- Audio Converter Tool Pane -->
+                <div class="tool-pane" id="pane-converter">
+                    <div class="controls-grid" style="grid-template-columns: 1fr;">
+                        <!-- Dropzone & File Loader -->
+                        <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed var(--border-color); padding: 40px 20px; cursor: pointer; text-align: center; transition: border-color 0.15s;" id="converter-dropzone">
+                            <span style="font-size: 36px; margin-bottom: 12px;">📁</span>
+                            <h3 style="font-size: 16px; margin-bottom: 8px;">Drag & Drop Audio File Here</h3>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">Supports MP3, WAV, OGG, M4A, FLAC, WebM (Max 100MB)</p>
+                            <button class="btn btn-secondary" onclick="document.getElementById('converter-file-input').click()">Browse Files</button>
+                            <input type="file" id="converter-file-input" accept="audio/*" style="display: none;">
+                        </div>
+                    </div>
+
+                    <!-- File Details & Options (Hidden until loaded) -->
+                    <div id="converter-options-card" class="control-card" style="margin-top: 20px; display: none;">
+                        <h3 style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Selected File: <span id="converter-file-name" style="color: var(--text-primary); font-weight: 600;"></span></h3>
+                        <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                            <div class="input-group">
+                                <label for="converter-format-select">Convert To</label>
+                                <select id="converter-format-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="mp3">MP3 (MPEG Layer 3)</option>
+                                    <option value="wav">WAV (Waveform Audio / PCM)</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="converter-bitrate-group">
+                                <label for="converter-bitrate-select">Bitrate Quality</label>
+                                <select id="converter-bitrate-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="128">128 kbps (Standard)</option>
+                                    <option value="192">192 kbps (Medium)</option>
+                                    <option value="320" selected>320 kbps (High Quality)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="action-bar" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                            <button id="converter-start-btn" class="btn btn-primary">Start Conversion</button>
+                            
+                            <div id="converter-status-container" style="display: none; align-items: center; gap: 12px; flex: 1;">
+                                <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 3px; overflow: hidden; position: relative;">
+                                    <div id="converter-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s;"></div>
+                                </div>
+                                <span id="converter-status-label" style="font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary);">Ready</span>
+                            </div>
+
+                            <a id="converter-download-btn" class="btn btn-secondary" style="display: none; text-decoration: none;">Download File</a>
+                        </div>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Client-Side Audio Converter</h3>
+                        <p style="margin-bottom: 12px;">This client-side audio file converter lets you transcode songs, sound clips, and voice tracks directly inside your browser. By utilizing HTML5 Web Audio decoding and dynamic, lightweight WebAssembly compression layers, all file processing happens locally on your computer. **Your audio is never uploaded to any external server**, guaranteeing 100% privacy, instant conversion speeds, and zero bandwidth limits.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Supported Formats:</h4>
+                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
+                            <li><strong>Decoding Inputs:</strong> Read files in MP3, WAV, OGG, M4A, FLAC, AAC, WebM, and AIFF audio formats.</li>
+                            <li><strong>Encoding Outputs:</strong> Convert files into MP3 format (custom quality up to 320 kbps) or lossless raw WAV files.</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Audio Recorder Tool Pane -->
                 <div class="tool-pane" id="pane-recorder">
                     <div class="controls-grid">
@@ -375,6 +439,7 @@
     <script src="../tools/tapper.js"></script>
     <script src="../tools/tuner.js"></script>
     <script src="../tools/noise.js"></script>
+    <script src="../tools/converter.js"></script>
     <script src="../tools/recorder.js"></script>
 
     <!-- Global App Entry -->

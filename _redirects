@@ -11,4 +11,10 @@
 /decibel-meter  /noise/index.html      200
 /decibelmeter   /noise/index.html      200
 /noise-generator /noise/index.html     200
+/converter      /converter/index.html  200
+/audioconverter /converter/index.html  200
+/audio-converter /converter/index.html 200
+/wav-to-mp3     /converter/index.html  200
+/mp3-to-wav     /converter/index.html  200
+
 

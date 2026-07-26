@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPM Tapper & Tap Tempo Beats Calculator - AudioMultiTool</title>
-    <meta name="description" content="Tap along to any music or beat to calculate its tempo in Beats Per Minute (BPM).">
+    <title>Online Audio Converter (WAV, MP3, M4A, FLAC, OGG) - AudioMultiTool</title>
+    <meta name="description" content="Convert audio files to MP3 or WAV formats 100% client-side. No limits, no uploads, absolute privacy.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
 
@@ -17,7 +17,7 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "BPM Tapper & Tap Tempo Beats Calculator",
+      "name": "Online Audio Converter (WAV, MP3, M4A, FLAC, OGG)",
       "operatingSystem": "All",
       "applicationCategory": "MultimediaApplication",
       "offers": {
@@ -53,7 +53,7 @@
                 <button class="nav-item" data-tool="sweep">
                     <span class="icon">📈</span> Speaker Sweep
                 </button>
-                <button class="nav-item active" data-tool="tapper">
+                <button class="nav-item" data-tool="tapper">
                     <span class="icon">⏱️</span> BPM Tapper
                 </button>
                 <button class="nav-item" data-tool="tuner">
@@ -62,7 +62,7 @@
                 <button class="nav-item" data-tool="noise">
                     <span class="icon">🎚️</span> Noise & dB
                 </button>
-                <button class="nav-item" data-tool="converter">
+                <button class="nav-item active" data-tool="converter">
                     <span class="icon">🔄</span> Audio Converter
                 </button>
                 <button class="nav-item" data-tool="recorder">
@@ -106,10 +106,10 @@
             <div id="mobile-menu" class="mobile-menu-drawer">
                 <button class="mobile-nav-item" data-tool="generator">🔊 Tone Generator</button>
                 <button class="mobile-nav-item" data-tool="sweep">📈 Speaker Sweep</button>
-                <button class="mobile-nav-item active" data-tool="tapper">⏱️ BPM Tapper</button>
+                <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
                 <button class="mobile-nav-item" data-tool="tuner">🎯 Chromatic Tuner</button>
                 <button class="mobile-nav-item" data-tool="noise">🎚️ Noise & dB</button>
-                <button class="mobile-nav-item" data-tool="converter">🔄 Audio Converter</button>
+                <button class="mobile-nav-item active" data-tool="converter">🔄 Audio Converter</button>
                 <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
             </div>
 
@@ -208,7 +208,7 @@
                 </div>
 
                 <!-- BPM Tapper Tool Pane -->
-                <div class="tool-pane active" id="pane-tapper">
+                <div class="tool-pane" id="pane-tapper">
                     <div class="tapper-layout">
                         <div class="tap-area-card" id="tap-trigger-btn">
                             <span class="tap-instruction">Click here or tap Spacebar</span>
@@ -317,7 +317,7 @@
                 </div>
 
                 <!-- Audio Converter Tool Pane -->
-                <div class="tool-pane" id="pane-converter">
+                <div class="tool-pane active" id="pane-converter">
                     <div class="controls-grid" style="grid-template-columns: 1fr;">
                         <!-- Dropzone & File Loader -->
                         <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed var(--border-color); padding: 40px 20px; cursor: pointer; text-align: center; transition: border-color 0.15s;" id="converter-dropzone">

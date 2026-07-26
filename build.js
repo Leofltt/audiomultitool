@@ -31,6 +31,11 @@ const tools = [
         desc: 'Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.'
     },
     {
+        name: 'converter',
+        title: 'Online Audio Converter (WAV, MP3, M4A, FLAC, OGG)',
+        desc: 'Convert audio files to MP3 or WAV formats 100% client-side. No limits, no uploads, absolute privacy.'
+    },
+    {
         name: 'recorder',
         title: 'Online Voice Recorder & System Sound Loopback Capture',
         desc: 'Record audio directly from your microphone or capture computer system audio fully client-side.'
