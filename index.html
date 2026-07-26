@@ -37,7 +37,7 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar Navigation (Desktop Only) -->
         <aside class="sidebar">
             <div class="brand">
                 <span class="brand-icon">🎛️</span>
@@ -76,9 +76,12 @@
         <main class="main-content">
             <!-- Header Panel -->
             <header class="top-bar">
-                <div class="active-title-container">
-                    <h2 id="active-tool-title">Tone Generator</h2>
-                    <p id="active-tool-desc">Generate pure audio frequencies with custom wave types.</p>
+                <div class="top-bar-left" style="display: flex; align-items: center; gap: 12px;">
+                    <button id="menu-toggle" class="menu-toggle-btn" title="Toggle Menu">☰</button>
+                    <div class="active-title-container">
+                        <h2 id="active-tool-title">Tone Generator</h2>
+                        <p id="active-tool-desc">Generate pure audio frequencies with custom wave types.</p>
+                    </div>
                 </div>
                 <div class="top-bar-actions">
                     <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
@@ -89,6 +92,15 @@
                     </div>
                 </div>
             </header>
+
+            <!-- Mobile Navigation Drawer Overlay -->
+            <div id="mobile-menu" class="mobile-menu-drawer">
+                <button class="mobile-nav-item active" data-tool="generator">🔊 Tone Generator</button>
+                <button class="mobile-nav-item" data-tool="sweep">📈 Speaker Sweep</button>
+                <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
+                <button class="mobile-nav-item" data-tool="tuner">🎯 Chromatic Tuner</button>
+                <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
+            </div>
 
             <!-- Tool Stage -->
             <section class="tool-stage">
@@ -301,8 +313,6 @@
             </footer>
         </main>
     </div>
-
-
 
     <!-- Tool Scripts -->
     <script src="tools/generator.js"></script>

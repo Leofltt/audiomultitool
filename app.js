@@ -100,40 +100,69 @@ const App = {
 
     setupNavigation() {
         const navItems = document.querySelectorAll('.nav-item');
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
         const panes = document.querySelectorAll('.tool-pane');
         const titleEl = document.getElementById('active-tool-title');
         const descEl = document.getElementById('active-tool-desc');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuToggle = document.getElementById('menu-toggle');
 
         const descriptions = {
             generator: 'Generate pure audio frequencies with custom wave types.',
             sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
             tapper: 'Tap tempo calculator to find the beats per minute of any song.',
-            tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.'
+            tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
+            recorder: 'Online voice & system audio recorder.'
         };
 
+        const selectTool = (targetTool, displayName) => {
+            this.stopAllTools();
+
+            // Clear active on all nav types
+            navItems.forEach(nav => nav.classList.remove('active'));
+            mobileNavItems.forEach(nav => nav.classList.remove('active'));
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            // Set active on matching buttons and pane
+            const desktopBtn = document.querySelector(`.nav-item[data-tool="${targetTool}"]`);
+            const mobileBtn = document.querySelector(`.mobile-nav-item[data-tool="${targetTool}"]`);
+            
+            if (desktopBtn) desktopBtn.classList.add('active');
+            if (mobileBtn) mobileBtn.classList.add('active');
+            
+            const targetPane = document.getElementById(`pane-${targetTool}`);
+            if (targetPane) targetPane.classList.add('active');
+
+            if (titleEl) titleEl.textContent = displayName;
+            if (descEl) descEl.textContent = descriptions[targetTool] || '';
+            this.activeTool = targetTool;
+
+            // Close mobile menu drawer if open
+            if (mobileMenu) mobileMenu.classList.remove('open');
+        };
+
+        // Desktop links
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 const targetTool = item.dataset.tool;
-                
-                // Stop any running sound engines from other tools
-                this.stopAllTools();
-
-                navItems.forEach(nav => nav.classList.remove('active'));
-                panes.forEach(pane => pane.classList.remove('active'));
-
-                item.classList.add('active');
-                document.getElementById(`pane-${targetTool}`).classList.add('active');
-
-                titleEl.textContent = item.textContent.trim();
-                descEl.textContent = descriptions[targetTool];
-                this.activeTool = targetTool;
-
-                // Extra triggers for specific tabs
-                if (targetTool === 'tuner') {
-                    // Alert users about mic requirements
-                }
+                selectTool(targetTool, item.textContent.trim().replace(/^[^\s]+\s+/, ''));
             });
         });
+
+        // Mobile links
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetTool = item.dataset.tool;
+                selectTool(targetTool, item.textContent.trim().replace(/^[^\s]+\s+/, ''));
+            });
+        });
+
+        // Menu Toggle Drawer
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+            });
+        }
     },
 
     setupVisualizerOptions() {

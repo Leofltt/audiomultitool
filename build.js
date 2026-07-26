@@ -58,13 +58,18 @@ tools.forEach(tool => {
     // 4. Update JSON-LD structured data title
     html = html.replace('"name": "AudioMultiTool Web Audio Suite"', `"name": "${tool.title}"`);
 
-    // 5. Update active nav button class
-    // First, remove active from the default (generator)
+    // 5. Update active nav button classes
+    // Desktop: Remove active from generator, add active to target
     html = html.replace('class="nav-item active" data-tool="generator"', 'class="nav-item" data-tool="generator"');
-    // Add active to the target tool's navigation button
-    html = html.replace(`data-tool="${tool.name}"`, `data-tool="${tool.name}" class="nav-item active"`);
-    // Clear double classes if we target generator itself
-    html = html.replace('class="nav-item" data-tool="generator" class="nav-item active"', 'class="nav-item active" data-tool="generator"');
+    if (tool.name !== 'generator') {
+        html = html.replace(`class="nav-item" data-tool="${tool.name}"`, `class="nav-item active" data-tool="${tool.name}"`);
+    }
+    
+    // Mobile: Remove active from generator, add active to target
+    html = html.replace('class="mobile-nav-item active" data-tool="generator"', 'class="mobile-nav-item" data-tool="generator"');
+    if (tool.name !== 'generator') {
+        html = html.replace(`class="mobile-nav-item" data-tool="${tool.name}"`, `class="mobile-nav-item active" data-tool="${tool.name}"`);
+    }
 
     // 6. Update active tool-pane class
     // First, remove active from the default tone generator pane
