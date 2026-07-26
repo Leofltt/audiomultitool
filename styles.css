@@ -843,6 +843,7 @@ body.light-theme .mobile-nav-item:hover {
     }
 
     .top-bar {
+        grid-row: 1; /* Explicitly place in row 1 */
         padding: 0 16px;
         height: 52px;
         flex-direction: row;
@@ -854,6 +855,14 @@ body.light-theme .mobile-nav-item:hover {
         display: flex;
         align-items: center;
         gap: 12px;
+    }
+
+    .mobile-menu-drawer {
+        position: absolute; /* Take out of grid flow */
+        top: 52px;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
     }
 
     .active-title-container h2 {
@@ -870,6 +879,7 @@ body.light-theme .mobile-nav-item:hover {
     }
 
     .tool-stage {
+        grid-row: 2; /* Explicitly place in row 2 */
         padding: 16px 12px;
         overflow-y: auto;
     }
@@ -923,10 +933,12 @@ body.light-theme .mobile-nav-item:hover {
     }
 
     .visualizer-bar {
+        grid-row: 3; /* Explicitly place in row 3 */
         padding: 6px 16px;
         grid-template-rows: 24px 1fr;
         height: 100px;
         background: var(--bg-surface);
+        z-index: 10;
     }
 
     .visualizer-header h3 {
