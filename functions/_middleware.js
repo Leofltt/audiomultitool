@@ -57,6 +57,17 @@ This tool records voice microphone signals or system sound loopbacks.
 - Client-side WebM encoding container.
 - Local play preview and download generator.
 `;
+    } else if (path.includes("/noise")) {
+      title = "Sound Level Meter & Noise Generator - AudioMultiTool";
+      body = `
+# Sound Level Meter & Noise Generator - AudioMultiTool
+This tool provides decibel volume level tracking and white, pink, and brown noise playback.
+
+## Specifications:
+- Decibel meter with real-time mic amplitude RMS calculations.
+- Live min/max dB peak counters.
+- Procedural audio buffer generation for white, pink, and brownian sound noise.
+`;
     } else {
       title = "Tone Generator & Oscillator - AudioMultiTool";
       body = `

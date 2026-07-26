@@ -26,6 +26,11 @@ const tools = [
         desc: 'Free chromatic tuner using your microphone to tune guitars, violins, ukuleles, and more.'
     },
     {
+        name: 'noise',
+        title: 'Online Decibel Level Meter & White, Pink, Brown Noise Generator',
+        desc: 'Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.'
+    },
+    {
         name: 'recorder',
         title: 'Online Voice Recorder & System Sound Loopback Capture',
         desc: 'Record audio directly from your microphone or capture computer system audio fully client-side.'

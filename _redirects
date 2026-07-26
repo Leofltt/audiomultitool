@@ -7,3 +7,8 @@
 /bpmtapper      /tapper/index.html     200
 /tuner          /tuner/index.html      200
 /recorder       /recorder/index.html   200
+/noise          /noise/index.html      200
+/decibel-meter  /noise/index.html      200
+/decibelmeter   /noise/index.html      200
+/noise-generator /noise/index.html     200
+

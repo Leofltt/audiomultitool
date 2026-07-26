@@ -30,6 +30,8 @@
         "Speaker Bass Sweep Tester",
         "BPM Tap Tempo Calculator",
         "Chromatic Instrument Tuner",
+        "Decibel Sound Level Meter",
+        "Noise Color Generator",
         "Online Audio Recorder"
       ]
     }
@@ -55,6 +57,9 @@
                 </button>
                 <button class="nav-item active" data-tool="tuner">
                     <span class="icon">🎯</span> Chromatic Tuner
+                </button>
+                <button class="nav-item" data-tool="noise">
+                    <span class="icon">🎚️</span> Noise & dB
                 </button>
                 <button class="nav-item" data-tool="recorder">
                     <span class="icon">🔴</span> Audio Recorder
@@ -99,6 +104,7 @@
                 <button class="mobile-nav-item" data-tool="sweep">📈 Speaker Sweep</button>
                 <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
                 <button class="mobile-nav-item active" data-tool="tuner">🎯 Chromatic Tuner</button>
+                <button class="mobile-nav-item" data-tool="noise">🎚️ Noise & dB</button>
                 <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
             </div>
 
@@ -256,6 +262,55 @@
                     </div>
                 </div>
 
+                <!-- Noise Generator & dB Meter Pane -->
+                <div class="tool-pane" id="pane-noise">
+                    <div class="controls-grid">
+                        <!-- Decibel Meter Card -->
+                        <div class="control-card">
+                            <h3>Decibel Level Meter</h3>
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 160px;">
+                                <div id="db-level-val" style="font-size: 48px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary);">0.0 <span style="font-size: 16px;">dB</span></div>
+                                <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 11px; color: var(--text-secondary);">
+                                    <span>Min: <strong id="db-level-min">--</strong> dB</span>
+                                    <span>Max: <strong id="db-level-max">--</strong> dB</span>
+                                </div>
+                            </div>
+                            <button id="db-toggle" class="btn btn-primary" style="width: 100%;">Start Listening</button>
+                        </div>
+                        
+                        <!-- Noise Generator Card -->
+                        <div class="control-card">
+                            <h3>Noise Color Generator</h3>
+                            <div class="input-group" style="margin-bottom: 16px;">
+                                <label for="noise-type">Select Noise Color</label>
+                                <select id="noise-type" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="white">White Noise (Full Spectrum)</option>
+                                    <option value="pink">Pink Noise (Equal Energy / Octave)</option>
+                                    <option value="brown">Brownian Noise (Deep Sub-Bass Focus)</option>
+                                </select>
+                            </div>
+                            <div class="volume-container" style="margin-bottom: 20px;">
+                                <h3>Noise Volume</h3>
+                                <input type="range" id="noise-vol" min="0" max="0.5" value="0.2" step="0.01" class="slider">
+                            </div>
+                            <button id="noise-toggle" class="btn btn-primary" style="width: 100%;">Start Playback</button>
+                        </div>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Decibel Meter & Sound Level Calibrator</h3>
+                        <p style="margin-bottom: 12px;">This sound pressure check utility utilizes browser-native mic nodes to calculate Decibel limits (dB FS approximation). It tracks dynamic peak spikes (Max dB) and quiet levels (Min dB) directly in your browser. This tool helps map room ambiance and calibrate monitor levels.</p>
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">White, Pink & Brown Noise Audio Colors</h3>
+                        <p style="margin-bottom: 12px;">Different colors of sound noise represent specific frequency spectral densities:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
+                            <li><strong>White Noise:</strong> Even power spectral density across all frequencies. Perfect for masking background distractions.</li>
+                            <li><strong>Pink Noise:</strong> Equal energy per octave, matching human auditory perception. Used in professional speaker testing and room tuning.</li>
+                            <li><strong>Brown Noise:</strong> Power density decreases by 6 dB per octave. Deep, low-pitched rumble, highly effective for meditation and sound masking.</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Audio Recorder Tool Pane -->
                 <div class="tool-pane" id="pane-recorder">
                     <div class="controls-grid">
@@ -319,6 +374,7 @@
     <script src="../tools/sweep.js"></script>
     <script src="../tools/tapper.js"></script>
     <script src="../tools/tuner.js"></script>
+    <script src="../tools/noise.js"></script>
     <script src="../tools/recorder.js"></script>
 
     <!-- Global App Entry -->

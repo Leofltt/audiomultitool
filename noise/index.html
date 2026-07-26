@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPM Tapper & Tap Tempo Beats Calculator - AudioMultiTool</title>
-    <meta name="description" content="Tap along to any music or beat to calculate its tempo in Beats Per Minute (BPM).">
+    <title>Online Decibel Level Meter & White, Pink, Brown Noise Generator - AudioMultiTool</title>
+    <meta name="description" content="Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
 
@@ -17,7 +17,7 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "BPM Tapper & Tap Tempo Beats Calculator",
+      "name": "Online Decibel Level Meter & White, Pink, Brown Noise Generator",
       "operatingSystem": "All",
       "applicationCategory": "MultimediaApplication",
       "offers": {
@@ -52,13 +52,13 @@
                 <button class="nav-item" data-tool="sweep">
                     <span class="icon">📈</span> Speaker Sweep
                 </button>
-                <button class="nav-item active" data-tool="tapper">
+                <button class="nav-item" data-tool="tapper">
                     <span class="icon">⏱️</span> BPM Tapper
                 </button>
                 <button class="nav-item" data-tool="tuner">
                     <span class="icon">🎯</span> Chromatic Tuner
                 </button>
-                <button class="nav-item" data-tool="noise">
+                <button class="nav-item active" data-tool="noise">
                     <span class="icon">🎚️</span> Noise & dB
                 </button>
                 <button class="nav-item" data-tool="recorder">
@@ -102,9 +102,9 @@
             <div id="mobile-menu" class="mobile-menu-drawer">
                 <button class="mobile-nav-item" data-tool="generator">🔊 Tone Generator</button>
                 <button class="mobile-nav-item" data-tool="sweep">📈 Speaker Sweep</button>
-                <button class="mobile-nav-item active" data-tool="tapper">⏱️ BPM Tapper</button>
+                <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
                 <button class="mobile-nav-item" data-tool="tuner">🎯 Chromatic Tuner</button>
-                <button class="mobile-nav-item" data-tool="noise">🎚️ Noise & dB</button>
+                <button class="mobile-nav-item active" data-tool="noise">🎚️ Noise & dB</button>
                 <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
             </div>
 
@@ -203,7 +203,7 @@
                 </div>
 
                 <!-- BPM Tapper Tool Pane -->
-                <div class="tool-pane active" id="pane-tapper">
+                <div class="tool-pane" id="pane-tapper">
                     <div class="tapper-layout">
                         <div class="tap-area-card" id="tap-trigger-btn">
                             <span class="tap-instruction">Click here or tap Spacebar</span>
@@ -263,7 +263,7 @@
                 </div>
 
                 <!-- Noise Generator & dB Meter Pane -->
-                <div class="tool-pane" id="pane-noise">
+                <div class="tool-pane active" id="pane-noise">
                     <div class="controls-grid">
                         <!-- Decibel Meter Card -->
                         <div class="control-card">

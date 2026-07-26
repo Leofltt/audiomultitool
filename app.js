@@ -29,10 +29,11 @@ const App = {
                 sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
                 tapper: 'Tap tempo calculator to find the beats per minute of any song.',
                 tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
+                noise: 'Calibrate monitors with a dB sound level meter and generate white, pink, or brownian noise.',
                 recorder: 'Online voice & system audio recorder.'
             };
             if (titleEl && descEl) {
-                titleEl.textContent = activeNav.textContent.trim();
+                titleEl.textContent = activeNav.textContent.trim().replace(/^[^\s]+\s+/, '');
                 descEl.textContent = descriptions[this.activeTool] || '';
             }
         }
@@ -44,6 +45,7 @@ const App = {
         if (window.SweepTool) window.SweepTool.init(this);
         if (window.TapperTool) window.TapperTool.init(this);
         if (window.TunerTool) window.TunerTool.init(this);
+        if (window.NoiseTool) window.NoiseTool.init(this);
         if (window.RecorderTool) window.RecorderTool.init(this);
     },
 
@@ -184,6 +186,9 @@ const App = {
         }
         if (window.TunerTool && typeof window.TunerTool.stop === 'function') {
             window.TunerTool.stop();
+        }
+        if (window.NoiseTool && typeof window.NoiseTool.stop === 'function') {
+            window.NoiseTool.stop();
         }
         if (window.RecorderTool && typeof window.RecorderTool.stop === 'function') {
             window.RecorderTool.stop();
