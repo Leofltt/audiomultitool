@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AudioMultiTool - Browser Audio Utilities & Calibration Tools</title>
+    <meta name="description" content="Free browser-based web audio tools. Features a tone generator, speaker bass sweep tester, BPM tap tempo, chromatic tuner, and audio recorder. No downloads, zero-latency.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388027993518928"
          crossorigin="anonymous"></script>
-    <meta name="description" content="Free browser-based web audio tools. Features a tone generator, speaker bass sweep tester, BPM tap tempo, chromatic tuner, and audio recorder. No downloads, zero-latency.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
 
     <!-- Structured Data Schema for Search Engines -->
     <script type="application/ld+json">
@@ -60,9 +60,15 @@
                     <span class="icon">🔴</span> Audio Recorder
                 </button>
             </nav>
-            <div class="ad-placeholder-sidebar">
-                <div class="ad-label">Sponsor / Advertisement</div>
-                <!-- Interactive placeholder or standard 250x250 slot -->
+            <div class="ad-sidebar-container">
+                <div class="ad-placeholder-sidebar">
+                    <div class="ad-label">Sponsor / Advertisement</div>
+                    <!-- Interactive placeholder or standard 250x250 slot -->
+                </div>
+                <div class="legal-footer-links" style="margin-top: 15px; font-size: 11px; text-align: center; color: var(--text-secondary);">
+                    <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none; margin-right: 10px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                </div>
             </div>
         </aside>
 
@@ -117,8 +123,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="action-bar">
+                    <div class="action-bar" style="margin-bottom: 40px;">
                         <button id="generator-toggle" class="btn btn-primary">Start Oscillator</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is an Online Tone Generator?</h3>
+                        <p style="margin-bottom: 12px;">An online tone generator is a client-side audio utility designed to produce specific audio frequencies using four primary geometric waveforms: Sine, Square, Sawtooth, and Triangle. It operates via the browser-native HTML5 Web Audio API, calculating audio waveforms locally without uploading any data to external servers.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Common Applications:</h4>
+                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
+                            <li><strong>Auditory Testing:</strong> Mapping personal hearing range limits, including tracking frequency cutoff thresholds.</li>
+                            <li><strong>Equipment Calibration:</strong> Aligning input and output levels on analog mixers, digital audio workstations (DAWs), and interface hardware.</li>
+                            <li><strong>Room Acoustics:</strong> Detecting room resonance frequencies and acoustic standing waves by outputting continuous sine waves.</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -153,8 +171,16 @@
                         <div class="sweep-progress-bar" id="sweep-progress"></div>
                         <div class="sweep-current-freq" id="sweep-current-freq">Ready to Sweep</div>
                     </div>
-                    <div class="action-bar">
+                    <div class="action-bar" style="margin-bottom: 40px;">
                         <button id="sweep-toggle" class="btn btn-primary">Begin Sweep</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is a Speaker Frequency Sweep?</h3>
+                        <p style="margin-bottom: 12px;">A speaker frequency sweep plays a sliding audio pitch that shifts logarithmically between a chosen starting frequency (typically sub-bass at 20 Hz) and ending frequency (treble range up to 20,000 Hz). The sweep duration determines how fast the frequency changes.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">How to Test Subwoofers & Speakers:</h4>
+                        <p style="margin-bottom: 12px;">To test a subwoofer's bass response, set the sweep range from 20 Hz to 120 Hz. Watch for sudden volume drops or physical rattle sounds from the speaker casing, which helps diagnose physical structure defects or speaker cabinet vibrations.</p>
                     </div>
                 </div>
 
@@ -178,11 +204,17 @@
                             <button id="tapper-reset" class="btn btn-secondary">Reset Calculator</button>
                         </div>
                     </div>
-                    <div class="tap-history">
+                    <div class="tap-history" style="margin-bottom: 40px;">
                         <h3>Tap History</h3>
                         <ul class="history-list" id="tapper-history">
                             <li class="empty-state">No taps recorded yet</li>
                         </ul>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">How does the BPM Tap Tempo Calculator work?</h3>
+                        <p style="margin-bottom: 12px;">Our BPM (Beats Per Minute) tapper measures the intervals between successive keystrokes or mouse clicks. It averages the last twelve tap intervals to display a stable and accurate tempo measurement. This manual counter is crucial for DJs, live musicians, and music producers trying to identify the tempo of an audio track without automated waveform detection tools.</p>
                     </div>
                 </div>
 
@@ -199,10 +231,16 @@
                                 <div class="cents-val" id="tuner-cents">0.0 Hz</div>
                             </div>
                         </div>
-                        <div class="mic-controls">
+                        <div class="mic-controls" style="margin-bottom: 40px;">
                             <button id="tuner-toggle" class="btn btn-primary">Enable Microphone</button>
                             <p class="mic-status-label" id="tuner-status">Requires mic permission to listen to audio pitch.</p>
                         </div>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Chromatic Tuner Pitch Tracking</h3>
+                        <p style="margin-bottom: 12px;">This chromatic instrument tuner uses an **auto-correlation algorithm** to analyze microphone audio streams in real-time. Auto-correlation isolates the fundamental frequency of single voice or acoustic instrument pitches (like guitar, bass, or violin) by searching for repeating signal cycles in the time domain, calculating offset cents from target standard pitch scales.</p>
                     </div>
                 </div>
 
@@ -236,8 +274,14 @@
                         </div>
                     </div>
 
-                    <div class="action-bar">
+                    <div class="action-bar" style="margin-bottom: 40px;">
                         <button id="recorder-toggle" class="btn btn-primary">Start Recording</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Voice & System Audio Recorder</h3>
+                        <p style="margin-bottom: 12px;">Our online recorder lets you capture audio directly from your microphone or record computer system sound loopbacks (e.g. video soundtracks or backing beats playing in other tabs) using browser-native APIs. The recorded streams are encoded locally into a WebM container, generating a safe, instant local download link.</p>
                     </div>
                 </div>
             </section>
@@ -256,6 +300,15 @@
                 </div>
             </footer>
         </main>
+    </div>
+
+    <!-- GDPR Cookie Consent Banner -->
+    <div id="cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 360px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 9999; font-size: 12px; display: none; line-height: 1.5; color: var(--text-secondary);">
+        <p style="margin-bottom: 12px;">We use cookies to personalize ads and analyze site traffic. By using our website, you agree to our use of cookies as outlined in our <a href="privacy.html" style="color: var(--primary);">Privacy Policy</a>.</p>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button id="cookie-decline" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Decline</button>
+            <button id="cookie-accept" class="btn btn-primary" style="padding: 6px 12px; font-size: 11px;">Accept</button>
+        </div>
     </div>
 
     <!-- Tool Scripts -->

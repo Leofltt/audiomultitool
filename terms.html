@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - AudioMultiTool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .legal-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        .legal-container h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        .legal-container h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        .legal-container p, .legal-container ul {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            color: var(--primary-hover);
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="legal-container">
+        <a href="/" class="back-link">← Back to AudioMultiTool</a>
+        <h1>Terms of Service</h1>
+        <p>Last updated: July 2026</p>
+        
+        <h2>1. Terms</h2>
+        <p>By accessing this Website, accessible from our domain, you are agreeing to be bound by these Website Terms and Conditions of Use and agree that you are responsible for the agreement with any applicable local laws. If you disagree with any of these terms, you are prohibited from accessing this site.</p>
+
+        <h2>2. Use License</h2>
+        <p>AudioMultiTool is a collection of browser-based utilities. Permission is granted to temporarily use the tools on this website for personal, non-commercial, or commercial audio calibration and recording workflows.</p>
+        <p>This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+        <ul>
+            <li>Attempt to reverse engineer any client-side algorithms hosted on the site;</li>
+            <li>Use the site in any way that violates applicable legal frameworks or infringes copyright;</li>
+            <li>Use automated scrapers or bots to overload request interfaces.</li>
+        </ul>
+
+        <h2>3. Disclaimer</h2>
+        <p>All the materials and tools on AudioMultiTool are provided "as is". We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+        <h2>4. Limitations</h2>
+        <p>In no event shall AudioMultiTool or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the audio utilities on our site.</p>
+
+        <h2>5. Revisions and Errata</h2>
+        <p>The materials appearing on AudioMultiTool's website could include technical, typographical, or photographic errors. We may change the materials contained on its website at any time without notice.</p>
+    </div>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+        } else if (savedTheme === 'dark') {
+            document.body.classList.remove('light-theme');
+        }
+    </script>
+</body>
+</html>
