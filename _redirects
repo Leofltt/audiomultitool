@@ -1,0 +1,9 @@
+# Cloudflare Pages URL Rewrites (200 status preserves clean browser url)
+/tonegenerator  /generator/index.html  200
+/tone-generator /generator/index.html  200
+/speaker-sweep  /sweep/index.html      200
+/speakersweep   /sweep/index.html      200
+/bpm-tapper     /tapper/index.html     200
+/bpmtapper      /tapper/index.html     200
+/tuner          /tuner/index.html      200
+/recorder       /recorder/index.html   200
