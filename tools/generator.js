@@ -26,7 +26,7 @@ window.GeneratorTool = {
 
         // Sync slider with display frequency
         freqSlider.addEventListener('input', (e) => {
-            const freq = e.target.value;
+            const freq = this.sliderToFreq(e.target.value);
             freqVal.textContent = freq;
             if (this.oscillator && this.isPlaying) {
                 this.oscillator.frequency.setTargetAtTime(freq, this.app.audioCtx.currentTime, 0.05);
@@ -90,8 +90,8 @@ window.GeneratorTool = {
         // Preset helpers
         presetBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                const freq = btn.dataset.freq;
-                freqSlider.value = freq;
+                const freq = parseFloat(btn.dataset.freq);
+                freqSlider.value = this.freqToSlider(freq);
                 freqVal.textContent = freq;
                 if (this.oscillator && this.isPlaying) {
                     this.oscillator.frequency.setTargetAtTime(freq, this.app.audioCtx.currentTime, 0.05);
@@ -148,7 +148,8 @@ window.GeneratorTool = {
             this.oscillator = ctx.createOscillator();
             this.oscillator.type = this.currentType;
             
-            const freq = document.getElementById('generator-freq-slider').value;
+            const sliderVal = document.getElementById('generator-freq-slider').value;
+            const freq = this.sliderToFreq(sliderVal);
             this.oscillator.frequency.setValueAtTime(freq, ctx.currentTime);
             
             this.oscillator.connect(this.gainNode);
@@ -226,5 +227,19 @@ window.GeneratorTool = {
         }
 
         return noiseBuffer;
+    },
+
+    sliderToFreq(val) {
+        const minF = 20;
+        const maxF = 20000;
+        const p = val / 1000;
+        return Math.round(minF * Math.pow(maxF / minF, p));
+    },
+
+    freqToSlider(freq) {
+        const minF = 20;
+        const maxF = 20000;
+        const p = Math.log(freq / minF) / Math.log(maxF / minF);
+        return Math.round(p * 1000);
     }
 };
