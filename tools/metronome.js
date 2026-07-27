@@ -127,7 +127,18 @@ window.MetronomeTool = {
     },
 
     setBpm(newBpm) {
-        this.bpm = Math.max(10, Math.min(newBpm, 300));
+        const boundedBpm = Math.max(10, Math.min(newBpm, 300));
+        if (this.bpm === boundedBpm) return;
+
+        this.bpm = boundedBpm;
+
+        // Smoothly adjust nextNoteTime grid if metronome is currently playing
+        if (this.isPlaying) {
+            const ctx = this.app.getAudioContext();
+            const secondsPerBeat = 60.0 / this.bpm;
+            const subdivisionDuration = secondsPerBeat / this.subdivision;
+            this.nextNoteTime = ctx.currentTime + subdivisionDuration;
+        }
         
         const slider = document.getElementById('metronome-bpm-slider');
         const display = document.getElementById('metronome-bpm-val');
@@ -162,7 +173,22 @@ window.MetronomeTool = {
         this.isPlaying = true;
         this.app.isSoundActive = true;
         this.notesQueue = [];
-        this.lastScheduledBeatUnix = 0;
+        this.lastTriggeredBeatUnix = 0;
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('sync') === '1') {
+            // Align the initial start click exactly to the absolute Unix Epoch grid
+            this.nextNoteTime = this.getUnixAlignedNextNoteTime(this.bpm, this.subdivision);
+            
+            const beatDurationMs = 60000 / (this.bpm * this.subdivision);
+            const barDurationMs = beatDurationMs * this.signature * this.subdivision;
+            const nowUnix = Date.now();
+            const elapsedInBar = nowUnix % barDurationMs;
+            this.currentBeatInBar = Math.floor(elapsedInBar / beatDurationMs);
+        } else {
+            this.nextNoteTime = ctx.currentTime + 0.05;
+            this.currentBeatInBar = 0;
+        }
 
         // Start scheduling interval
         this.schedulerIntervalId = setInterval(() => this.scheduler(), this.lookahead);
@@ -190,7 +216,10 @@ window.MetronomeTool = {
         }
 
         const dots = document.querySelectorAll('#metronome-indicators .beat-dot');
-        dots.forEach(dot => dot.classList.remove('active'));
+        dots.forEach(dot => {
+            dot.classList.remove('flash-active');
+            dot.style.animation = 'none';
+        });
 
         const toggleBtn = document.getElementById('metronome-toggle-btn');
         if (toggleBtn) {
@@ -214,33 +243,21 @@ window.MetronomeTool = {
 
     scheduler() {
         const ctx = this.app.getAudioContext();
-        const nowUnix = Date.now();
-        const audioCtxTimeAtNow = ctx.currentTime;
-
-        const beatDurationMs = 60000 / (this.bpm * this.subdivision);
-        const barDurationMs = beatDurationMs * this.signature * this.subdivision;
-
-        // Scheduler window limit (100ms lookahead)
-        const lookAheadLimitUnix = nowUnix + (this.scheduleAheadTime * 1000);
-
-        // Find the start of the current bar relative to Unix time epoch
-        const currentBarStartUnix = nowUnix - (nowUnix % barDurationMs);
-        
-        let testBeatIndex = Math.floor((nowUnix - currentBarStartUnix) / beatDurationMs);
-        let testBeatUnix = currentBarStartUnix + (testBeatIndex * beatDurationMs);
-
-        while (testBeatUnix < lookAheadLimitUnix) {
-            // Schedule if it falls in the target window and hasn't been scheduled yet
-            if (testBeatUnix > nowUnix - 10 && (!this.lastScheduledBeatUnix || testBeatUnix > this.lastScheduledBeatUnix)) {
-                const beatInBar = Math.floor((testBeatUnix - currentBarStartUnix) / beatDurationMs) % (this.signature * this.subdivision);
-                const targetAudioTime = audioCtxTimeAtNow + (testBeatUnix - nowUnix) / 1000;
-                
-                this.scheduleNote(beatInBar, targetAudioTime, testBeatUnix);
-                this.lastScheduledBeatUnix = testBeatUnix;
-            }
-            testBeatIndex++;
-            testBeatUnix = currentBarStartUnix + (testBeatIndex * beatDurationMs);
+        while (this.nextNoteTime < ctx.currentTime + this.scheduleAheadTime) {
+            // Generate a virtual unix timestamp mapping for compositor sync calculations
+            const virtualUnixTime = Date.now() + (this.nextNoteTime - ctx.currentTime) * 1000;
+            
+            this.scheduleNote(this.currentBeatInBar, this.nextNoteTime, virtualUnixTime);
+            this.advanceNote();
         }
+    },
+
+    advanceNote() {
+        const secondsPerBeat = 60.0 / this.bpm;
+        const subdivisionDuration = secondsPerBeat / this.subdivision;
+
+        this.nextNoteTime += subdivisionDuration;
+        this.currentBeatInBar = (this.currentBeatInBar + 1) % (this.signature * this.subdivision);
     },
 
     scheduleNote(beatIndex, time, beatUnix) {
@@ -251,6 +268,17 @@ window.MetronomeTool = {
 
         // Play dynamic synthesized click
         this.playClick(time, isDownbeat, !isMainBeat);
+    },
+
+    getUnixAlignedNextNoteTime(bpm, subdivision) {
+        const ctx = this.app.getAudioContext();
+        const nowUnix = Date.now();
+        const audioCtxTimeAtNow = ctx.currentTime;
+        
+        const beatDurationMs = 60000 / (bpm * subdivision);
+        const nextBeatUnix = nowUnix + (beatDurationMs - (nowUnix % beatDurationMs));
+        
+        return audioCtxTimeAtNow + (nextBeatUnix - nowUnix) / 1000;
     },
 
     playClick(time, isDownbeat, isSubdivisionNote) {
