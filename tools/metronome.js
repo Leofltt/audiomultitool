@@ -18,8 +18,8 @@ window.MetronomeTool = {
     lookahead: 25.0,         // Interval time in ms
     scheduleAheadTime: 0.1,  // Scheduler lookahead window in seconds
     notesQueue: [],          // Queue of notes scheduled for visual sync
-    lastScheduledBeatUnix: 0,
-    lastTriggeredBeatUnix: 0,
+    scheduledBeatCount: 0,   // Sequential counter for scheduled beats
+    lastTriggeredBeatId: -1,  // The last beat ID that was visually animated
 
     init(appInstance) {
         this.app = appInstance;
@@ -173,7 +173,8 @@ window.MetronomeTool = {
         this.isPlaying = true;
         this.app.isSoundActive = true;
         this.notesQueue = [];
-        this.lastTriggeredBeatUnix = 0;
+        this.scheduledBeatCount = 0;
+        this.lastTriggeredBeatId = -1;
 
         const params = new URLSearchParams(window.location.search);
         if (params.get('sync') === '1') {
@@ -244,10 +245,7 @@ window.MetronomeTool = {
     scheduler() {
         const ctx = this.app.getAudioContext();
         while (this.nextNoteTime < ctx.currentTime + this.scheduleAheadTime) {
-            // Generate a virtual unix timestamp mapping for compositor sync calculations
-            const virtualUnixTime = Date.now() + (this.nextNoteTime - ctx.currentTime) * 1000;
-            
-            this.scheduleNote(this.currentBeatInBar, this.nextNoteTime, virtualUnixTime);
+            this.scheduleNote(this.currentBeatInBar, this.nextNoteTime);
             this.advanceNote();
         }
     },
@@ -260,11 +258,12 @@ window.MetronomeTool = {
         this.currentBeatInBar = (this.currentBeatInBar + 1) % (this.signature * this.subdivision);
     },
 
-    scheduleNote(beatIndex, time, beatUnix) {
+    scheduleNote(beatIndex, time) {
         const isMainBeat = (beatIndex % this.subdivision === 0);
         const isDownbeat = (beatIndex === 0);
 
-        this.notesQueue.push({ beat: beatIndex, time: time, beatUnix: beatUnix });
+        const beatId = this.scheduledBeatCount++;
+        this.notesQueue.push({ beat: beatIndex, time: time, beatId: beatId });
 
         // Play dynamic synthesized click
         this.playClick(time, isDownbeat, !isMainBeat);
@@ -349,8 +348,8 @@ window.MetronomeTool = {
             }
         }
 
-        if (activeNote && (!this.lastTriggeredBeatUnix || activeNote.beatUnix > this.lastTriggeredBeatUnix)) {
-            this.lastTriggeredBeatUnix = activeNote.beatUnix;
+        if (activeNote && activeNote.beatId > this.lastTriggeredBeatId) {
+            this.lastTriggeredBeatId = activeNote.beatId;
             
             const beatIndex = activeNote.beat;
             const mainBeat = Math.floor(beatIndex / this.subdivision);
