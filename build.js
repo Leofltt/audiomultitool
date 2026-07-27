@@ -64,6 +64,8 @@ tools.forEach(tool => {
     // 3. Set custom title and description
     html = html.replace(/<title>.*?<\/title>/, `<title>${tool.title} - AudioMultiTool</title>`);
     html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${tool.desc}">`);
+    html = html.replace(/<h2 id="active-tool-title">.*?<\/h2>/, `<h2 id="active-tool-title">${tool.title}</h2>`);
+    html = html.replace(/<p id="active-tool-desc">.*?<\/p>/, `<p id="active-tool-desc">${tool.desc}</p>`);
 
     // 4. Update JSON-LD structured data title
     html = html.replace('"name": "AudioMultiTool Web Audio Suite"', `"name": "${tool.title}"`);

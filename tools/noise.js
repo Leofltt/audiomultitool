@@ -76,6 +76,7 @@ window.NoiseTool = {
         this.avgDbSum = 0;
         this.avgDbCount = 0;
         this.isListening = true;
+        this.app.isSoundActive = true;
 
         // Run measurement processing loop on animation frames
         const process = () => {
@@ -180,6 +181,7 @@ window.NoiseTool = {
 
     stopDb() {
         this.isListening = false;
+        this.app.isSoundActive = false;
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
             this.animationId = null;

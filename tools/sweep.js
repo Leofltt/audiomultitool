@@ -65,6 +65,7 @@ window.SweepTool = {
 
         this.oscillator.start();
         this.isPlaying = true;
+        this.app.isSoundActive = true;
         this.startTime = Date.now();
 
         // Update progress bar UI on screen
@@ -114,6 +115,7 @@ window.SweepTool = {
             this.gainNode = null;
         }
         this.isPlaying = false;
+        this.app.isSoundActive = false;
 
         const toggleBtn = document.getElementById('sweep-toggle');
         if (toggleBtn) {

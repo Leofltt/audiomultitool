@@ -4,6 +4,7 @@ const App = {
     analyserNode: null,
     visualizerType: 'oscilloscope', // 'oscilloscope' or 'frequency'
     activeTool: 'generator',
+    isSoundActive: false,
     canvas: null,
     canvasCtx: null,
     animationId: null,
@@ -19,7 +20,7 @@ const App = {
         this.setupTheme();
 
         // Dynamically detect active tool from starting HTML state
-        const activeNav = document.querySelector('.nav-item.active');
+        let activeNav = document.querySelector('.nav-item.active') || document.querySelector('.mobile-nav-item.active');
         if (activeNav) {
             this.activeTool = activeNav.dataset.tool;
             const titleEl = document.getElementById('active-tool-title');
@@ -115,6 +116,8 @@ const App = {
             sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
             tapper: 'Tap tempo calculator to find the beats per minute of any song.',
             tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
+            noise: 'Calibrate monitors with a dB sound level meter.',
+            converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
             recorder: 'Online voice & system audio recorder.'
         };
 
@@ -214,7 +217,7 @@ const App = {
             this.canvasCtx.fillStyle = 'rgba(11, 15, 25, 0.25)';
             this.canvasCtx.fillRect(0, 0, width, height);
 
-            if (!this.analyserNode) {
+            if (!this.analyserNode || !this.isSoundActive) {
                 // Draw idling sine wave placeholder when no sound is active
                 this.canvasCtx.lineWidth = 2;
                 this.canvasCtx.strokeStyle = 'rgba(79, 70, 229, 0.15)';

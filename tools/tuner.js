@@ -296,6 +296,7 @@ window.TunerTool = {
 
         this.refOscillator.start();
         this.isRefPlaying = true;
+        this.app.isSoundActive = true;
     },
 
     stopReferenceTone() {
@@ -312,6 +313,9 @@ window.TunerTool = {
         }
         this.isRefPlaying = false;
         this.activeRefString = null;
+        if (!this.isPlaying) {
+            this.app.isSoundActive = false;
+        }
 
         const buttons = document.querySelectorAll('#tuner-strings-container button');
         buttons.forEach(b => {
@@ -361,6 +365,7 @@ window.TunerTool = {
         this.sourceNode.connect(this.analyser);
 
         this.isPlaying = true;
+        this.app.isSoundActive = true;
         this.stopReferenceTone();
 
         const bufferLength = this.analyser.fftSize;
@@ -459,6 +464,7 @@ window.TunerTool = {
 
     stop() {
         this.isPlaying = false;
+        this.app.isSoundActive = false;
         clearInterval(this.pitchInterval);
         this.stopReferenceTone();
 

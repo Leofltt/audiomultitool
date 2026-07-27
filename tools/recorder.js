@@ -94,6 +94,7 @@ window.RecorderTool = {
             // Start recording chunks
             this.mediaRecorder.start(10);
             this.isRecording = true;
+            this.app.isSoundActive = true;
             this.startTime = Date.now();
 
             // Toggle Button Styles
@@ -128,6 +129,7 @@ window.RecorderTool = {
         }
         this.cleanupStream();
         this.isRecording = false;
+        this.app.isSoundActive = false;
         this.resetUI();
     },
 

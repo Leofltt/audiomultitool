@@ -131,6 +131,7 @@ window.GeneratorTool = {
 
         this.startSource();
         this.isPlaying = true;
+        this.app.isSoundActive = true;
     },
 
     startSource() {
@@ -179,6 +180,7 @@ window.GeneratorTool = {
             this.gainNode = null;
         }
         this.isPlaying = false;
+        this.app.isSoundActive = false;
 
         const toggleBtn = document.getElementById('generator-toggle');
         if (toggleBtn) {
