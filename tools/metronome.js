@@ -305,35 +305,43 @@ window.MetronomeTool = {
         const ctx = this.app.getAudioContext();
         const currentTime = ctx.currentTime;
 
-        while (this.notesQueue.length > 0 && this.notesQueue[0].time < currentTime) {
-            const currentBeat = this.notesQueue[0].beat;
+        // Clean up old notes from the queue (older than 1 second)
+        while (this.notesQueue.length > 0 && this.notesQueue[0].time < currentTime - 1.0) {
             this.notesQueue.shift();
-            this.triggerBeatVisual(currentBeat);
+        }
+
+        // Find the active note (the most recent note that has played)
+        let activeNote = null;
+        for (let i = this.notesQueue.length - 1; i >= 0; i--) {
+            if (this.notesQueue[i].time <= currentTime) {
+                activeNote = this.notesQueue[i];
+                break;
+            }
+        }
+
+        const dots = document.querySelectorAll('#metronome-indicators .beat-dot');
+        
+        if (activeNote) {
+            const beatIndex = activeNote.beat;
+            const mainBeat = Math.floor(beatIndex / this.subdivision);
+            const isFirstSubdivision = (beatIndex % this.subdivision === 0);
+
+            const beatDuration = 60 / this.bpm;
+            // Dynamic flash duration matching the active tempo speed
+            const flashDuration = Math.min(0.15, beatDuration * 0.4);
+
+            dots.forEach((dot, idx) => {
+                if (idx === mainBeat && isFirstSubdivision && (currentTime < activeNote.time + flashDuration)) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        } else {
+            dots.forEach(dot => dot.classList.remove('active'));
         }
 
         requestAnimationFrame(() => this.visualSyncLoop());
-    },
-
-    triggerBeatVisual(beatIndex) {
-        const mainBeat = Math.floor(beatIndex / this.subdivision);
-        const isFirstSubdivision = (beatIndex % this.subdivision === 0);
-
-        const dots = document.querySelectorAll('#metronome-indicators .beat-dot');
-        dots.forEach((dot, idx) => {
-            if (idx === mainBeat && isFirstSubdivision) {
-                dot.classList.add('active');
-            } else if (isFirstSubdivision) {
-                dot.classList.remove('active');
-            }
-        });
-
-        // Flash duration decay
-        if (isFirstSubdivision) {
-            setTimeout(() => {
-                const activeDot = dots[mainBeat];
-                if (activeDot) activeDot.classList.remove('active');
-            }, 80);
-        }
     },
 
     // Tap Tempo implementation
