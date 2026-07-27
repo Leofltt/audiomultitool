@@ -1,6 +1,6 @@
-# AudioMultiTool 🎧
+# AudioMultiTool 
 
-A high-performance, 100% client-side, ad-free suite of web audio utilities. Built using the native Web Audio API and modern browser standards. 
+A high-performance, 100% client-side suite of web audio utilities. Built using the native Web Audio API and modern browser standards. 
 
 👉 **Live Site:** [audiomultitool.com](https://audiomultitool.com)
 
