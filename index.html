@@ -254,22 +254,69 @@
 
                 <!-- Chromatic Tuner Tool Pane -->
                 <div class="tool-pane" id="pane-tuner">
-                    <div class="tuner-layout">
-                        <div class="tuner-dial-card">
-                            <div class="tuner-meter">
-                                <div class="tuner-needle" id="tuner-needle"></div>
-                                <div class="tuner-center-mark"></div>
+                    <div class="controls-grid" style="grid-template-columns: 1.2fr 0.8fr; gap: 24px;">
+                        <!-- Dial & Visual Needle -->
+                        <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; position: relative;">
+                            <div class="tuner-meter" style="width: 240px; height: 120px; border-bottom: 2px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 20px;">
+                                <div class="tuner-needle" id="tuner-needle" style="width: 2px; height: 100px; background: var(--accent); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: rotate(0deg); transition: transform 0.1s ease-out;"></div>
+                                <div class="tuner-center-mark" style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: absolute; bottom: -3px; left: calc(50% - 3px);"></div>
+                                <div style="position: absolute; left: 10px; bottom: 4px; font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary);">-50c</div>
+                                <div style="position: absolute; right: 10px; bottom: 4px; font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary);">+50c</div>
                             </div>
-                            <div class="pitch-display">
-                                <div class="note-val" id="tuner-note">--</div>
-                                <div class="cents-val" id="tuner-cents">0.0 Hz</div>
+                            <div class="pitch-display" style="text-align: center; margin-bottom: 12px;">
+                                <div class="note-val" id="tuner-note" style="font-size: 48px; font-weight: 700; color: var(--text-primary); line-height: 1.1;">--</div>
+                                <div class="cents-val" id="tuner-cents" style="font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary); margin-top: 4px;">0.0 Hz</div>
                             </div>
+                            <!-- Tune Directions Helper -->
+                            <div id="tuner-direction" style="font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-top: 10px; height: 20px;">Microphone Off</div>
                         </div>
-                        <div class="mic-controls" style="margin-bottom: 40px;">
-                            <button id="tuner-toggle" class="btn btn-primary">Enable Microphone</button>
-                            <p class="mic-status-label" id="tuner-status">Requires mic permission to listen to audio pitch.</p>
+
+                        <!-- Options & Presets Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; gap: 16px;">
+                            <div class="input-group">
+                                <label for="tuner-instrument-select">Instrument Mode</label>
+                                <select id="tuner-instrument-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="chromatic" selected>Chromatic (Freeform)</option>
+                                    <option value="guitar">Guitar (6-String)</option>
+                                    <option value="bass">Bass Guitar (4-String)</option>
+                                    <option value="ukulele">Ukulele (Standard C)</option>
+                                    <option value="violin">Violin / Mandolin</option>
+                                    <option value="viola">Viola / Cello</option>
+                                    <option value="banjo">Banjo (5-String Open G)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group" id="tuner-tuning-group" style="display: none;">
+                                <label for="tuner-tuning-select">Tuning Template</label>
+                                <select id="tuner-tuning-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <!-- Options filled dynamically in JS -->
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tuner-calibration">A4 Calibration</label>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <input type="range" id="tuner-calibration" min="430" max="450" value="440" step="1" class="slider" style="flex: 1;">
+                                    <span id="tuner-calibration-val" style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; width: 48px; text-align: right;">440Hz</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Reference String Pegs (Pitch Pipe) Card -->
+                    <div class="control-card" id="tuner-strings-card" style="margin-top: 20px; display: none; text-align: center;">
+                        <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Reference Strings (Click to play tone)</h3>
+                        <div id="tuner-strings-container" style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                            <!-- String buttons injected dynamically -->
+                        </div>
+                        <p style="font-size: 10px; color: var(--text-secondary); margin-top: 10px;">Select a string to listen to its target pitch as an auditory reference tone.</p>
+                    </div>
+
+                    <div class="mic-controls" style="margin-top: 24px; margin-bottom: 40px; text-align: center;">
+                        <button id="tuner-toggle" class="btn btn-primary">Enable Microphone</button>
+                        <p class="mic-status-label" id="tuner-status" style="margin-top: 8px;">Requires mic permission to listen to instrument pitches.</p>
+                    </div>
+                </div>
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">

@@ -1,22 +1,233 @@
-// Chromatic Tuner Tool Component (Microphone Auto-Correlation Pitch Detector)
+// Premium Instrument Tuner Tool Component (Microphone Pitch Tracking & Reference Pitch Pipe)
 window.TunerTool = {
     app: null,
     audioStream: null,
     sourceNode: null,
+    analyser: null,
     isPlaying: false,
     pitchInterval: null,
     
-    // Note list matching MIDI notes
+    // Pitch pipe synthesiser nodes
+    refOscillator: null,
+    refGain: null,
+    isRefPlaying: false,
+    activeRefString: null,
+
+    // Calibration settings
+    a4Frequency: 440,
+
     noteStrings: ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
+
+    instruments: {
+        chromatic: {
+            name: "Chromatic (Freeform)",
+            tunings: {
+                standard: { name: "Freeform Note Tracking", notes: [] }
+            }
+        },
+        guitar: {
+            name: "Guitar (6-String)",
+            tunings: {
+                standard: { name: "Standard (E A D G B E)", notes: ["E2", "A2", "D3", "G3", "B3", "E4"] },
+                dropd: { name: "Drop D (D A D G B E)", notes: ["D2", "A2", "D3", "G3", "B3", "E4"] },
+                dadgad: { name: "DADGAD (D A D G A D)", notes: ["D2", "A2", "D3", "G3", "A3", "D4"] },
+                halfstep: { name: "Half-Step Down (Eb Ab Db Gb Bb Eb)", notes: ["D#2", "G#2", "C#3", "F#3", "A#3", "D#4"] }
+            }
+        },
+        bass: {
+            name: "Bass Guitar",
+            tunings: {
+                standard: { name: "Standard (E A D G)", notes: ["E1", "A1", "D2", "G2"] },
+                five: { name: "5-String (B E A D G)", notes: ["B0", "E1", "A1", "D2", "G2"] }
+            }
+        },
+        ukulele: {
+            name: "Ukulele",
+            tunings: {
+                standard: { name: "Standard C (G C E A)", notes: ["G4", "C4", "E4", "A4"] }
+            }
+        },
+        violin: {
+            name: "Violin / Mandolin",
+            tunings: {
+                standard: { name: "Standard (G D A E)", notes: ["G3", "D4", "A4", "E5"] }
+            }
+        },
+        viola: {
+            name: "Viola / Cello",
+            tunings: {
+                standard: { name: "Cello/Viola Standard (C G D A)", notes: ["C3", "G3", "D4", "A4"] }
+            }
+        },
+        banjo: {
+            name: "Banjo",
+            tunings: {
+                standard: { name: "Open G (G D G B D)", notes: ["G4", "D3", "G3", "B3", "D4"] }
+            }
+        }
+    },
 
     init(appInstance) {
         this.app = appInstance;
         this.setupEventListeners();
+        this.populateTunings();
+        this.updateTunerStringsCard();
     },
 
     setupEventListeners() {
         const toggleBtn = document.getElementById('tuner-toggle');
-        toggleBtn.addEventListener('click', () => this.toggle());
+        const instrumentSelect = document.getElementById('tuner-instrument-select');
+        const tuningSelect = document.getElementById('tuner-tuning-select');
+        const calibrationSlider = document.getElementById('tuner-calibration');
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => this.toggle());
+        }
+
+        if (instrumentSelect) {
+            instrumentSelect.addEventListener('change', () => {
+                this.populateTunings();
+                this.updateTunerStringsCard();
+            });
+        }
+
+        if (tuningSelect) {
+            tuningSelect.addEventListener('change', () => {
+                this.updateTunerStringsCard();
+            });
+        }
+
+        if (calibrationSlider) {
+            calibrationSlider.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value);
+                this.a4Frequency = val;
+                document.getElementById('tuner-calibration-val').textContent = `${val}Hz`;
+            });
+        }
+    },
+
+    populateTunings() {
+        const instrument = document.getElementById('tuner-instrument-select').value;
+        const tuningGroup = document.getElementById('tuner-tuning-group');
+        const tuningSelect = document.getElementById('tuner-tuning-select');
+        
+        if (!tuningSelect || !tuningGroup) return;
+
+        tuningSelect.innerHTML = '';
+        const configs = this.instruments[instrument];
+
+        if (instrument === 'chromatic') {
+            tuningGroup.style.display = 'none';
+        } else {
+            tuningGroup.style.display = 'block';
+            for (const key in configs.tunings) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = configs.tunings[key].name;
+                tuningSelect.appendChild(opt);
+            }
+        }
+    },
+
+    updateTunerStringsCard() {
+        const card = document.getElementById('tuner-strings-card');
+        const container = document.getElementById('tuner-strings-container');
+        const instrument = document.getElementById('tuner-instrument-select').value;
+        const tuningKey = document.getElementById('tuner-tuning-select').value;
+
+        if (!card || !container) return;
+
+        // Stop any playing reference tone
+        this.stopReferenceTone();
+
+        if (instrument === 'chromatic') {
+            card.style.display = 'none';
+            container.innerHTML = '';
+            return;
+        }
+
+        card.style.display = 'block';
+        container.innerHTML = '';
+
+        const notes = this.instruments[instrument].tunings[tuningKey].notes;
+
+        notes.forEach((note) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-secondary';
+            btn.style.padding = '8px 16px';
+            btn.style.fontFamily = 'var(--font-mono)';
+            btn.style.fontWeight = '600';
+            btn.textContent = note;
+            btn.addEventListener('click', () => this.toggleReferenceString(btn, note));
+            container.appendChild(btn);
+        });
+    },
+
+    toggleReferenceString(btn, noteName) {
+        if (this.isRefPlaying && this.activeRefString === noteName) {
+            this.stopReferenceTone();
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-secondary');
+        } else {
+            // Remove selection state from all string buttons
+            const buttons = document.querySelectorAll('#tuner-strings-container button');
+            buttons.forEach(b => {
+                b.classList.remove('btn-primary');
+                b.classList.add('btn-secondary');
+            });
+
+            // Start playing new pitch reference
+            const freq = this.frequencyFromNoteName(noteName);
+            this.playReferenceTone(freq);
+            this.activeRefString = noteName;
+            
+            btn.classList.remove('btn-secondary');
+            btn.classList.add('btn-primary');
+        }
+    },
+
+    playReferenceTone(frequency) {
+        this.stopReferenceTone();
+        const ctx = this.app.getAudioContext();
+        
+        this.refOscillator = ctx.createOscillator();
+        this.refGain = ctx.createGain();
+
+        this.refOscillator.type = 'sine';
+        this.refOscillator.frequency.value = frequency;
+        
+        // Low, safe volume level for hearing protection
+        this.refGain.gain.setValueAtTime(0, ctx.currentTime);
+        this.refGain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.05);
+
+        this.refOscillator.connect(this.refGain);
+        this.refGain.connect(ctx.destination);
+
+        this.refOscillator.start();
+        this.isRefPlaying = true;
+    },
+
+    stopReferenceTone() {
+        if (this.refOscillator) {
+            try {
+                this.refOscillator.stop();
+                this.refOscillator.disconnect();
+            } catch(e) {}
+            this.refOscillator = null;
+        }
+        if (this.refGain) {
+            this.refGain.disconnect();
+            this.refGain = null;
+        }
+        this.isRefPlaying = false;
+        this.activeRefString = null;
+
+        // Reset UI buttons
+        const buttons = document.querySelectorAll('#tuner-strings-container button');
+        buttons.forEach(b => {
+            b.classList.remove('btn-primary');
+            b.classList.add('btn-secondary');
+        });
     },
 
     toggle() {
@@ -25,76 +236,151 @@ window.TunerTool = {
 
         if (this.isPlaying) {
             this.stop();
-            toggleBtn.textContent = 'Enable Microphone';
-            toggleBtn.classList.remove('btn-danger');
-            toggleBtn.classList.add('btn-primary');
-            statusLabel.textContent = 'Requires mic permission to listen to audio pitch.';
+            if (toggleBtn) {
+                toggleBtn.textContent = 'Enable Microphone';
+                toggleBtn.classList.remove('btn-danger');
+                toggleBtn.classList.add('btn-primary');
+            }
+            if (statusLabel) statusLabel.textContent = 'Requires mic permission to listen to instrument pitches.';
         } else {
             this.start()
                 .then(() => {
-                    toggleBtn.textContent = 'Disable Microphone';
-                    toggleBtn.classList.remove('btn-primary');
-                    toggleBtn.classList.add('btn-danger');
-                    statusLabel.textContent = 'Listening... Play a note on your instrument.';
+                    if (toggleBtn) {
+                        toggleBtn.textContent = 'Disable Microphone';
+                        toggleBtn.classList.remove('btn-primary');
+                        toggleBtn.classList.add('btn-danger');
+                    }
+                    if (statusLabel) statusLabel.textContent = 'Listening... Play a note near your microphone.';
                 })
                 .catch((err) => {
-                    console.error("Microphone access error: ", err);
-                    statusLabel.textContent = 'Access Denied. Please enable microphone permissions in your browser.';
+                    console.error("Microphone access error for tuner:", err);
+                    if (statusLabel) statusLabel.textContent = 'Access Denied. Please enable microphone permissions.';
                 });
         }
     },
 
     async start() {
-        // Request microphone access
         this.audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
         const ctx = this.app.getAudioContext();
-        
-        // Routing microphone output into our analyzer context
+
         this.sourceNode = ctx.createMediaStreamSource(this.audioStream);
+        
+        // Connect mic stream to global visualizer
         this.sourceNode.connect(this.app.analyserNode);
 
-        this.isPlaying = true;
+        // Dedicated local analyzer for high-precision pitch tracking
+        this.analyser = ctx.createAnalyser();
+        this.analyser.fftSize = 2048;
+        this.sourceNode.connect(this.analyser);
 
-        const bufferLength = 2048;
+        this.isPlaying = true;
+        this.stopReferenceTone();
+
+        const bufferLength = this.analyser.fftSize;
         const buffer = new Float32Array(bufferLength);
 
         this.pitchInterval = setInterval(() => {
             if (!this.isPlaying) return;
-            
-            // Get frequency time-domain details to determine pitch
-            this.app.analyserNode.getFloatTimeDomainData(buffer);
+
+            this.analyser.getFloatTimeDomainData(buffer);
             const freq = this.autoCorrelate(buffer, ctx.sampleRate);
 
+            const noteEl = document.getElementById('tuner-note');
+            const centsEl = document.getElementById('tuner-cents');
+            const directionEl = document.getElementById('tuner-direction');
+            const needle = document.getElementById('tuner-needle');
+
             if (freq !== -1) {
-                const noteNum = this.noteFromFrequency(freq);
-                const noteName = this.noteStrings[noteNum % 12];
-                const cents = this.getCents(freq, this.frequencyFromNoteNumber(noteNum));
+                const instrument = document.getElementById('tuner-instrument-select').value;
+                const tuningKey = document.getElementById('tuner-tuning-select').value;
+                
+                let targetNoteName = "";
+                let targetFreq = 0;
+                let cents = 0;
 
-                // Update needle UI
-                const needle = document.getElementById('tuner-needle');
-                // Limit cents offset rotation to +/- 45 degrees
-                const rotateDegree = Math.max(Math.min(cents, 50), -50) * 0.9;
-                needle.style.transform = `translateX(-50%) rotate(${rotateDegree}deg)`;
-
-                // Highlight needle green if pitch is perfectly in tune (+/- 3 cents)
-                if (Math.abs(cents) <= 3) {
-                    needle.style.background = 'var(--accent)';
-                    needle.style.boxShadow = '0 0 10px var(--accent-glow)';
+                if (instrument === 'chromatic') {
+                    // Freeform Chromatic Note Detection
+                    const noteNum = this.noteFromFrequency(freq);
+                    targetNoteName = this.noteStrings[noteNum % 12];
+                    targetFreq = this.frequencyFromNoteNumber(noteNum);
+                    cents = this.getCents(freq, targetFreq);
                 } else {
-                    needle.style.background = 'var(--primary-hover)';
-                    needle.style.boxShadow = '0 0 8px var(--primary-glow)';
+                    // Match Closest String Preset Target
+                    const notes = this.instruments[instrument].tunings[tuningKey].notes;
+                    let closestDiff = Infinity;
+                    
+                    notes.forEach((noteName) => {
+                        const noteFreq = this.frequencyFromNoteName(noteName);
+                        const diff = Math.abs(freq - noteFreq);
+                        if (diff < closestDiff) {
+                            closestDiff = diff;
+                            targetNoteName = noteName;
+                            targetFreq = noteFreq;
+                        }
+                    });
+                    
+                    cents = this.getCents(freq, targetFreq);
                 }
 
-                // Update text displays
-                document.getElementById('tuner-note').textContent = noteName;
-                document.getElementById('tuner-cents').textContent = `${freq.toFixed(1)} Hz (${cents > 0 ? '+' : ''}${Math.round(cents)} cents)`;
+                // UI Display Updates
+                if (noteEl) noteEl.textContent = targetNoteName;
+                if (centsEl) centsEl.textContent = `${freq.toFixed(1)} Hz / Target: ${targetFreq.toFixed(1)} Hz`;
+
+                // Rotate tuning needle dial (+/- 50 cents)
+                if (needle) {
+                    const rotateDegree = Math.max(Math.min(cents, 50), -50) * 0.9;
+                    needle.style.transform = `translateX(-50%) rotate(${rotateDegree}deg)`;
+                    
+                    // Perfect tuning highlights needle green (+/- 2 cents precision)
+                    if (Math.abs(cents) <= 2) {
+                        needle.style.background = 'var(--accent)';
+                    } else {
+                        needle.style.background = '#f87171'; // Off pitch red
+                    }
+                }
+
+                // Dynamic direction alerts
+                if (directionEl) {
+                    if (Math.abs(cents) <= 2) {
+                        directionEl.textContent = "IN TUNE! 🎉";
+                        directionEl.style.color = "var(--accent)";
+                    } else if (cents > 2) {
+                        directionEl.textContent = "TUNE DOWN ⬇️";
+                        directionEl.style.color = "#f87171";
+                    } else {
+                        directionEl.textContent = "TUNE UP ⬆️";
+                        directionEl.style.color = "#fbbf24";
+                    }
+                }
+
+                // Highlight corresponding reference button in active mode
+                if (instrument !== 'chromatic') {
+                    const buttons = document.querySelectorAll('#tuner-strings-container button');
+                    buttons.forEach(btn => {
+                        if (btn.textContent === targetNoteName) {
+                            btn.style.border = '2px solid var(--accent)';
+                            btn.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.2)';
+                        } else {
+                            btn.style.border = '1px solid var(--border-color)';
+                            btn.style.boxShadow = 'none';
+                        }
+                    });
+                }
+
+            } else {
+                // Clear directions if silence detected
+                if (directionEl) {
+                    directionEl.textContent = "Play a note...";
+                    directionEl.style.color = "var(--text-secondary)";
+                }
             }
-        }, 100);
+        }, 80);
     },
 
     stop() {
         this.isPlaying = false;
         clearInterval(this.pitchInterval);
+        this.stopReferenceTone();
 
         if (this.audioStream) {
             this.audioStream.getTracks().forEach(track => track.stop());
@@ -106,31 +392,48 @@ window.TunerTool = {
             this.sourceNode = null;
         }
 
-        // Reset UI displays
-        document.getElementById('tuner-note').textContent = '--';
-        document.getElementById('tuner-cents').textContent = '0.0 Hz';
-        document.getElementById('tuner-needle').style.transform = 'translateX(-50%) rotate(0deg)';
-        document.getElementById('tuner-needle').style.background = 'var(--primary-hover)';
+        if (this.analyser) {
+            this.analyser.disconnect();
+            this.analyser = null;
+        }
+
+        // Restore default state
+        const noteEl = document.getElementById('tuner-note');
+        const centsEl = document.getElementById('tuner-cents');
+        const directionEl = document.getElementById('tuner-direction');
+        const needle = document.getElementById('tuner-needle');
+
+        if (noteEl) noteEl.textContent = '--';
+        if (centsEl) centsEl.textContent = '0.0 Hz';
+        if (directionEl) directionEl.textContent = 'Microphone Off';
+        if (needle) {
+            needle.style.transform = 'translateX(-50%) rotate(0deg)';
+            needle.style.background = 'var(--accent)';
+        }
+
+        const buttons = document.querySelectorAll('#tuner-strings-container button');
+        buttons.forEach(btn => {
+            btn.style.border = '1px solid var(--border-color)';
+            btn.style.boxShadow = 'none';
+        });
     },
 
-    // Auto-correlation algorithm to track fundamental pitch
+    // Autocorrelation algorithm with quadratic interpolation for sub-cents precision
     autoCorrelate(buffer, sampleRate) {
-        // Find volume threshold (prevent analyzing silence/background static)
         let rms = 0;
         for (let i = 0; i < buffer.length; i++) {
             rms += buffer[i] * buffer[i];
         }
         rms = Math.sqrt(rms / buffer.length);
-        if (rms < 0.01) return -1; // Volume too low
+        if (rms < 0.008) return -1; // Volume gate (prevent parsing low ambient static)
 
-        // Find range values for audio waves
         let r1 = 0, r2 = buffer.length - 1;
-        const thres = 0.2;
+        const threshold = 0.2;
         for (let i = 0; i < buffer.length / 2; i++) {
-            if (Math.abs(buffer[i]) < thres) { r1 = i; break; }
+            if (Math.abs(buffer[i]) < threshold) { r1 = i; break; }
         }
         for (let i = buffer.length / 2; i < buffer.length; i++) {
-            if (Math.abs(buffer[i]) < thres) { r2 = i; break; }
+            if (Math.abs(buffer[i]) < threshold) { r2 = i; break; }
         }
 
         const activeBuffer = buffer.slice(r1, r2);
@@ -142,7 +445,6 @@ window.TunerTool = {
             }
         }
 
-        // Find first peak of correlation
         let d = 0;
         while (correlations[d] > correlations[d + 1]) d++;
         
@@ -158,25 +460,38 @@ window.TunerTool = {
 
         let T0 = maxpos;
 
-        // Perform parabolic interpolation for precision adjustment
-        const x1 = correlations[T0 - 1];
-        const x2 = correlations[T0];
-        const x3 = correlations[T0 + 1];
-        const a = (x1 + x3 - 2 * x2) / 2;
-        const b = (x3 - x1) / 2;
-        
-        if (a) T0 = T0 - b / (2 * a);
+        // Parabolic Interpolation mapping for exact fundamental pitch frequency calculations
+        if (T0 > 0 && T0 < activeBuffer.length - 1) {
+            const x1 = correlations[T0 - 1];
+            const x2 = correlations[T0];
+            const x3 = correlations[T0 + 1];
+            const a = (x1 + x3 - 2 * x2) / 2;
+            const b = (x3 - x1) / 2;
+            if (a) T0 = T0 - b / (2 * a);
+        }
 
         return sampleRate / T0;
     },
 
     noteFromFrequency(frequency) {
-        const noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
+        const noteNum = 12 * (Math.log(frequency / this.a4Frequency) / Math.log(2));
         return Math.round(noteNum) + 69;
     },
 
     frequencyFromNoteNumber(note) {
-        return 440 * Math.pow(2, (note - 69) / 12);
+        return this.a4Frequency * Math.pow(2, (note - 69) / 12);
+    },
+
+    frequencyFromNoteName(noteName) {
+        const match = noteName.match(/^([A-G]#?)(-?\d+)$/);
+        if (!match) return 440;
+        
+        const note = match[1];
+        const octave = parseInt(match[2]);
+        const noteIndex = this.noteStrings.indexOf(note);
+        
+        const midiNum = noteIndex + (octave + 1) * 12;
+        return this.frequencyFromNoteNumber(midiNum);
     },
 
     getCents(frequency, noteFrequency) {
