@@ -48,7 +48,7 @@
             </div>
             <nav class="nav-menu">
                 <button class="nav-item" data-tool="generator">
-                    <span class="icon">🔊</span> Tone Generator
+                    <span class="icon">🔊</span> Signal Generator
                 </button>
                 <button class="nav-item" data-tool="sweep">
                     <span class="icon">📈</span> Speaker Sweep
@@ -60,7 +60,7 @@
                     <span class="icon">🎯</span> Chromatic Tuner
                 </button>
                 <button class="nav-item" data-tool="noise">
-                    <span class="icon">🎚️</span> Noise & dB
+                    <span class="icon">🎚️</span> dB Meter
                 </button>
                 <button class="nav-item" data-tool="converter">
                     <span class="icon">🔄</span> Audio Converter
@@ -88,8 +88,8 @@
                 <div class="top-bar-left" style="display: flex; align-items: center; gap: 12px;">
                     <button id="menu-toggle" class="menu-toggle-btn" title="Toggle Menu">☰</button>
                     <div class="active-title-container">
-                        <h2 id="active-tool-title">Tone Generator</h2>
-                        <p id="active-tool-desc">Generate pure audio frequencies with custom wave types.</p>
+                        <h2 id="active-tool-title">Signal Generator</h2>
+                        <p id="active-tool-desc">Generate pure audio frequencies and noise colors.</p>
                     </div>
                 </div>
                 <div class="top-bar-actions">
@@ -104,21 +104,21 @@
 
             <!-- Mobile Navigation Drawer Overlay -->
             <div id="mobile-menu" class="mobile-menu-drawer">
-                <button class="mobile-nav-item" data-tool="generator">🔊 Tone Generator</button>
+                <button class="mobile-nav-item" data-tool="generator">🔊 Signal Generator</button>
                 <button class="mobile-nav-item" data-tool="sweep">📈 Speaker Sweep</button>
                 <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
                 <button class="mobile-nav-item active" data-tool="tuner">🎯 Chromatic Tuner</button>
-                <button class="mobile-nav-item" data-tool="noise">🎚️ Noise & dB</button>
+                <button class="mobile-nav-item" data-tool="noise">🎚️ dB Meter</button>
                 <button class="mobile-nav-item" data-tool="converter">🔄 Audio Converter</button>
                 <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
             </div>
 
             <!-- Tool Stage -->
             <section class="tool-stage">
-                <!-- Tone Generator Tool Pane -->
+                <!-- Signal Generator Tool Pane -->
                 <div class="tool-pane" id="pane-generator">
                     <div class="controls-grid">
-                        <div class="control-card frequency-card">
+                        <div class="control-card frequency-card" id="generator-freq-card">
                             <h3>Frequency</h3>
                             <div class="dial-container">
                                 <div class="freq-display"><span id="generator-freq-val">440</span><span class="unit">Hz</span></div>
@@ -133,32 +133,43 @@
                         </div>
 
                         <div class="control-card waveform-card">
-                            <h3>Waveform</h3>
-                            <div class="wave-buttons">
-                                <button class="wave-btn active" data-wave="sine">Sine</button>
-                                <button class="wave-btn" data-wave="square">Square</button>
-                                <button class="wave-btn" data-wave="sawtooth">Sawtooth</button>
-                                <button class="wave-btn" data-wave="triangle">Triangle</button>
+                            <h3>Signal Type</h3>
+                            <div style="margin-bottom: 14px;">
+                                <h4 style="font-size: 10px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;">Oscillator Tones</h4>
+                                <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                                    <button class="wave-btn active" data-type="sine">Sine</button>
+                                    <button class="wave-btn" data-type="square">Square</button>
+                                    <button class="wave-btn" data-type="sawtooth">Sawtooth</button>
+                                    <button class="wave-btn" data-type="triangle">Triangle</button>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="font-size: 10px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;">Noise Colors</h4>
+                                <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                                    <button class="wave-btn" data-type="white">White</button>
+                                    <button class="wave-btn" data-type="pink">Pink</button>
+                                    <button class="wave-btn" data-type="brown">Brown</button>
+                                </div>
                             </div>
                             <div class="volume-container">
                                 <h3>Volume</h3>
-                                <input type="range" id="generator-vol" min="0" max="1" value="0.5" step="0.01" class="slider">
+                                <input type="range" id="generator-vol" min="0" max="0.5" value="0.25" step="0.01" class="slider">
                             </div>
                         </div>
                     </div>
                     <div class="action-bar" style="margin-bottom: 40px;">
-                        <button id="generator-toggle" class="btn btn-primary">Start Oscillator</button>
+                        <button id="generator-toggle" class="btn btn-primary">Start Generator</button>
                     </div>
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is an Online Tone Generator?</h3>
-                        <p style="margin-bottom: 12px;">An online tone generator is a client-side audio utility designed to produce specific audio frequencies using four primary geometric waveforms: Sine, Square, Sawtooth, and Triangle. It operates via the browser-native HTML5 Web Audio API, calculating audio waveforms locally without uploading any data to external servers.</p>
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is an Online Signal Generator?</h3>
+                        <p style="margin-bottom: 12px;">An online signal generator is a client-side audio utility designed to produce specific audio frequencies using four primary geometric waveforms (Sine, Square, Sawtooth, and Triangle) and three spectral noise colors (White, Pink, and Brown noise). It operates via the browser-native HTML5 Web Audio API, calculating audio waveforms locally without uploading any data to external servers.</p>
                         <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Common Applications:</h4>
                         <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
                             <li><strong>Auditory Testing:</strong> Mapping personal hearing range limits, including tracking frequency cutoff thresholds.</li>
-                            <li><strong>Equipment Calibration:</strong> Aligning input and output levels on analog mixers, digital audio workstations (DAWs), and interface hardware.</li>
-                            <li><strong>Room Acoustics:</strong> Detecting room resonance frequencies and acoustic standing waves by outputting continuous sine waves.</li>
+                            <li><strong>Equipment Calibration:</strong> Aligning input and output levels on mixers, DAWs, and hardware interfaces.</li>
+                            <li><strong>White & Pink Noise:</strong> Masking background distractions (White/Brown) or performing acoustic analyzer testing (Pink).</li>
                         </ul>
                     </div>
                 </div>
@@ -267,51 +278,58 @@
                     </div>
                 </div>
 
-                <!-- Noise Generator & dB Meter Pane -->
+                <!-- Sound Level dB Meter Pane -->
                 <div class="tool-pane" id="pane-noise">
                     <div class="controls-grid">
-                        <!-- Decibel Meter Card -->
-                        <div class="control-card">
-                            <h3>Decibel Level Meter</h3>
-                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 160px;">
-                                <div id="db-level-val" style="font-size: 48px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary);">0.0 <span style="font-size: 16px;">dB</span></div>
-                                <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 11px; color: var(--text-secondary);">
-                                    <span>Min: <strong id="db-level-min">--</strong> dB</span>
-                                    <span>Max: <strong id="db-level-max">--</strong> dB</span>
-                                </div>
+                        <!-- Main Meter Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px;">
+                            <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px;">Sound Pressure Level</h3>
+                            
+                            <!-- Visual dB Level Gauge Bar -->
+                            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 16px; position: relative;">
+                                <div id="db-gauge-fill" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s, background-color 0.15s;"></div>
                             </div>
-                            <button id="db-toggle" class="btn btn-primary" style="width: 100%;">Start Listening</button>
+
+                            <div id="db-level-val" style="font-size: 56px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary); line-height: 1;">0.0 <span style="font-size: 18px; font-family: var(--font-sans); font-weight: 500; color: var(--text-secondary);">dB</span></div>
+                            
+                            <div id="db-environment-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin: 12px 0 16px; height: 16px;">Microphone Off</div>
+                            
+                            <div style="display: flex; gap: 24px; margin-top: 4px; font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary);">
+                                <span>MIN: <strong id="db-level-min" style="color: var(--text-primary);">--</strong> dB</span>
+                                <span>AVG: <strong id="db-level-avg" style="color: var(--text-primary);">--</strong> dB</span>
+                                <span>MAX: <strong id="db-level-max" style="color: var(--text-primary);">--</strong> dB</span>
+                            </div>
                         </div>
                         
-                        <!-- Noise Generator Card -->
-                        <div class="control-card">
-                            <h3>Noise Color Generator</h3>
-                            <div class="input-group" style="margin-bottom: 16px;">
-                                <label for="noise-type">Select Noise Color</label>
-                                <select id="noise-type" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
-                                    <option value="white">White Noise (Full Spectrum)</option>
-                                    <option value="pink">Pink Noise (Equal Energy / Octave)</option>
-                                    <option value="brown">Brownian Noise (Deep Sub-Bass Focus)</option>
-                                </select>
+                        <!-- Configuration & Weighting Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <h3>Measurement Filters</h3>
+                                <div class="input-group" style="margin-bottom: 16px;">
+                                    <label for="db-weighting-select">Frequency Weighting</label>
+                                    <select id="db-weighting-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="A">dB(A) - Human Hearing curve (Standard)</option>
+                                        <option value="Z">dB(Z) - Flat/Unweighted (Absolute Power)</option>
+                                    </select>
+                                </div>
+                                <p style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+                                    <strong>dB(A) weighting</strong> applies a curve filtering out low sub-bass and ultra-high frequencies, matching human ear perception. **dB(Z) flat** measures raw absolute pressure across all bands.
+                                </p>
                             </div>
-                            <div class="volume-container" style="margin-bottom: 20px;">
-                                <h3>Noise Volume</h3>
-                                <input type="range" id="noise-vol" min="0" max="0.5" value="0.2" step="0.01" class="slider">
-                            </div>
-                            <button id="noise-toggle" class="btn btn-primary" style="width: 100%;">Start Playback</button>
+                            <button id="db-toggle" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Start Measurement</button>
                         </div>
                     </div>
 
                     <!-- Valuable Content SEO Section -->
-                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 30px;">
                         <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Decibel Meter & Sound Level Calibrator</h3>
-                        <p style="margin-bottom: 12px;">This sound pressure check utility utilizes browser-native mic nodes to calculate Decibel limits (dB FS approximation). It tracks dynamic peak spikes (Max dB) and quiet levels (Min dB) directly in your browser. This tool helps map room ambiance and calibrate monitor levels.</p>
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">White, Pink & Brown Noise Audio Colors</h3>
-                        <p style="margin-bottom: 12px;">Different colors of sound noise represent specific frequency spectral densities:</p>
-                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
-                            <li><strong>White Noise:</strong> Even power spectral density across all frequencies. Perfect for masking background distractions.</li>
-                            <li><strong>Pink Noise:</strong> Equal energy per octave, matching human auditory perception. Used in professional speaker testing and room tuning.</li>
-                            <li><strong>Brown Noise:</strong> Power density decreases by 6 dB per octave. Deep, low-pitched rumble, highly effective for meditation and sound masking.</li>
+                        <p style="margin-bottom: 12px;">This sound pressure level (SPL) meter checks ambient noise using your browser microphone. It supports standard **A-weighting (dBA)** filters to model human hearing frequency responses, tracking minimum, maximum, and average values in real-time. This tool is perfect for home theater calibration, workspace noise assessment, and general auditory safety monitoring.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Understanding Decibel Level Safety Limits:</h4>
+                        <ul style="margin-left: 18px; list-style-type: disc;">
+                            <li><strong>30–45 dB:</strong> Very Quiet. Typical whisper, library environment, or quiet bedroom.</li>
+                            <li><strong>50–65 dB:</strong> Moderate. Normal face-to-face conversation, quiet office, or rainfall.</li>
+                            <li><strong>70–80 dB:</strong> Loud. Heavy city street traffic, vacuum cleaners, or alarm clocks.</li>
+                            <li><strong>85+ dB:</strong> Hearing Hazard. Continuous exposure above 85 dB (e.g. lawnmowers, heavy machinery, loud concerts) requires ear protection.</li>
                         </ul>
                     </div>
                 </div>
