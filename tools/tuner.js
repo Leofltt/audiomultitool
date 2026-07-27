@@ -1,4 +1,4 @@
-// Premium Instrument Tuner Tool Component (Microphone Pitch Tracking & Reference Pitch Pipe)
+// Premium Instrument Tuner Tool Component (Microphone Pitch Tracking, Custom Tunings, & Reference Pitch Pipe)
 window.TunerTool = {
     app: null,
     audioStream: null,
@@ -31,38 +31,44 @@ window.TunerTool = {
                 standard: { name: "Standard (E A D G B E)", notes: ["E2", "A2", "D3", "G3", "B3", "E4"] },
                 dropd: { name: "Drop D (D A D G B E)", notes: ["D2", "A2", "D3", "G3", "B3", "E4"] },
                 dadgad: { name: "DADGAD (D A D G A D)", notes: ["D2", "A2", "D3", "G3", "A3", "D4"] },
-                halfstep: { name: "Half-Step Down (Eb Ab Db Gb Bb Eb)", notes: ["D#2", "G#2", "C#3", "F#3", "A#3", "D#4"] }
+                halfstep: { name: "Half-Step Down (Eb Ab Db Gb Bb Eb)", notes: ["D#2", "G#2", "C#3", "F#3", "A#3", "D#4"] },
+                custom: { name: "Custom Tuning...", notes: ["E2", "A2", "D3", "G3", "B3", "E4"] }
             }
         },
         bass: {
             name: "Bass Guitar",
             tunings: {
                 standard: { name: "Standard (E A D G)", notes: ["E1", "A1", "D2", "G2"] },
-                five: { name: "5-String (B E A D G)", notes: ["B0", "E1", "A1", "D2", "G2"] }
+                five: { name: "5-String (B E A D G)", notes: ["B0", "E1", "A1", "D2", "G2"] },
+                custom: { name: "Custom Tuning...", notes: ["E1", "A1", "D2", "G2"] }
             }
         },
         ukulele: {
             name: "Ukulele",
             tunings: {
-                standard: { name: "Standard C (G C E A)", notes: ["G4", "C4", "E4", "A4"] }
+                standard: { name: "Standard C (G C E A)", notes: ["G4", "C4", "E4", "A4"] },
+                custom: { name: "Custom Tuning...", notes: ["G4", "C4", "E4", "A4"] }
             }
         },
         violin: {
             name: "Violin / Mandolin",
             tunings: {
-                standard: { name: "Standard (G D A E)", notes: ["G3", "D4", "A4", "E5"] }
+                standard: { name: "Standard (G D A E)", notes: ["G3", "D4", "A4", "E5"] },
+                custom: { name: "Custom Tuning...", notes: ["G3", "D4", "A4", "E5"] }
             }
         },
         viola: {
             name: "Viola / Cello",
             tunings: {
-                standard: { name: "Cello/Viola Standard (C G D A)", notes: ["C3", "G3", "D4", "A4"] }
+                standard: { name: "Cello/Viola Standard (C G D A)", notes: ["C3", "G3", "D4", "A4"] },
+                custom: { name: "Custom Tuning...", notes: ["C3", "G3", "D4", "A4"] }
             }
         },
         banjo: {
             name: "Banjo",
             tunings: {
-                standard: { name: "Open G (G D G B D)", notes: ["G4", "D3", "G3", "B3", "D4"] }
+                standard: { name: "Open G (G D G B D)", notes: ["G4", "D3", "G3", "B3", "D4"] },
+                custom: { name: "Custom Tuning...", notes: ["G4", "D3", "G3", "B3", "D4"] }
             }
         }
     },
@@ -133,21 +139,31 @@ window.TunerTool = {
         const card = document.getElementById('tuner-strings-card');
         const container = document.getElementById('tuner-strings-container');
         const instrument = document.getElementById('tuner-instrument-select').value;
-        const tuningKey = document.getElementById('tuner-tuning-select').value;
+        const tuningSelect = document.getElementById('tuner-tuning-select');
+        const tuningKey = tuningSelect ? tuningSelect.value : 'standard';
+        const customEditor = document.getElementById('tuner-custom-editor');
 
         if (!card || !container) return;
 
-        // Stop any playing reference tone
         this.stopReferenceTone();
 
         if (instrument === 'chromatic') {
             card.style.display = 'none';
+            if (customEditor) customEditor.style.display = 'none';
             container.innerHTML = '';
             return;
         }
 
         card.style.display = 'block';
         container.innerHTML = '';
+
+        // Toggle custom editor view visibility
+        if (tuningKey === 'custom') {
+            if (customEditor) customEditor.style.display = 'block';
+            this.buildCustomTuningEditor();
+        } else {
+            if (customEditor) customEditor.style.display = 'none';
+        }
 
         const notes = this.instruments[instrument].tunings[tuningKey].notes;
 
@@ -163,20 +179,66 @@ window.TunerTool = {
         });
     },
 
+    buildCustomTuningEditor() {
+        const inputsContainer = document.getElementById('tuner-custom-strings-inputs');
+        const instrument = document.getElementById('tuner-instrument-select').value;
+        
+        if (!inputsContainer) return;
+        inputsContainer.innerHTML = '';
+
+        // Retrieve baseline tuning list (defaults to standard tuning setup of selected template)
+        const currentCustomNotes = this.instruments[instrument].tunings.custom.notes;
+
+        // Generate options range from C0 to B7 chromatic notes
+        const allNotes = [];
+        const baseNotes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        for (let octave = 0; octave <= 7; octave++) {
+            baseNotes.forEach(note => {
+                allNotes.push(`${note}${octave}`);
+            });
+        }
+
+        currentCustomNotes.forEach((currentNote, index) => {
+            const select = document.createElement('select');
+            select.style.background = 'rgba(0, 0, 0, 0.05)';
+            select.style.border = '1px solid var(--border-color)';
+            select.style.borderRadius = '4px';
+            select.style.color = 'var(--text-primary)';
+            select.style.fontSize = '12px';
+            select.style.padding = '6px';
+            select.style.outline = 'none';
+            select.style.cursor = 'pointer';
+
+            allNotes.forEach(note => {
+                const opt = document.createElement('option');
+                opt.value = note;
+                opt.textContent = note;
+                if (note === currentNote) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            select.addEventListener('change', () => {
+                // Update target notes array
+                this.instruments[instrument].tunings.custom.notes[index] = select.value;
+                this.updateTunerStringsCard();
+            });
+
+            inputsContainer.appendChild(select);
+        });
+    },
+
     toggleReferenceString(btn, noteName) {
         if (this.isRefPlaying && this.activeRefString === noteName) {
             this.stopReferenceTone();
             btn.classList.remove('btn-primary');
             btn.classList.add('btn-secondary');
         } else {
-            // Remove selection state from all string buttons
             const buttons = document.querySelectorAll('#tuner-strings-container button');
             buttons.forEach(b => {
                 b.classList.remove('btn-primary');
                 b.classList.add('btn-secondary');
             });
 
-            // Start playing new pitch reference
             const freq = this.frequencyFromNoteName(noteName);
             this.playReferenceTone(freq);
             this.activeRefString = noteName;
@@ -196,7 +258,6 @@ window.TunerTool = {
         this.refOscillator.type = 'sine';
         this.refOscillator.frequency.value = frequency;
         
-        // Low, safe volume level for hearing protection
         this.refGain.gain.setValueAtTime(0, ctx.currentTime);
         this.refGain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.05);
 
@@ -222,7 +283,6 @@ window.TunerTool = {
         this.isRefPlaying = false;
         this.activeRefString = null;
 
-        // Reset UI buttons
         const buttons = document.querySelectorAll('#tuner-strings-container button');
         buttons.forEach(b => {
             b.classList.remove('btn-primary');
@@ -264,11 +324,8 @@ window.TunerTool = {
         const ctx = this.app.getAudioContext();
 
         this.sourceNode = ctx.createMediaStreamSource(this.audioStream);
-        
-        // Connect mic stream to global visualizer
         this.sourceNode.connect(this.app.analyserNode);
 
-        // Dedicated local analyzer for high-precision pitch tracking
         this.analyser = ctx.createAnalyser();
         this.analyser.fftSize = 2048;
         this.sourceNode.connect(this.analyser);
@@ -292,20 +349,19 @@ window.TunerTool = {
 
             if (freq !== -1) {
                 const instrument = document.getElementById('tuner-instrument-select').value;
-                const tuningKey = document.getElementById('tuner-tuning-select').value;
+                const tuningSelect = document.getElementById('tuner-tuning-select');
+                const tuningKey = tuningSelect ? tuningSelect.value : 'standard';
                 
                 let targetNoteName = "";
                 let targetFreq = 0;
                 let cents = 0;
 
                 if (instrument === 'chromatic') {
-                    // Freeform Chromatic Note Detection
                     const noteNum = this.noteFromFrequency(freq);
                     targetNoteName = this.noteStrings[noteNum % 12];
                     targetFreq = this.frequencyFromNoteNumber(noteNum);
                     cents = this.getCents(freq, targetFreq);
                 } else {
-                    // Match Closest String Preset Target
                     const notes = this.instruments[instrument].tunings[tuningKey].notes;
                     let closestDiff = Infinity;
                     
@@ -322,24 +378,20 @@ window.TunerTool = {
                     cents = this.getCents(freq, targetFreq);
                 }
 
-                // UI Display Updates
                 if (noteEl) noteEl.textContent = targetNoteName;
                 if (centsEl) centsEl.textContent = `${freq.toFixed(1)} Hz / Target: ${targetFreq.toFixed(1)} Hz`;
 
-                // Rotate tuning needle dial (+/- 50 cents)
                 if (needle) {
                     const rotateDegree = Math.max(Math.min(cents, 50), -50) * 0.9;
                     needle.style.transform = `translateX(-50%) rotate(${rotateDegree}deg)`;
                     
-                    // Perfect tuning highlights needle green (+/- 2 cents precision)
                     if (Math.abs(cents) <= 2) {
                         needle.style.background = 'var(--accent)';
                     } else {
-                        needle.style.background = '#f87171'; // Off pitch red
+                        needle.style.background = '#f87171';
                     }
                 }
 
-                // Dynamic direction alerts
                 if (directionEl) {
                     if (Math.abs(cents) <= 2) {
                         directionEl.textContent = "IN TUNE! 🎉";
@@ -353,7 +405,6 @@ window.TunerTool = {
                     }
                 }
 
-                // Highlight corresponding reference button in active mode
                 if (instrument !== 'chromatic') {
                     const buttons = document.querySelectorAll('#tuner-strings-container button');
                     buttons.forEach(btn => {
@@ -368,7 +419,6 @@ window.TunerTool = {
                 }
 
             } else {
-                // Clear directions if silence detected
                 if (directionEl) {
                     directionEl.textContent = "Play a note...";
                     directionEl.style.color = "var(--text-secondary)";
@@ -397,7 +447,6 @@ window.TunerTool = {
             this.analyser = null;
         }
 
-        // Restore default state
         const noteEl = document.getElementById('tuner-note');
         const centsEl = document.getElementById('tuner-cents');
         const directionEl = document.getElementById('tuner-direction');
@@ -418,14 +467,13 @@ window.TunerTool = {
         });
     },
 
-    // Autocorrelation algorithm with quadratic interpolation for sub-cents precision
     autoCorrelate(buffer, sampleRate) {
         let rms = 0;
         for (let i = 0; i < buffer.length; i++) {
             rms += buffer[i] * buffer[i];
         }
         rms = Math.sqrt(rms / buffer.length);
-        if (rms < 0.008) return -1; // Volume gate (prevent parsing low ambient static)
+        if (rms < 0.008) return -1;
 
         let r1 = 0, r2 = buffer.length - 1;
         const threshold = 0.2;
@@ -460,7 +508,6 @@ window.TunerTool = {
 
         let T0 = maxpos;
 
-        // Parabolic Interpolation mapping for exact fundamental pitch frequency calculations
         if (T0 > 0 && T0 < activeBuffer.length - 1) {
             const x1 = correlations[T0 - 1];
             const x2 = correlations[T0];
