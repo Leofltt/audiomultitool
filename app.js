@@ -28,7 +28,7 @@ const App = {
             const descriptions = {
                 generator: 'Generate pure audio frequencies with custom wave types.',
                 sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
-                tapper: 'A precision metronome and manual tap tempo calculator.',
+                metronome: 'A precision metronome and manual tap tempo calculator.',
                 tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
                 noise: 'Calibrate monitors with a dB sound level meter and generate white, pink, or brownian noise.',
                 converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
@@ -114,7 +114,7 @@ const App = {
         const descriptions = {
             generator: 'Generate pure audio frequencies with custom wave types.',
             sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
-            tapper: 'A precision metronome and manual tap tempo calculator.',
+            metronome: 'A precision metronome and manual tap tempo calculator.',
             tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
             noise: 'Calibrate monitors with a dB sound level meter.',
             converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
