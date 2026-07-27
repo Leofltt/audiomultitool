@@ -159,9 +159,8 @@ window.MetronomeTool = {
         
         this.isPlaying = true;
         this.app.isSoundActive = true;
-        this.currentBeatInBar = 0;
-        this.nextNoteTime = ctx.currentTime + 0.05;
         this.notesQueue = [];
+        this.lastScheduledBeatUnix = 0;
 
         // Start scheduling interval
         this.schedulerIntervalId = setInterval(() => this.scheduler(), this.lookahead);
@@ -174,6 +173,8 @@ window.MetronomeTool = {
             toggleBtn.textContent = 'Stop Metronome';
             toggleBtn.classList.remove('btn-primary');
             toggleBtn.classList.add('btn-danger');
+            toggleBtn.style.boxShadow = '';
+            toggleBtn.style.animation = '';
         }
     },
 
@@ -191,9 +192,17 @@ window.MetronomeTool = {
 
         const toggleBtn = document.getElementById('metronome-toggle-btn');
         if (toggleBtn) {
-            toggleBtn.textContent = 'Start Metronome';
-            toggleBtn.classList.remove('btn-danger');
-            toggleBtn.classList.add('btn-primary');
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('sync') === '1') {
+                toggleBtn.textContent = '🔊 Join Synced Session';
+                toggleBtn.classList.remove('btn-danger');
+                toggleBtn.classList.add('btn-primary');
+                toggleBtn.style.boxShadow = '0 0 15px var(--accent)';
+            } else {
+                toggleBtn.textContent = 'Start Metronome';
+                toggleBtn.classList.remove('btn-danger');
+                toggleBtn.classList.add('btn-primary');
+            }
         }
     },
 
@@ -203,21 +212,36 @@ window.MetronomeTool = {
 
     scheduler() {
         const ctx = this.app.getAudioContext();
-        while (this.nextNoteTime < ctx.currentTime + this.scheduleAheadTime) {
-            this.scheduleNote(this.currentBeatInBar, this.nextNoteTime);
-            this.advanceNote();
+        const nowUnix = Date.now();
+        const audioCtxTimeAtNow = ctx.currentTime;
+
+        const beatDurationMs = 60000 / (this.bpm * this.subdivision);
+        const barDurationMs = beatDurationMs * this.signature * this.subdivision;
+
+        // Scheduler window limit (100ms lookahead)
+        const lookAheadLimitUnix = nowUnix + (this.scheduleAheadTime * 1000);
+
+        // Find the start of the current bar relative to Unix time epoch
+        const currentBarStartUnix = nowUnix - (nowUnix % barDurationMs);
+        
+        let testBeatIndex = Math.floor((nowUnix - currentBarStartUnix) / beatDurationMs);
+        let testBeatUnix = currentBarStartUnix + (testBeatIndex * beatDurationMs);
+
+        while (testBeatUnix < lookAheadLimitUnix) {
+            // Schedule if it falls in the target window and hasn't been scheduled yet
+            if (testBeatUnix > nowUnix - 10 && (!this.lastScheduledBeatUnix || testBeatUnix > this.lastScheduledBeatUnix)) {
+                const beatInBar = Math.floor((testBeatUnix - currentBarStartUnix) / beatDurationMs) % (this.signature * this.subdivision);
+                const targetAudioTime = audioCtxTimeAtNow + (testBeatUnix - nowUnix) / 1000;
+                
+                this.scheduleNote(beatInBar, targetAudioTime, testBeatUnix);
+                this.lastScheduledBeatUnix = testBeatUnix;
+            }
+            testBeatIndex++;
+            testBeatUnix = currentBarStartUnix + (testBeatIndex * beatDurationMs);
         }
     },
 
-    advanceNote() {
-        const secondsPerBeat = 60.0 / this.bpm;
-        const subdivisionDuration = secondsPerBeat / this.subdivision;
-
-        this.nextNoteTime += subdivisionDuration;
-        this.currentBeatInBar = (this.currentBeatInBar + 1) % (this.signature * this.subdivision);
-    },
-
-    scheduleNote(beatIndex, time) {
+    scheduleNote(beatIndex, time, beatUnix) {
         const isMainBeat = (beatIndex % this.subdivision === 0);
         const isDownbeat = (beatIndex === 0);
 
@@ -403,7 +427,8 @@ window.MetronomeTool = {
             bpm: this.bpm,
             sig: this.signature,
             sub: this.subdivision,
-            sound: this.soundProfile
+            sound: this.soundProfile,
+            sync: '1' // Sync flag
         });
 
         const shareUrl = `${baseUrl}?${queryParams.toString()}`;
@@ -430,6 +455,7 @@ window.MetronomeTool = {
         const urlSig = params.get('sig');
         const urlSub = params.get('sub');
         const urlSound = params.get('sound');
+        const sync = params.get('sync');
 
         if (urlBpm) {
             this.setBpm(parseInt(urlBpm));
@@ -449,6 +475,14 @@ window.MetronomeTool = {
             this.soundProfile = urlSound;
             const soundSelect = document.getElementById('metronome-sound');
             if (soundSelect) soundSelect.value = urlSound;
+        }
+
+        if (sync === '1') {
+            const toggleBtn = document.getElementById('metronome-toggle-btn');
+            if (toggleBtn) {
+                toggleBtn.textContent = '🔊 Join Synced Session';
+                toggleBtn.style.boxShadow = '0 0 15px var(--accent)';
+            }
         }
     }
 };
