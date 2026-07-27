@@ -227,12 +227,12 @@
                                 <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Tempo & Beat Output</h3>
                                 
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 16px;">
-                                    <button id="metronome-minus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1;">−</button>
+                                    <button id="metronome-minus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0 !important; flex-shrink: 0;">−</button>
                                     <div style="font-family: var(--font-mono); font-size: 56px; font-weight: 700; color: var(--text-primary); line-height: 1;" id="metronome-bpm-val">120</div>
-                                    <button id="metronome-plus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1;">+</button>
+                                    <button id="metronome-plus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0 !important; flex-shrink: 0;">+</button>
                                 </div>
 
-                                <input type="range" id="metronome-bpm-slider" min="30" max="280" value="120" step="1" class="slider" style="width: 100%; margin-bottom: 16px;">
+                                <input type="range" id="metronome-bpm-slider" min="10" max="300" value="120" step="1" class="slider" style="width: 100%; margin-bottom: 16px;">
 
                                 <!-- Beat Indicators Dynamic Row -->
                                 <div class="metronome-indicators" id="metronome-indicators">

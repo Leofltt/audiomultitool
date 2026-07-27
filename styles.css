@@ -976,6 +976,7 @@ body.light-theme .mobile-nav-item:hover {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
     transition: all 0.1s ease;
+    flex-shrink: 0;
 }
 body.light-theme .beat-dot {
     background: rgba(0, 0, 0, 0.1);

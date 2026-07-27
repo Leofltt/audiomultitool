@@ -125,7 +125,7 @@ window.MetronomeTool = {
     },
 
     setBpm(newBpm) {
-        this.bpm = Math.max(30, Math.min(newBpm, 280));
+        this.bpm = Math.max(10, Math.min(newBpm, 300));
         
         const slider = document.getElementById('metronome-bpm-slider');
         const display = document.getElementById('metronome-bpm-val');
@@ -367,7 +367,7 @@ window.MetronomeTool = {
         const avgInterval = totalIntervals / (this.tapTimes.length - 1);
         const bpm = Math.round(60000 / avgInterval);
         
-        const boundedBpm = Math.max(30, Math.min(bpm, 280));
+        const boundedBpm = Math.max(10, Math.min(bpm, 300));
 
         // Update Tapper UI
         document.getElementById('tapper-bpm-val').textContent = boundedBpm;
