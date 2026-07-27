@@ -18,6 +18,8 @@ window.MetronomeTool = {
     lookahead: 25.0,         // Interval time in ms
     scheduleAheadTime: 0.1,  // Scheduler lookahead window in seconds
     notesQueue: [],          // Queue of notes scheduled for visual sync
+    lastScheduledBeatUnix: 0,
+    lastTriggeredBeatUnix: 0,
 
     init(appInstance) {
         this.app = appInstance;
@@ -245,7 +247,7 @@ window.MetronomeTool = {
         const isMainBeat = (beatIndex % this.subdivision === 0);
         const isDownbeat = (beatIndex === 0);
 
-        this.notesQueue.push({ beat: beatIndex, time: time });
+        this.notesQueue.push({ beat: beatIndex, time: time, beatUnix: beatUnix });
 
         // Play dynamic synthesized click
         this.playClick(time, isDownbeat, !isMainBeat);
@@ -319,26 +321,29 @@ window.MetronomeTool = {
             }
         }
 
-        const dots = document.querySelectorAll('#metronome-indicators .beat-dot');
-        
-        if (activeNote) {
+        if (activeNote && (!this.lastTriggeredBeatUnix || activeNote.beatUnix > this.lastTriggeredBeatUnix)) {
+            this.lastTriggeredBeatUnix = activeNote.beatUnix;
+            
             const beatIndex = activeNote.beat;
             const mainBeat = Math.floor(beatIndex / this.subdivision);
             const isFirstSubdivision = (beatIndex % this.subdivision === 0);
 
-            const beatDuration = 60 / this.bpm;
-            // Dynamic flash duration matching the active tempo speed
-            const flashDuration = Math.min(0.15, beatDuration * 0.4);
-
-            dots.forEach((dot, idx) => {
-                if (idx === mainBeat && isFirstSubdivision && (currentTime < activeNote.time + flashDuration)) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        } else {
-            dots.forEach(dot => dot.classList.remove('active'));
+            if (isFirstSubdivision) {
+                const dots = document.querySelectorAll('#metronome-indicators .beat-dot');
+                dots.forEach((dot, idx) => {
+                    dot.classList.remove('flash-active');
+                    // Force a DOM reflow to restart CSS keyframe animation instantly
+                    void dot.offsetWidth; 
+                    
+                    if (idx === mainBeat) {
+                        dot.classList.add('flash-active');
+                        // Scale the animation speed to the tempo
+                        const beatDuration = 60 / this.bpm;
+                        const duration = Math.min(0.3, beatDuration * 0.5);
+                        dot.style.animationDuration = `${duration}s`;
+                    }
+                });
+            }
         }
 
         requestAnimationFrame(() => this.visualSyncLoop());

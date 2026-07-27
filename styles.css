@@ -16,6 +16,7 @@
     
     --text-primary: #F3F4F6;
     --text-secondary: #9CA3AF;
+    --beat-dot-idle-bg: rgba(255, 255, 255, 0.15);
     
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -39,6 +40,7 @@ body.light-theme {
     
     --text-primary: #111827;
     --text-secondary: #4B5563;
+    --beat-dot-idle-bg: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -975,19 +977,44 @@ body.light-theme .mobile-nav-item:hover {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
-    transition: all 0.1s ease;
+    transition: transform 0.1s ease, border-color 0.1s ease;
     flex-shrink: 0;
 }
 body.light-theme .beat-dot {
     background: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.15);
 }
-.beat-dot.active {
-    background: var(--text-primary);
-    box-shadow: 0 0 10px var(--text-primary);
-    transform: scale(1.15);
+
+@keyframes beat-flash {
+    0% {
+        background: var(--text-primary);
+        box-shadow: 0 0 12px var(--text-primary);
+        transform: scale(1.2);
+    }
+    100% {
+        background: var(--beat-dot-idle-bg);
+        box-shadow: none;
+        transform: scale(1);
+    }
 }
-.beat-dot.active.downbeat {
-    background: var(--accent);
-    box-shadow: 0 0 12px var(--accent);
+
+@keyframes downbeat-flash {
+    0% {
+        background: var(--accent);
+        box-shadow: 0 0 15px var(--accent);
+        transform: scale(1.25);
+    }
+    100% {
+        background: var(--beat-dot-idle-bg);
+        box-shadow: none;
+        transform: scale(1);
+    }
+}
+
+.beat-dot.flash-active {
+    animation: beat-flash 0.25s ease-out forwards;
+}
+
+.beat-dot.flash-active.downbeat {
+    animation: downbeat-flash 0.25s ease-out forwards;
 }
