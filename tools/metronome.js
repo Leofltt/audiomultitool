@@ -23,6 +23,7 @@ window.MetronomeTool = {
         this.app = appInstance;
         this.setupEventListeners();
         this.rebuildIndicators();
+        this.loadQueryParams();
     },
 
     setupEventListeners() {
@@ -39,8 +40,14 @@ window.MetronomeTool = {
         const tapCard = document.getElementById('tap-trigger-btn');
         const resetBtn = document.getElementById('tapper-reset');
 
+        const shareBtn = document.getElementById('metronome-share-btn');
+
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => this.toggle());
+        }
+
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => this.shareConfig());
         }
 
         if (bpmSlider) {
@@ -385,5 +392,63 @@ window.MetronomeTool = {
         
         const historyList = document.getElementById('tapper-history');
         historyList.innerHTML = '<li class="empty-state">No taps recorded yet</li>';
+    },
+
+    shareConfig() {
+        const shareBtn = document.getElementById('metronome-share-btn');
+        if (!shareBtn) return;
+
+        const baseUrl = window.location.origin + '/metronome/';
+        const queryParams = new URLSearchParams({
+            bpm: this.bpm,
+            sig: this.signature,
+            sub: this.subdivision,
+            sound: this.soundProfile
+        });
+
+        const shareUrl = `${baseUrl}?${queryParams.toString()}`;
+
+        navigator.clipboard.writeText(shareUrl)
+            .then(() => {
+                const originalText = shareBtn.innerHTML;
+                shareBtn.innerHTML = '<span>✅</span> Copied!';
+                shareBtn.style.borderColor = 'var(--accent)';
+                setTimeout(() => {
+                    shareBtn.innerHTML = originalText;
+                    shareBtn.style.borderColor = '';
+                }, 1800);
+            })
+            .catch(err => {
+                console.error("Clipboard copy failed: ", err);
+                alert("Here is your shareable link:\n" + shareUrl);
+            });
+    },
+
+    loadQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        const urlBpm = params.get('bpm');
+        const urlSig = params.get('sig');
+        const urlSub = params.get('sub');
+        const urlSound = params.get('sound');
+
+        if (urlBpm) {
+            this.setBpm(parseInt(urlBpm));
+        }
+        if (urlSig) {
+            this.signature = parseInt(urlSig);
+            const signatureSelect = document.getElementById('metronome-signature');
+            if (signatureSelect) signatureSelect.value = urlSig;
+            this.rebuildIndicators();
+        }
+        if (urlSub) {
+            this.subdivision = parseInt(urlSub);
+            const subdivisionSelect = document.getElementById('metronome-subdivision');
+            if (subdivisionSelect) subdivisionSelect.value = urlSub;
+        }
+        if (urlSound) {
+            this.soundProfile = urlSound;
+            const soundSelect = document.getElementById('metronome-sound');
+            if (soundSelect) soundSelect.value = urlSound;
+        }
     }
 };
