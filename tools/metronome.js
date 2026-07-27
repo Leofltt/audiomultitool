@@ -219,7 +219,7 @@ window.MetronomeTool = {
         const dots = document.querySelectorAll('#metronome-indicators .beat-dot');
         dots.forEach(dot => {
             dot.classList.remove('flash-active');
-            dot.style.animation = 'none';
+            dot.style.animationDuration = '';
         });
 
         const toggleBtn = document.getElementById('metronome-toggle-btn');
