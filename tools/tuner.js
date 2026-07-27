@@ -110,6 +110,36 @@ window.TunerTool = {
                 document.getElementById('tuner-calibration-val').textContent = `${val}Hz`;
             });
         }
+
+        const addStringBtn = document.getElementById('tuner-add-string-btn');
+        const removeStringBtn = document.getElementById('tuner-remove-string-btn');
+
+        if (addStringBtn) {
+            addStringBtn.addEventListener('click', () => this.addCustomString());
+        }
+
+        if (removeStringBtn) {
+            removeStringBtn.addEventListener('click', () => this.removeCustomString());
+        }
+    },
+
+    addCustomString() {
+        const instrument = document.getElementById('tuner-instrument-select').value;
+        const notes = this.instruments[instrument].tunings.custom.notes;
+        if (notes.length < 12) { // cap at 12 strings maximum for layout safety
+            const newNote = notes.length > 0 ? notes[notes.length - 1] : "C4";
+            notes.push(newNote);
+            this.updateTunerStringsCard();
+        }
+    },
+
+    removeCustomString() {
+        const instrument = document.getElementById('tuner-instrument-select').value;
+        const notes = this.instruments[instrument].tunings.custom.notes;
+        if (notes.length > 1) {
+            notes.pop();
+            this.updateTunerStringsCard();
+        }
     },
 
     populateTunings() {
