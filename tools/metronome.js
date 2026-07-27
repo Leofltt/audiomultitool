@@ -136,6 +136,7 @@ window.MetronomeTool = {
 
     rebuildIndicators() {
         const container = document.getElementById('metronome-indicators');
+        console.log("Metronome indicators container found:", !!container, "Signature value:", this.signature);
         if (!container) return;
 
         container.innerHTML = '';
@@ -144,6 +145,7 @@ window.MetronomeTool = {
             dot.className = i === 0 ? 'beat-dot downbeat' : 'beat-dot';
             container.appendChild(dot);
         }
+        console.log("Indicators rebuild completed. Children count:", container.children.length);
     },
 
     toggle() {

@@ -52,7 +52,7 @@ tools.forEach(tool => {
     }
 
     // 2. Adjust asset paths to point to parent folder
-    html = html.replace('href="styles.css"', 'href="../styles.css"');
+    html = html.replace('href="styles.css?v=1.1"', 'href="../styles.css?v=1.1"');
     html = html.replace('href="privacy.html"', 'href="../privacy.html"');
     html = html.replace('href="terms.html"', 'href="../terms.html"');
     html = html.replace('href="/"', 'href="../"');
