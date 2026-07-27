@@ -961,3 +961,31 @@ body.light-theme .mobile-nav-item:hover {
         font-size: 11px;
     }
 }
+
+/* Metronome Grid styling */
+.metronome-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+.beat-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.1s ease;
+}
+body.light-theme .beat-dot {
+    background: rgba(0, 0, 0, 0.05);
+}
+.beat-dot.active {
+    background: var(--text-primary);
+    box-shadow: 0 0 10px var(--text-primary);
+    transform: scale(1.15);
+}
+.beat-dot.active.downbeat {
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+}

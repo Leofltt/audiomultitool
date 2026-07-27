@@ -16,9 +16,9 @@ const tools = [
         desc: 'Test your subwoofers and speaker frequency limits with clean logarithmic tone sweeps.'
     },
     {
-        name: 'tapper',
-        title: 'BPM Tapper & Tap Tempo Beats Calculator',
-        desc: 'Tap along to any music or beat to calculate its tempo in Beats Per Minute (BPM).'
+        name: 'metronome',
+        title: 'Online Metronome & BPM Tap Tempo Calculator',
+        desc: 'A precision web metronome with subdivision configurations, click presets, and integrated manual tap tempo beats-per-minute counter.'
     },
     {
         name: 'tuner',

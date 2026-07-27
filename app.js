@@ -28,7 +28,7 @@ const App = {
             const descriptions = {
                 generator: 'Generate pure audio frequencies with custom wave types.',
                 sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
-                tapper: 'Tap tempo calculator to find the beats per minute of any song.',
+                tapper: 'A precision metronome and manual tap tempo calculator.',
                 tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
                 noise: 'Calibrate monitors with a dB sound level meter and generate white, pink, or brownian noise.',
                 converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
@@ -45,7 +45,7 @@ const App = {
         // Initialize sub-tools
         if (window.GeneratorTool) window.GeneratorTool.init(this);
         if (window.SweepTool) window.SweepTool.init(this);
-        if (window.TapperTool) window.TapperTool.init(this);
+        if (window.MetronomeTool) window.MetronomeTool.init(this);
         if (window.TunerTool) window.TunerTool.init(this);
         if (window.NoiseTool) window.NoiseTool.init(this);
         if (window.ConverterTool) window.ConverterTool.init(this);
@@ -114,7 +114,7 @@ const App = {
         const descriptions = {
             generator: 'Generate pure audio frequencies with custom wave types.',
             sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
-            tapper: 'Tap tempo calculator to find the beats per minute of any song.',
+            tapper: 'A precision metronome and manual tap tempo calculator.',
             tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
             noise: 'Calibrate monitors with a dB sound level meter.',
             converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
@@ -185,6 +185,9 @@ const App = {
     stopAllTools() {
         if (window.GeneratorTool && typeof window.GeneratorTool.stop === 'function') {
             window.GeneratorTool.stop();
+        }
+        if (window.MetronomeTool && typeof window.MetronomeTool.stop === 'function') {
+            window.MetronomeTool.stop();
         }
         if (window.SweepTool && typeof window.SweepTool.stop === 'function') {
             window.SweepTool.stop();

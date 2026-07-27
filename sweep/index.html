@@ -54,7 +54,7 @@
                     <span class="icon">📈</span> Speaker Sweep
                 </button>
                 <button class="nav-item" data-tool="tapper">
-                    <span class="icon">⏱️</span> BPM Tapper
+                    <span class="icon">⏱️</span> Metronome
                 </button>
                 <button class="nav-item" data-tool="tuner">
                     <span class="icon">🎯</span> Chromatic Tuner
@@ -106,7 +106,7 @@
             <div id="mobile-menu" class="mobile-menu-drawer">
                 <button class="mobile-nav-item" data-tool="generator">🔊 Signal Generator</button>
                 <button class="mobile-nav-item active" data-tool="sweep">📈 Speaker Sweep</button>
-                <button class="mobile-nav-item" data-tool="tapper">⏱️ BPM Tapper</button>
+                <button class="mobile-nav-item" data-tool="tapper">⏱️ Metronome</button>
                 <button class="mobile-nav-item" data-tool="tuner">🎯 Chromatic Tuner</button>
                 <button class="mobile-nav-item" data-tool="noise">🎚️ dB Meter</button>
                 <button class="mobile-nav-item" data-tool="converter">🔄 Audio Converter</button>
@@ -218,37 +218,99 @@
                     </div>
                 </div>
 
-                <!-- BPM Tapper Tool Pane -->
+                <!-- BPM Tapper & Metronome Tool Pane -->
                 <div class="tool-pane" id="pane-tapper">
-                    <div class="tapper-layout">
-                        <div class="tap-area-card" id="tap-trigger-btn">
-                            <span class="tap-instruction">Click here or tap Spacebar</span>
-                            <div class="bpm-large-display" id="tapper-bpm-val">--</div>
-                            <span class="bpm-label">BPM</span>
+                    <div class="controls-grid" style="grid-template-columns: 1.2fr 0.8fr; gap: 24px;">
+                        <!-- Metronome Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 24px;">
+                            <div style="text-align: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Tempo & Beat Output</h3>
+                                
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 16px;">
+                                    <button id="metronome-minus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1;">−</button>
+                                    <div style="font-family: var(--font-mono); font-size: 56px; font-weight: 700; color: var(--text-primary); line-height: 1;" id="metronome-bpm-val">120</div>
+                                    <button id="metronome-plus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1;">+</button>
+                                </div>
+
+                                <input type="range" id="metronome-bpm-slider" min="30" max="280" value="120" step="1" class="slider" style="width: 100%; margin-bottom: 16px;">
+
+                                <!-- Beat Indicators Dynamic Row -->
+                                <div class="metronome-indicators" id="metronome-indicators">
+                                    <div class="beat-dot downbeat"></div>
+                                    <div class="beat-dot"></div>
+                                    <div class="beat-dot"></div>
+                                    <div class="beat-dot"></div>
+                                </div>
+                            </div>
+
+                            <button id="metronome-toggle-btn" class="btn btn-primary" style="width: 100%; font-size: 15px; padding: 14px 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Start Metronome</button>
                         </div>
-                        <div class="tapper-stats">
-                            <div class="stat-card">
-                                <h4>Average BPM</h4>
-                                <p id="tapper-avg">--</p>
+
+                        <!-- Metronome Settings & Tap Tempo -->
+                        <div style="display: flex; flex-direction: column; gap: 20px;">
+                            <!-- Settings Card -->
+                            <div class="control-card" style="display: flex; flex-direction: column; gap: 14px;">
+                                <div class="input-group">
+                                    <label for="metronome-signature">Time Signature</label>
+                                    <select id="metronome-signature" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="2">2/4 (Duple Meter)</option>
+                                        <option value="3">3/4 (Triple Meter)</option>
+                                        <option value="4" selected>4/4 (Common Time)</option>
+                                        <option value="5">5/4 (Odd Meter)</option>
+                                        <option value="6">6/8 (Compound Duple)</option>
+                                        <option value="7">7/8 (Complex Meter)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="metronome-subdivision">Subdivision</label>
+                                    <select id="metronome-subdivision" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="1" selected>Quarter Notes (1x)</option>
+                                        <option value="2">Eighth Notes (2x)</option>
+                                        <option value="3">Triplets (3x)</option>
+                                        <option value="4">Sixteenth Notes (4x)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="metronome-sound">Click Sound Profile</label>
+                                    <select id="metronome-sound" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="woodblock" selected>Classic Woodblock</option>
+                                        <option value="beep">Digital Beep</option>
+                                        <option value="rimshot">Acoustic Rimshot</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="stat-card">
-                                <h4>Est. Genre</h4>
-                                <p id="tapper-genre">Tap to calculate</p>
+
+                            <!-- Tap Tempo Trigger Card -->
+                            <div class="control-card" style="padding: 16px;">
+                                <div class="tap-area-card" id="tap-trigger-btn" style="height: 120px; border: 1px dashed var(--border-color); border-radius: var(--border-radius); cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                    <span class="tap-instruction" style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase;">Tap to Set Tempo</span>
+                                    <div class="bpm-large-display" id="tapper-bpm-val" style="font-size: 40px; margin: 2px 0;">--</div>
+                                    <span class="bpm-label" style="font-size: 10px; color: var(--text-secondary);">BPM</span>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font-size: 12px; color: var(--text-secondary);">
+                                    <span>Avg: <strong id="tapper-avg" style="color: var(--text-primary);">--</strong></span>
+                                    <span>Genre: <strong id="tapper-genre" style="color: var(--text-primary);">Tap to start</strong></span>
+                                    <button id="tapper-reset" class="btn btn-secondary" style="font-size: 10px; padding: 2px 8px;">Reset</button>
+                                </div>
                             </div>
-                            <button id="tapper-reset" class="btn btn-secondary">Reset Calculator</button>
                         </div>
                     </div>
-                    <div class="tap-history" style="margin-bottom: 40px;">
-                        <h3>Tap History</h3>
-                        <ul class="history-list" id="tapper-history">
+
+                    <div class="tap-history" style="margin-top: 24px; margin-bottom: 40px;">
+                        <h3 style="font-size: 12px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Tempo Tap History</h3>
+                        <ul class="history-list" id="tapper-history" style="max-height: 100px; overflow-y: auto;">
                             <li class="empty-state">No taps recorded yet</li>
                         </ul>
                     </div>
 
                     <!-- Valuable Content SEO Section -->
-                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">How does the BPM Tap Tempo Calculator work?</h3>
-                        <p style="margin-bottom: 12px;">Our BPM (Beats Per Minute) tapper measures the intervals between successive keystrokes or mouse clicks. It averages the last twelve tap intervals to display a stable and accurate tempo measurement. This manual counter is crucial for DJs, live musicians, and music producers trying to identify the tempo of an audio track without automated waveform detection tools.</p>
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 30px;">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Web Audio Metronome & Tap Tempo Calculator</h3>
+                        <p style="margin-bottom: 12px;">This professional online metronome is built using the high-precision <strong>Web Audio API scheduler loop</strong>. Unlike basic interval timers, our engine calculates and schedules click events ahead of time, ensuring sample-accurate tempo timing that never drifts, even under heavy background computer processes.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">How to use subdivision and accents:</h4>
+                        <p style="margin-bottom: 12px;">Choose your primary Time Signature to configure the beat-bar count (such as 4/4 or 6/8 time). Set the Subdivision multiplier to practice eighth notes or triplets. The metronome automatically accents the first beat of each measure with a distinct higher frequency click, keeping your rhythm perfectly synchronized.</p>
                     </div>
                 </div>
 
@@ -548,7 +610,7 @@
     <!-- Tool Scripts -->
     <script src="../tools/generator.js"></script>
     <script src="../tools/sweep.js"></script>
-    <script src="../tools/tapper.js"></script>
+    <script src="../tools/metronome.js"></script>
     <script src="../tools/tuner.js"></script>
     <script src="../tools/noise.js"></script>
     <script src="../tools/converter.js"></script>

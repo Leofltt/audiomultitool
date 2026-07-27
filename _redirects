@@ -3,8 +3,10 @@
 /tone-generator /generator/index.html  200
 /speaker-sweep  /sweep/index.html      200
 /speakersweep   /sweep/index.html      200
-/bpm-tapper     /tapper/index.html     200
-/bpmtapper      /tapper/index.html     200
+/bpm-tapper     /metronome/index.html     200
+/bpmtapper      /metronome/index.html     200
+/metronome      /metronome/index.html     200
+/tapper         /metronome/index.html     301
 /tuner          /tuner/index.html      200
 /recorder       /recorder/index.html   200
 /noise          /noise/index.html      200
