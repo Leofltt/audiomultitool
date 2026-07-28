@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Decibel Level Meter & White, Pink, Brown Noise Generator - AudioMultiTool</title>
+    <title>Online Decibel Meter & Noise Generator - AudioMultiTool</title>
     <meta name="description" content="Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css?v=1.1">
@@ -17,7 +17,7 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "Online Decibel Level Meter & White, Pink, Brown Noise Generator",
+      "name": "Online Decibel Meter & Noise Generator",
       "operatingSystem": "All",
       "applicationCategory": "MultimediaApplication",
       "offers": {
@@ -47,27 +47,27 @@
                 <h1>AudioMultiTool</h1>
             </div>
             <nav class="nav-menu">
-                <button class="nav-item" data-tool="generator">
+                <a class="nav-item" data-tool="generator" href="/generator/">
                     <span class="icon">🔊</span> Signal Generator
-                </button>
-                <button class="nav-item" data-tool="sweep">
+                </a>
+                <a class="nav-item" data-tool="sweep" href="/sweep/">
                     <span class="icon">📈</span> Speaker Sweep
-                </button>
-                <button class="nav-item" data-tool="metronome">
+                </a>
+                <a class="nav-item" data-tool="metronome" href="/metronome/">
                     <span class="icon">⏱️</span> Metronome
-                </button>
-                <button class="nav-item" data-tool="tuner">
+                </a>
+                <a class="nav-item" data-tool="tuner" href="/tuner/">
                     <span class="icon">🎯</span> Chromatic Tuner
-                </button>
-                <button class="nav-item active" data-tool="noise">
+                </a>
+                <a class="nav-item active" data-tool="noise" href="/noise/">
                     <span class="icon">🎚️</span> dB Meter
-                </button>
-                <button class="nav-item" data-tool="converter">
+                </a>
+                <a class="nav-item" data-tool="converter" href="/converter/">
                     <span class="icon">🔄</span> Audio Converter
-                </button>
-                <button class="nav-item" data-tool="recorder">
+                </a>
+                <a class="nav-item" data-tool="recorder" href="/recorder/">
                     <span class="icon">🔴</span> Audio Recorder
-                </button>
+                </a>
             </nav>
             <div class="ad-sidebar-container">
                 <div class="ad-placeholder-sidebar">
@@ -88,7 +88,7 @@
                 <div class="top-bar-left" style="display: flex; align-items: center; gap: 12px;">
                     <button id="menu-toggle" class="menu-toggle-btn" title="Toggle Menu">☰</button>
                     <div class="active-title-container">
-                        <h2 id="active-tool-title">Online Decibel Level Meter & White, Pink, Brown Noise Generator</h2>
+                        <h2 id="active-tool-title">Online Decibel Meter & Noise Generator</h2>
                         <p id="active-tool-desc">Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.</p>
                     </div>
                 </div>
@@ -104,13 +104,13 @@
 
             <!-- Mobile Navigation Drawer Overlay -->
             <div id="mobile-menu" class="mobile-menu-drawer">
-                <button class="mobile-nav-item" data-tool="generator">🔊 Signal Generator</button>
-                <button class="mobile-nav-item" data-tool="sweep">📈 Speaker Sweep</button>
-                <button class="mobile-nav-item" data-tool="metronome">⏱️ Metronome</button>
-                <button class="mobile-nav-item" data-tool="tuner">🎯 Chromatic Tuner</button>
-                <button class="mobile-nav-item active" data-tool="noise">🎚️ dB Meter</button>
-                <button class="mobile-nav-item" data-tool="converter">🔄 Audio Converter</button>
-                <button class="mobile-nav-item" data-tool="recorder">🔴 Audio Recorder</button>
+                <a class="mobile-nav-item" data-tool="generator" href="/generator/">🔊 Signal Generator</a>
+                <a class="mobile-nav-item" data-tool="sweep" href="/sweep/">📈 Speaker Sweep</a>
+                <a class="mobile-nav-item" data-tool="metronome" href="/metronome/">⏱️ Metronome</a>
+                <a class="mobile-nav-item" data-tool="tuner" href="/tuner/">🎯 Chromatic Tuner</a>
+                <a class="mobile-nav-item active" data-tool="noise" href="/noise/">🎚️ dB Meter</a>
+                <a class="mobile-nav-item" data-tool="converter" href="/converter/">🔄 Audio Converter</a>
+                <a class="mobile-nav-item" data-tool="recorder" href="/recorder/">🔴 Audio Recorder</a>
             </div>
 
             <!-- Tool Stage -->

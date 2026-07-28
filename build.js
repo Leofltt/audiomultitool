@@ -7,12 +7,12 @@ const mainHtml = fs.readFileSync(mainHtmlPath, 'utf8');
 const tools = [
     {
         name: 'generator',
-        title: 'Online Tone Generator & Frequency Oscillator',
+        title: 'Online Tone Generator & Oscillator',
         desc: 'Generate pure audio frequencies (sine, square, sawtooth, triangle waves) in your browser.'
     },
     {
         name: 'sweep',
-        title: 'Speaker Frequency Sweep Tester & Subwoofer Test',
+        title: 'Speaker Frequency Sweep & Subwoofer Test',
         desc: 'Test your subwoofers and speaker frequency limits with clean logarithmic tone sweeps.'
     },
     {
@@ -22,22 +22,22 @@ const tools = [
     },
     {
         name: 'tuner',
-        title: 'Online Chromatic Instrument Tuner (Mic Input)',
+        title: 'Online Chromatic Instrument Tuner',
         desc: 'Free chromatic tuner using your microphone to tune guitars, violins, ukuleles, and more.'
     },
     {
         name: 'noise',
-        title: 'Online Decibel Level Meter & White, Pink, Brown Noise Generator',
+        title: 'Online Decibel Meter & Noise Generator',
         desc: 'Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.'
     },
     {
         name: 'converter',
-        title: 'Online Audio Converter (WAV, MP3, M4A, FLAC, OGG)',
+        title: 'Online Audio Converter (MP3, WAV & More)',
         desc: 'Convert audio files to MP3 or WAV formats 100% client-side. No limits, no uploads, absolute privacy.'
     },
     {
         name: 'recorder',
-        title: 'Online Voice Recorder & System Sound Loopback Capture',
+        title: 'Online Voice & Audio Recorder',
         desc: 'Record audio directly from your microphone or capture computer system audio fully client-side.'
     }
 ];
