@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "audiomultitool-tuner",
+      "type": "skill-md",
+      "description": "Pitch detection and tuning for musical instruments",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/tuner/SKILL.md",
+      "digest": "sha256:8c0f716d366bd5dbfdb802f571334b1cb7982fe3e1dd2bfc744e1ef0774853cc"
+    }
+  ]
+}

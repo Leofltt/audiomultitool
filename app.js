@@ -50,6 +50,73 @@ const App = {
         if (window.NoiseTool) window.NoiseTool.init(this);
         if (window.ConverterTool) window.ConverterTool.init(this);
         if (window.RecorderTool) window.RecorderTool.init(this);
+
+        // Initialize WebMCP tools
+        this.initWebMcp();
+    },
+
+    initWebMcp() {
+        if (typeof navigator !== 'undefined' && navigator.modelContext) {
+            const controller = new AbortController();
+            const signal = controller.signal;
+
+            const tools = [
+                {
+                    name: "switch_tool",
+                    description: "Navigate to one of the audio tools on the site: generator, sweep, metronome, tuner, noise, converter, recorder.",
+                    inputSchema: {
+                        type: "object",
+                        properties: {
+                            toolName: {
+                                type: "string",
+                                enum: ["generator", "sweep", "metronome", "tuner", "noise", "converter", "recorder"]
+                            }
+                        },
+                        required: ["toolName"]
+                    },
+                    execute: async (args) => {
+                        if (typeof this.selectTool === 'function') {
+                            this.selectTool(args.toolName);
+                            return { success: true, message: `Switched to tool: ${args.toolName}` };
+                        }
+                        return { success: false, message: "App navigation not available" };
+                    }
+                },
+                {
+                    name: "get_active_tool",
+                    description: "Retrieve the name of the currently active tool on the page.",
+                    inputSchema: {
+                        type: "object",
+                        properties: {}
+                    },
+                    execute: async () => {
+                        return { activeTool: this.activeTool };
+                    }
+                }
+            ];
+
+            // Attempt navigator.modelContext.registerTool
+            if (typeof navigator.modelContext.registerTool === 'function') {
+                for (const tool of tools) {
+                    try {
+                        navigator.modelContext.registerTool(tool.name, tool.description, tool.inputSchema, tool.execute, { signal });
+                    } catch (e) {
+                        console.warn("Failed to register tool:", tool.name, e);
+                    }
+                }
+            }
+
+            // Attempt navigator.modelContext.provideContext
+            if (typeof navigator.modelContext.provideContext === 'function') {
+                try {
+                    navigator.modelContext.provideContext({
+                        tools: tools
+                    });
+                } catch (e) {
+                    console.warn("Failed to provideContext:", e);
+                }
+            }
+        }
     },
 
     setupTheme() {
@@ -169,6 +236,14 @@ const App = {
                 mobileMenu.classList.toggle('open');
             });
         }
+
+        // Expose selectTool on App instance
+        this.selectTool = (targetTool) => {
+            const btn = document.querySelector(`.nav-item[data-tool="${targetTool}"]`) || 
+                        document.querySelector(`.mobile-nav-item[data-tool="${targetTool}"]`);
+            const name = btn ? btn.textContent.trim().replace(/^[^\s]+\s+/, '') : targetTool;
+            selectTool(targetTool, name);
+        };
     },
 
     setupVisualizerOptions() {

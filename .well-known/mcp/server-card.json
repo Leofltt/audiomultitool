@@ -1,0 +1,12 @@
+{
+  "serverInfo": {
+    "name": "AudioMultiTool MCP Server",
+    "version": "1.0.0"
+  },
+  "endpoint": "https://audiomultitool.com/mcp",
+  "capabilities": {
+    "tools": {},
+    "resources": {},
+    "prompts": {}
+  }
+}
