@@ -4,9 +4,51 @@
     {
       "name": "audiomultitool-tuner",
       "type": "skill-md",
-      "description": "Pitch detection and tuning for musical instruments",
+      "description": "Pitch detection and instrument tuning using time-domain auto-correlation microphone tracking.",
       "url": "https://audiomultitool.com/.well-known/agent-skills/tuner/SKILL.md",
-      "digest": "sha256:8c0f716d366bd5dbfdb802f571334b1cb7982fe3e1dd2bfc744e1ef0774853cc"
+      "digest": "sha256:7a78935c8f549be53100fb24cb3f6c00009d265a575a2e32edcf97692f8788d3"
+    },
+    {
+      "name": "audiomultitool-metronome",
+      "type": "skill-md",
+      "description": "Precision sample-accurate audio metronome, tap tempo calculator, and network-synced sessions.",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/metronome/SKILL.md",
+      "digest": "sha256:c8def7c30b3f97b3c5dadee314829bfca3b7c6799ac12d4b345a3576dc302a0e"
+    },
+    {
+      "name": "audiomultitool-generator",
+      "type": "skill-md",
+      "description": "Custom frequency tone generator and oscillator utilizing Web Audio nodes.",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/generator/SKILL.md",
+      "digest": "sha256:4d971c2ba52da25372252f35bd64b76799f041f1fff2fd4990c2b81ae35c3a93"
+    },
+    {
+      "name": "audiomultitool-sweep",
+      "type": "skill-md",
+      "description": "Logarithmic and linear frequency sweep generator for speaker and acoustics testing.",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/sweep/SKILL.md",
+      "digest": "sha256:57520a53caf0884905de9b2e5f2c93af8e7390669b4484fe400a8a272165c253"
+    },
+    {
+      "name": "audiomultitool-noise",
+      "type": "skill-md",
+      "description": "Sound level dB meter calibration and white, pink, and brownian noise profiles generator.",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/noise/SKILL.md",
+      "digest": "sha256:08b602f1898e724c62ac291786c284c12418a180d2a438bdd540b28ef4563162"
+    },
+    {
+      "name": "audiomultitool-converter",
+      "type": "skill-md",
+      "description": "Client-side browser-native audio format converter between MP3 and WAV.",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/converter/SKILL.md",
+      "digest": "sha256:cc4bd0cc491b28c9f8611fb3823da0deee86d795ad28f6b5ebad8d29ff816493"
+    },
+    {
+      "name": "audiomultitool-recorder",
+      "type": "skill-md",
+      "description": "Local client-side browser recorder capturing voice microphone signals or system sound loopbacks.",
+      "url": "https://audiomultitool.com/.well-known/agent-skills/recorder/SKILL.md",
+      "digest": "sha256:3528d007f1aa5e3ad370cc8cbc64716f07b1be18059620d1e0f4b77a6de85525"
     }
   ]
 }

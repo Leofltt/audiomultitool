@@ -70,9 +70,28 @@ window.MetronomeTool = {
             });
         }
 
+        const customContainer = document.getElementById('metronome-custom-signature-container');
+        const customInput = document.getElementById('metronome-custom-signature');
+
         if (signatureSelect) {
             signatureSelect.addEventListener('change', (e) => {
-                this.signature = parseInt(e.target.value);
+                if (e.target.value === 'custom') {
+                    if (customContainer) customContainer.style.display = 'block';
+                    this.signature = parseInt(customInput.value) || 4;
+                } else {
+                    if (customContainer) customContainer.style.display = 'none';
+                    this.signature = parseInt(e.target.value);
+                }
+                this.rebuildIndicators();
+            });
+        }
+
+        if (customInput) {
+            customInput.addEventListener('input', (e) => {
+                let val = parseInt(e.target.value) || 4;
+                val = Math.max(1, Math.min(val, 32));
+                e.target.value = val;
+                this.signature = val;
                 this.rebuildIndicators();
             });
         }
@@ -503,7 +522,18 @@ window.MetronomeTool = {
         if (urlSig) {
             this.signature = parseInt(urlSig);
             const signatureSelect = document.getElementById('metronome-signature');
-            if (signatureSelect) signatureSelect.value = urlSig;
+            if (signatureSelect) {
+                const options = Array.from(signatureSelect.options).map(o => o.value);
+                if (options.includes(urlSig)) {
+                    signatureSelect.value = urlSig;
+                } else {
+                    signatureSelect.value = 'custom';
+                    const customContainer = document.getElementById('metronome-custom-signature-container');
+                    const customInput = document.getElementById('metronome-custom-signature');
+                    if (customContainer) customContainer.style.display = 'block';
+                    if (customInput) customInput.value = urlSig;
+                }
+            }
             this.rebuildIndicators();
         }
         if (urlSub) {
