@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404: Lost in Frequency - AudioMultiTool</title>
+    <meta name="description" content="The page you are looking for cannot be found. Jump back to our free suite of online web audio tools, metronomes, converters, and recorders.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css?v=1.1">
+
+    <style>
+        /* Standalone 404 page layout overrides */
+        body {
+            overflow-y: auto;
+            height: auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .error-container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin: auto;
+        }
+
+        /* Hero Graphic */
+        .error-graphic {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .oscillo-svg {
+            width: 320px;
+            height: 120px;
+            max-width: 100%;
+        }
+
+        .wave-line {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+            animation: waveFlow 4s linear infinite;
+        }
+
+        .grid-line {
+            stroke: var(--border-color);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+
+        .center-line {
+            stroke: var(--border-hover);
+            stroke-width: 1.5;
+        }
+
+        @keyframes waveFlow {
+            0% {
+                stroke-dashoffset: 1000;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Typographic elements */
+        .error-code {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .error-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .error-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+        }
+
+        /* Dashboard Grid of Tools */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .tool-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.05);
+        }
+
+        .tool-card-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .tool-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tool-card-title::after {
+            content: "→";
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: all 0.2s ease;
+            color: var(--primary);
+        }
+
+        .tool-card:hover .tool-card-title::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .tool-card-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Footer & Utility Actions */
+        .error-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
+            margin-top: 20px;
+        }
+
+        .btn-home {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s ease;
+        }
+
+        .btn-home:hover {
+            background: var(--primary-hover);
+        }
+
+        .theme-toggle-404 {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.15s ease;
+        }
+
+        .theme-toggle-404:hover {
+            border-color: var(--border-hover);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            .error-title {
+                font-size: 26px;
+            }
+            .error-desc {
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <script>
+        // Inline theme helper to prevent light-theme flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+                document.documentElement.classList.add('light-theme-init');
+            }
+        })();
+    </script>
+</head>
+<body>
+    <script>
+        // Set body class right away based on initial config
+        if (document.documentElement.classList.contains('light-theme-init')) {
+            document.body.classList.add('light-theme');
+            document.documentElement.classList.remove('light-theme-init');
+        }
+    </script>
+
+    <div class="error-container">
+        <!-- Animated Oscilloscope Waveform Graphic -->
+        <div class="error-graphic">
+            <svg class="oscillo-svg" viewBox="0 0 320 120">
+                <!-- Background Grid -->
+                <line x1="0" y1="20" x2="320" y2="20" class="grid-line" />
+                <line x1="0" y1="40" x2="320" y2="40" class="grid-line" />
+                <line x1="0" y1="60" x2="320" y2="60" class="center-line" />
+                <line x1="0" y1="80" x2="320" y2="80" class="grid-line" />
+                <line x1="0" y1="100" x2="320" y2="100" class="grid-line" />
+                
+                <line x1="40" y1="0" x2="40" y2="120" class="grid-line" />
+                <line x1="80" y1="0" x2="80" y2="120" class="grid-line" />
+                <line x1="120" y1="0" x2="120" y2="120" class="grid-line" />
+                <line x1="160" y1="0" x2="160" y2="120" class="center-line" />
+                <line x1="200" y1="0" x2="200" y2="120" class="grid-line" />
+                <line x1="240" y1="0" x2="240" y2="120" class="grid-line" />
+                <line x1="280" y1="0" x2="280" y2="120" class="grid-line" />
+
+                <!-- 404 Distorted Sine Waveform -->
+                <path class="wave-line" d="M 0 60 Q 20 60 40 60 T 80 60 Q 100 20 120 60 T 160 100 Q 180 0 200 60 T 240 120 Q 260 60 280 60 T 320 60" />
+            </svg>
+        </div>
+
+        <div class="error-code">Error 404</div>
+        <h1 class="error-title">Lost in Frequency</h1>
+        <p class="error-desc">
+            The page you are looking for has been modulated out of range or does not exist. Let's get you back on track.
+        </p>
+
+        <!-- Navigation Dashboard -->
+        <div class="tools-grid">
+            <a href="/generator/" class="tool-card">
+                <span class="tool-card-icon">🔊</span>
+                <span class="tool-card-title">Signal Generator</span>
+                <span class="tool-card-desc">Generate pure audio frequencies, test tones, and colored noise signals.</span>
+            </a>
+
+            <a href="/sweep/" class="tool-card">
+                <span class="tool-card-icon">📈</span>
+                <span class="tool-card-title">Speaker Sweep</span>
+                <span class="tool-card-desc">Run clean frequency sweeps to test speakers and find crossover ranges.</span>
+            </a>
+
+            <a href="/metronome/" class="tool-card">
+                <span class="tool-card-icon">⏱️</span>
+                <span class="tool-card-title">Precision Metronome</span>
+                <span class="tool-card-desc">Accurate tempo scheduling, tap BPM counter, and epoch-aligned syncing.</span>
+            </a>
+
+            <a href="/tuner/" class="tool-card">
+                <span class="tool-card-icon">🎯</span>
+                <span class="tool-card-title">Chromatic Tuner</span>
+                <span class="tool-card-desc">Tune your guitar, bass, or violin with accurate real-time microphone pitch estimation.</span>
+            </a>
+
+            <a href="/noise/" class="tool-card">
+                <span class="tool-card-icon">🎚️</span>
+                <span class="tool-card-title">dB Meter & Noise</span>
+                <span class="tool-card-desc">Measure sound pressure levels and listen to focus white, pink, or brownian noise.</span>
+            </a>
+
+            <a href="/converter/" class="tool-card">
+                <span class="tool-card-icon">🔄</span>
+                <span class="tool-card-title">Audio Converter</span>
+                <span class="tool-card-desc">Convert formats locally in the browser. Zero server uploads for complete privacy.</span>
+            </a>
+        </div>
+
+        <div class="error-footer">
+            <a href="/" class="btn-home">Back to Homepage</a>
+            
+            <button id="theme-toggle" class="theme-toggle-404" title="Toggle Light/Dark Theme">
+                <span class="theme-icon">☀️</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Interactive Theme Toggle Logic matching the main application
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('.theme-icon');
+
+        const updateToggleIcon = (isLight) => {
+            themeIcon.textContent = isLight ? '🌙' : '☀️';
+        };
+
+        const setTheme = (isLight) => {
+            if (isLight) {
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-theme');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateToggleIcon(isLight);
+        };
+
+        // Initial setup matching storage preference
+        const isCurrentlyLight = document.body.classList.contains('light-theme');
+        updateToggleIcon(isCurrentlyLight);
+
+        // Click event listener
+        themeToggleBtn.addEventListener('click', () => {
+            const willBeLight = !document.body.classList.contains('light-theme');
+            setTheme(willBeLight);
+        });
+    </script>
+</body>
+</html>
