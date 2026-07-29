@@ -4,6 +4,45 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const path = url.pathname;
 
+  // Health & OpenAPI Spec endpoints
+  if (path === "/health") {
+    return new Response(JSON.stringify({ "status": "ok" }), {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=60"
+      }
+    });
+  }
+
+  if (path === "/openapi.json") {
+    const openapi = {
+      "openapi": "3.0.3",
+      "info": {
+        "title": "AudioMultiTool API",
+        "version": "1.0.0",
+        "description": "API endpoints for AudioMultiTool tools, including DNS-AID resolution and API catalog discovery."
+      },
+      "paths": {
+        "/health": {
+          "get": {
+            "summary": "Check API health",
+            "responses": {
+              "200": {
+                "description": "Healthy"
+              }
+            }
+          }
+        }
+      }
+    };
+    return new Response(JSON.stringify(openapi), {
+      headers: {
+        "Content-Type": "application/openapi+json",
+        "Cache-Control": "public, max-age=86400"
+      }
+    });
+  }
+
   // 1. DNS-over-HTTPS (DoH) & JSON DNS resolver for DNS-AID
   if (path === "/dns-query" || path === "/resolve") {
     let name = "";
@@ -92,8 +131,37 @@ export async function onRequest(context) {
       name = name.slice(0, -1);
     }
 
+    let baseDomain = "audiomultitool.com";
+    if (name.includes("_agents.")) {
+      baseDomain = name.substring(name.indexOf("_agents.") + 8);
+    } else {
+      baseDomain = url.hostname;
+    }
+
+    let capText = "";
+    try {
+      const capRes = await context.env.ASSETS.fetch(new Request(url.origin + "/.well-known/mcp/server-card.json"));
+      capText = await capRes.text();
+    } catch (e) {
+      capText = JSON.stringify({
+        "serverInfo": {
+          "name": "AudioMultiTool MCP Server",
+          "version": "1.0.0"
+        },
+        "endpoint": `https://${baseDomain}/mcp`,
+        "capabilities": {
+          "tools": {},
+          "resources": {},
+          "prompts": {}
+        }
+      });
+    }
+
+    const capUrl = `https://${baseDomain}/.well-known/mcp/server-card.json`;
+    const capHash = await getSha256Base64Url(capText);
+
     if (isBinary) {
-      const responseBuffer = buildDnsResponse(id, name, type);
+      const responseBuffer = buildDnsResponse(id, name, type, baseDomain, capUrl, capHash);
       return new Response(responseBuffer, {
         headers: {
           "Content-Type": "application/dns-message",
@@ -101,7 +169,7 @@ export async function onRequest(context) {
         }
       });
     } else {
-      const jsonResponse = handleJsonDnsQuery(name, type);
+      const jsonResponse = handleJsonDnsQuery(name, type, baseDomain, capUrl, capHash);
       return new Response(JSON.stringify(jsonResponse), {
         headers: {
           "Content-Type": "application/dns-json",
@@ -116,17 +184,23 @@ export async function onRequest(context) {
     const apiCatalog = {
       "linkset": [
         {
-          "anchor": "https://audiomultitool.com/",
+          "anchor": `${url.origin}/`,
           "service-desc": [
             {
-              "href": "https://audiomultitool.com/.well-known/api-catalog.json",
-              "type": "application/json"
+              "href": `${url.origin}/openapi.json`,
+              "type": "application/openapi+json"
             }
           ],
           "service-doc": [
             {
-              "href": "https://audiomultitool.com/",
+              "href": `${url.origin}/`,
               "type": "text/html"
+            }
+          ],
+          "status": [
+            {
+              "href": `${url.origin}/health`,
+              "type": "application/json"
             }
           ]
         }
@@ -134,7 +208,7 @@ export async function onRequest(context) {
     };
     return new Response(JSON.stringify(apiCatalog), {
       headers: {
-        "Content-Type": "application/linkset+json",
+        "Content-Type": 'application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"',
         "Cache-Control": "public, max-age=86400"
       }
     });
@@ -296,8 +370,45 @@ Discover all available APIs and tools at: https://audiomultitool.com/.well-known
   return await context.next();
 }
 
+// Helpers for DNS-AID SVCB parameter encoding
+function domainToBytes(domain) {
+  const parts = domain.split(".");
+  const bytes = [];
+  for (const part of parts) {
+    if (part.length === 0) continue;
+    bytes.push(part.length);
+    for (let i = 0; i < part.length; i++) {
+      bytes.push(part.charCodeAt(i));
+    }
+  }
+  bytes.push(0);
+  return bytes;
+}
+
+function stringToBytes(str) {
+  const bytes = [];
+  for (let i = 0; i < str.length; i++) {
+    bytes.push(str.charCodeAt(i));
+  }
+  return bytes;
+}
+
+function uint8ToBase64Url(uint8) {
+  let binary = "";
+  for (let i = 0; i < uint8.length; i++) {
+    binary += String.fromCharCode(uint8[i]);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+async function getSha256Base64Url(text) {
+  const msgUint8 = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  return uint8ToBase64Url(new Uint8Array(hashBuffer));
+}
+
 // DoH response builder for SVCB/HTTPS
-function buildDnsResponse(id, name, type) {
+function buildDnsResponse(id, name, type, baseDomain, capUrl, capHash) {
   const nameParts = name.split(".");
   const nameBytes = [];
   for (const part of nameParts) {
@@ -309,25 +420,47 @@ function buildDnsResponse(id, name, type) {
   }
   nameBytes.push(0);
 
-  const targetBytes = [
-    5, 97, 103, 101, 110, 116,
-    14, 97, 117, 100, 105, 111, 109, 117, 108, 116, 105, 116, 111, 111, 108,
-    3, 99, 111, 109,
-    0
-  ];
+  const targetBytes = domainToBytes("agent." + baseDomain);
+
+  const capUrlBytes = stringToBytes(capUrl);
+  const capHashBytes = stringToBytes(capHash);
 
   const paramBytes = [
-    0, 0, // key 0 (mandatory)
-    0, 4, // len 4
-    0, 1, 0, 3, // value [1, 3]
+    // key 0 (mandatory)
+    0, 0,
+    // len 8
+    0, 8,
+    // value: [1, 3, 65400, 65401]
+    0, 1,
+    0, 3,
+    255, 120,
+    255, 121,
     
-    0, 1, // key 1 (alpn)
-    0, 4, // len 4
-    3, 97, 50, 97, // value (length-prefixed strings: 3, 'a', '2', 'a')
+    // key 1 (alpn)
+    0, 1,
+    // len 4
+    0, 4,
+    // value (length-prefixed strings: 3, 'a', '2', 'a')
+    3, 97, 50, 97,
     
-    0, 3, // key 3 (port)
-    0, 2, // len 2
-    1, 187 // value 443 (0x01bb)
+    // key 3 (port)
+    0, 3,
+    // len 2
+    0, 2,
+    // value 443 (0x01bb)
+    1, 187,
+
+    // key 65400 (cap)
+    255, 120,
+    // len
+    (capUrlBytes.length >> 8) & 0xff, capUrlBytes.length & 0xff,
+    ...capUrlBytes,
+
+    // key 65401 (cap-sha256)
+    255, 121,
+    // len
+    (capHashBytes.length >> 8) & 0xff, capHashBytes.length & 0xff,
+    ...capHashBytes
   ];
 
   const rdata = [...[0, 1], ...targetBytes, ...paramBytes];
@@ -375,7 +508,7 @@ function buildDnsResponse(id, name, type) {
 }
 
 // JSON DoH responder
-function handleJsonDnsQuery(name, type) {
+function handleJsonDnsQuery(name, type, baseDomain, capUrl, capHash) {
   const isHttps = type === 65;
   const typeCode = isHttps ? 65 : 64;
   const typeStr = isHttps ? "HTTPS" : "SVCB";
@@ -386,7 +519,6 @@ function handleJsonDnsQuery(name, type) {
     "RD": true,
     "RA": true,
     "AD": true, // DNSSEC Authentic Data flag
-    "CD": false,
     "Question": [
       {
         "name": name + ".",
@@ -398,7 +530,7 @@ function handleJsonDnsQuery(name, type) {
         "name": name + ".",
         "type": typeCode,
         "TTL": 3600,
-        "data": `1 agent.audiomultitool.com. alpn="a2a" port=443 mandatory=alpn,port`
+        "data": `1 agent.${baseDomain}. alpn="a2a" port=443 mandatory=alpn,port,key65400,key65401 key65400="${capUrl}" key65401="${capHash}"`
       }
     ]
   };
