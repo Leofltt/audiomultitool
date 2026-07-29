@@ -186,8 +186,11 @@ window.MetronomeTool = {
         }
     },
 
-    startMetronome() {
+    async startMetronome() {
         const ctx = this.app.getAudioContext();
+        if (ctx.state === 'suspended') {
+            await ctx.resume();
+        }
         
         this.isPlaying = true;
         this.app.isSoundActive = true;
@@ -197,18 +200,20 @@ window.MetronomeTool = {
 
         const params = new URLSearchParams(window.location.search);
         if (params.get('sync') === '1') {
-            // Align the initial start click exactly to the absolute Unix Epoch grid
-            this.nextNoteTime = this.getUnixAlignedNextNoteTime(this.bpm, this.subdivision);
+            const tParam = params.get('t');
+            const referenceTime = tParam ? parseInt(tParam) : 0;
             
-            const beatDurationMs = 60000 / (this.bpm * this.subdivision);
-            const barDurationMs = beatDurationMs * this.signature * this.subdivision;
-            const nowUnix = Date.now();
-            const elapsedInBar = nowUnix % barDurationMs;
-            this.currentBeatInBar = Math.floor(elapsedInBar / beatDurationMs);
+            // Align the initial start click exactly to the absolute reference time grid
+            const syncData = this.getUnixAlignedNextNoteTime(this.bpm, this.subdivision, referenceTime);
+            this.nextNoteTime = syncData.nextNoteTime;
+            this.currentBeatInBar = syncData.targetBeatCount % (this.signature * this.subdivision);
         } else {
             this.nextNoteTime = ctx.currentTime + 0.05;
             this.currentBeatInBar = 0;
         }
+
+        // Run scheduler immediately to queue the first note(s)
+        this.scheduler();
 
         // Start scheduling interval
         this.schedulerIntervalId = setInterval(() => this.scheduler(), this.lookahead);
@@ -288,15 +293,26 @@ window.MetronomeTool = {
         this.playClick(time, isDownbeat, !isMainBeat);
     },
 
-    getUnixAlignedNextNoteTime(bpm, subdivision) {
+    getUnixAlignedNextNoteTime(bpm, subdivision, referenceTimeMs = 0) {
         const ctx = this.app.getAudioContext();
         const nowUnix = Date.now();
         const audioCtxTimeAtNow = ctx.currentTime;
         
         const beatDurationMs = 60000 / (bpm * subdivision);
-        const nextBeatUnix = nowUnix + (beatDurationMs - (nowUnix % beatDurationMs));
+        const elapsedMs = nowUnix - referenceTimeMs;
+        const beatsElapsed = Math.floor(elapsedMs / beatDurationMs);
+        let targetBeatCount = beatsElapsed + 1;
+        let nextBeatUnix = referenceTimeMs + targetBeatCount * beatDurationMs;
         
-        return audioCtxTimeAtNow + (nextBeatUnix - nowUnix) / 1000;
+        if (nextBeatUnix - nowUnix < 20) {
+            targetBeatCount += 1;
+            nextBeatUnix += beatDurationMs;
+        }
+        
+        return {
+            nextNoteTime: audioCtxTimeAtNow + (nextBeatUnix - nowUnix) / 1000,
+            targetBeatCount: targetBeatCount
+        };
     },
 
     playClick(time, isDownbeat, isSubdivisionNote) {
@@ -481,13 +497,22 @@ window.MetronomeTool = {
         const shareBtn = document.getElementById('metronome-share-btn');
         if (!shareBtn) return;
 
+        let referenceTime = Date.now();
+        if (this.isPlaying) {
+            const ctx = this.app.getAudioContext();
+            const beatDurationMs = 60000 / (this.bpm * this.subdivision);
+            const nextNoteTimeUnix = Date.now() + (this.nextNoteTime - ctx.currentTime) * 1000;
+            referenceTime = Math.round(nextNoteTimeUnix - (this.currentBeatInBar * beatDurationMs));
+        }
+
         const baseUrl = window.location.origin + '/metronome/';
         const queryParams = new URLSearchParams({
             bpm: this.bpm,
             sig: this.signature,
             sub: this.subdivision,
             sound: this.soundProfile,
-            sync: '1' // Sync flag
+            sync: '1', // Sync flag
+            t: referenceTime.toString() // Exact downbeat anchor timestamp of the active session
         });
 
         const shareUrl = `${baseUrl}?${queryParams.toString()}`;
