@@ -50,8 +50,11 @@ tools.forEach(tool => {
     html = html.replace('href="styles.css?v=1.1"', 'href="../styles.css?v=1.1"');
     html = html.replace('href="privacy.html"', 'href="../privacy.html"');
     html = html.replace('href="terms.html"', 'href="../terms.html"');
+    html = html.replace('href="contact.html"', 'href="../contact.html"');
     html = html.replace('href="/"', 'href="../"');
     html = html.replace('src="app.js?v=1.1"', 'src="../app.js?v=1.1"');
+    html = html.replace('href="favicon.png"', 'href="../favicon.png"');
+    html = html.replace('href="manifest.json"', 'href="../manifest.json"');
     
     // Replace script tool sources
     html = html.replace(/src="tools\//g, 'src="../tools/');
