@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - AudioMultiTool</title>
+    <meta name="description" content="Get in touch with AudioMultiTool. Report bugs, suggest tools, or submit security vulnerability disclosures.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎛️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .legal-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        .legal-container h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .legal-container p {
+            margin-bottom: 25px;
+            color: var(--text-secondary);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            color: var(--primary-hover);
+        }
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 14px;
+            padding: 10px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        body.light-theme .form-group input, body.light-theme .form-group textarea {
+            background: rgba(0, 0, 0, 0.02);
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="legal-container">
+        <a href="/" class="back-link">← Back to AudioMultiTool</a>
+        <h1>Contact Us</h1>
+        <p>Have a question, feedback, feature request, or security vulnerability to disclose? Submit the form below to reach us.</p>
+        
+        <form class="contact-form" action="https://formsubmit.co/flttleonardo@gmail.com" method="POST">
+            <!-- Honey to block spam bots -->
+            <input type="text" name="_honey" style="display:none">
+            <!-- Disable Captcha screen to keep it premium -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="New message from AudioMultiTool">
+
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Your Email Address</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Bug report / Vulnerability report / Request" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" placeholder="Write your message here..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary submit-btn">Send Message</button>
+        </form>
+    </div>
+
+    <script>
+        // Sync theme with main app settings
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+        } else if (savedTheme === 'dark') {
+            document.body.classList.remove('light-theme');
+        }
+    </script>
+</body>
+</html>

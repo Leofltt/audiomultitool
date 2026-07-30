@@ -246,6 +246,12 @@ let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://audiomultitool.com/contact.html</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 `;
 
 presets.forEach(preset => {

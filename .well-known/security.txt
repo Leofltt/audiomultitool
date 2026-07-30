@@ -1,5 +1,5 @@
 # Security contact information for audiomultitool.com
-Contact: mailto:security@audiomultitool.com
+Contact: https://audiomultitool.com/contact.html
 Expires: 2027-07-30T17:00:00.000Z
 Preferred-Languages: en
 Canonical: https://audiomultitool.com/.well-known/security.txt
