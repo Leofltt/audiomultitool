@@ -1,0 +1,10 @@
+{
+  "name": "AudioMultiTool Web Audio Suite",
+  "short_name": "AudioMultiTool",
+  "description": "Fast, 100% client-side web audio utilities: precision online metronome, chromatic tuner, easy voice recorder, DB decibel meter, and audio converter.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0E1015",
+  "theme_color": "#0E1015",
+  "categories": ["utilities", "music"]
+}

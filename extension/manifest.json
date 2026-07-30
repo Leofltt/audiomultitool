@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "AudioMultiTool Launcher",
+  "version": "1.0.0",
+  "description": "Quick launcher for the free, client-side AudioMultiTool web audio suite (metronome, voice recorder, tuner, noise generator, & converter).",
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

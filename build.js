@@ -17,8 +17,8 @@ const tools = [
     },
     {
         name: 'metronome',
-        title: 'Online Metronome & BPM Tap Tempo Calculator',
-        desc: 'A precision web metronome with subdivision configurations, click presets, and integrated manual tap tempo beats-per-minute counter.'
+        title: 'Online Metronome - BPM Tap Tempo & Rhythm Calculator',
+        desc: 'A precision online metronome with custom subdivisions, bpm tap tempo calculator, and epoch-synced network audio sharing. 100% free and client-side.'
     },
     {
         name: 'tuner',
@@ -37,8 +37,8 @@ const tools = [
     },
     {
         name: 'recorder',
-        title: 'Online Voice & Audio Recorder',
-        desc: 'Record audio directly from your microphone or capture computer system audio fully client-side.'
+        title: 'Easy Voice Recorder - Free Online Audio Recorder',
+        desc: 'Use our easy voice recorder to capture microphone or system audio 100% client-side. Free online recorder with no file size limits and absolute privacy.'
     }
 ];
 
@@ -56,7 +56,7 @@ tools.forEach(tool => {
     html = html.replace('href="privacy.html"', 'href="../privacy.html"');
     html = html.replace('href="terms.html"', 'href="../terms.html"');
     html = html.replace('href="/"', 'href="../"');
-    html = html.replace('src="app.js"', 'src="../app.js"');
+    html = html.replace('src="app.js?v=1.1"', 'src="../app.js?v=1.1"');
     
     // Replace script tool sources
     html = html.replace(/src="tools\//g, 'src="../tools/');

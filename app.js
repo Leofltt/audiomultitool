@@ -19,6 +19,15 @@ const App = {
         this.setupVisualizerOptions();
         this.setupTheme();
 
+        // Register Service Worker for PWA Offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.warn('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
         // Dynamically detect active tool from starting HTML state
         let activeNav = document.querySelector('.nav-item.active') || document.querySelector('.mobile-nav-item.active');
         if (activeNav) {

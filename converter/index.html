@@ -7,22 +7,23 @@
     <meta name="description" content="Convert audio files to MP3 or WAV formats 100% client-side. No limits, no uploads, absolute privacy.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css?v=1.1">
+    <link rel="manifest" href="manifest.json">
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388027993518928"
          crossorigin="anonymous"></script>
 
-    <!-- Structured Data Schema for Search Engines -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
+      "@type": "WebApplication",
       "name": "Online Audio Converter (MP3, WAV & More)",
       "operatingSystem": "All",
+      "browserRequirements": "Requires HTML5 Web Audio API, MediaRecorder API",
       "applicationCategory": "MultimediaApplication",
       "offers": {
         "@type": "Offer",
-        "price": "0",
+        "price": "0.00",
         "priceCurrency": "USD"
       },
       "featureList": [
@@ -321,8 +322,8 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 30px;">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Web Audio Metronome & Tap Tempo Calculator</h3>
-                        <p style="margin-bottom: 12px;">This professional online metronome is built using the high-precision <strong>Web Audio API scheduler loop</strong>. Unlike basic interval timers, our engine calculates and schedules click events ahead of time, ensuring sample-accurate tempo timing that never drifts, even under heavy background computer processes.</p>
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">High-Precision Online Metronome & BPM Tap Calculator</h3>
+                        <p style="margin-bottom: 12px;">This professional **online metronome** is built using the high-precision <strong>Web Audio API scheduler loop</strong>. Unlike basic interval timers, our online metronome engine calculates and schedules click events ahead of time, ensuring sample-accurate tempo timing that never drifts, even under heavy background computer processes.</p>
                         <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Precision Tempo & Configuration Sharing:</h4>
                         <p style="margin-bottom: 12px;">Click the <strong>Share Link</strong> button to generate a custom URL containing your exact configuration (BPM, signature, subdivision, click sound profile). In addition, checking the sync sharing option will synchronize the metronome start timer to the absolute Unix Epoch time grid. If two users open the same shared link, their metronomes will click in perfect sync over the network, completely without latency or server signaling required.</p>
                         <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">How to use subdivision and accents:</h4>
@@ -403,9 +404,16 @@
                         <p style="font-size: 10px; color: var(--text-secondary); margin-top: 10px;">Select a string to listen to its target pitch as an auditory reference tone.</p>
                     </div>
 
-                    <div class="mic-controls" style="margin-top: 24px; margin-bottom: 40px; text-align: center;">
-                        <button id="tuner-toggle" class="btn btn-primary">Enable Microphone</button>
-                        <p class="mic-status-label" id="tuner-status" style="margin-top: 8px;">Requires mic permission to listen to instrument pitches.</p>
+                    <div class="mic-controls" style="margin-top: 24px; margin-bottom: 40px; text-align: center; max-width: 320px; margin-left: auto; margin-right: auto;">
+                        <div class="input-group" style="margin-bottom: 16px; text-align: left;">
+                            <label for="tuner-source" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Input Source</label>
+                            <select id="tuner-source" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                <option value="mic">Microphone Input</option>
+                                <option value="system">Computer / System Audio</option>
+                            </select>
+                        </div>
+                        <button id="tuner-toggle" class="btn btn-primary" style="width: 100%;">Enable Tuner</button>
+                        <p class="mic-status-label" id="tuner-status" style="margin-top: 8px;">Requires permission to listen to instrument pitches.</p>
                     </div>
 
                     <!-- Valuable Content SEO Section -->
@@ -477,16 +485,21 @@
                         <!-- Dropzone & File Loader -->
                         <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed var(--border-color); padding: 40px 20px; cursor: pointer; text-align: center; transition: border-color 0.15s;" id="converter-dropzone">
                             <span style="font-size: 36px; margin-bottom: 12px;">📁</span>
-                            <h3 style="font-size: 16px; margin-bottom: 8px;">Drag & Drop Audio File Here</h3>
-                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">Supports MP3, WAV, OGG, M4A, FLAC, WebM (Max 100MB)</p>
-                            <button class="btn btn-secondary" onclick="document.getElementById('converter-file-input').click()">Browse Files</button>
-                            <input type="file" id="converter-file-input" accept="audio/*" style="display: none;">
+                            <h3 style="font-size: 16px; margin-bottom: 8px;">Drag & Drop Audio Files or Folders Here</h3>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">Supports MP3, WAV, OGG, M4A, FLAC, WebM (Large files converted sequentially to prevent memory crash)</p>
+                            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <button class="btn btn-secondary" onclick="document.getElementById('converter-file-input').click()">Browse Files</button>
+                                <button class="btn btn-secondary" id="converter-folder-btn" onclick="document.getElementById('converter-folder-input').click()">Browse Folder</button>
+                            </div>
+                            <input type="file" id="converter-file-input" accept="audio/*" multiple style="display: none;">
+                            <input type="file" id="converter-folder-input" accept="audio/*" webkitdirectory directory multiple style="display: none;">
                         </div>
                     </div>
 
                     <!-- File Details & Options (Hidden until loaded) -->
                     <div id="converter-options-card" class="control-card" style="margin-top: 20px; display: none;">
-                        <h3 style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Selected File: <span id="converter-file-name" style="color: var(--text-primary); font-weight: 600;"></span></h3>
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 12px; font-weight: 600;">Selected Files (<span id="converter-files-count">0</span>)</h3>
+                        <div id="converter-file-list" style="margin-bottom: 24px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; background: rgba(0,0,0,0.08);"></div>
                         
                         <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
                             <div class="input-group">
@@ -601,8 +614,8 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Voice & System Audio Recorder</h3>
-                        <p style="margin-bottom: 12px;">Our online recorder lets you capture audio directly from your microphone or record computer system sound loopbacks (e.g. video soundtracks or backing beats playing in other tabs) using browser-native APIs. The recorded streams are encoded locally into a WebM container, generating a safe, instant local download link.</p>
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Easy Voice Recorder - Free Online Audio Recorder</h3>
+                        <p style="margin-bottom: 12px;">This <strong>free online recorder</strong> acts as an **easy voice recorder** that lets you capture audio directly from your microphone or record computer system sound loopbacks (e.g., video soundtracks, background music, or beats playing in other tabs) using native browser APIs. Recording occurs entirely locally inside your browser, keeping your audio private while generating a safe, instant download link.</p>
                     </div>
                 </div>
             </section>
@@ -624,15 +637,15 @@
     </div>
 
     <!-- Tool Scripts -->
-    <script src="../tools/generator.js"></script>
-    <script src="../tools/sweep.js"></script>
-    <script src="../tools/metronome.js"></script>
-    <script src="../tools/tuner.js"></script>
-    <script src="../tools/noise.js"></script>
-    <script src="../tools/converter.js"></script>
-    <script src="../tools/recorder.js"></script>
+    <script src="../tools/generator.js?v=1.1"></script>
+    <script src="../tools/sweep.js?v=1.1"></script>
+    <script src="../tools/metronome.js?v=1.1"></script>
+    <script src="../tools/tuner.js?v=1.1"></script>
+    <script src="../tools/noise.js?v=1.1"></script>
+    <script src="../tools/converter.js?v=1.1"></script>
+    <script src="../tools/recorder.js?v=1.1"></script>
 
     <!-- Global App Entry -->
-    <script src="../app.js"></script>
+    <script src="../app.js?v=1.1"></script>
 </body>
 </html>

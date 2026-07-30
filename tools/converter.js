@@ -1,7 +1,7 @@
 // Client-Side Audio Converter Tool Component
 window.ConverterTool = {
     app: null,
-    selectedFile: null,
+    selectedFiles: [],
     isConverting: false,
     lameLoaded: false,
 
@@ -13,6 +13,7 @@ window.ConverterTool = {
     setupEventListeners() {
         const dropzone = document.getElementById('converter-dropzone');
         const fileInput = document.getElementById('converter-file-input');
+        const folderInput = document.getElementById('converter-folder-input');
         const startBtn = document.getElementById('converter-start-btn');
         const formatSelect = document.getElementById('converter-format-select');
 
@@ -36,21 +37,29 @@ window.ConverterTool = {
             dropzone.style.background = 'transparent';
             
             if (e.dataTransfer.files.length > 0) {
-                this.handleFileSelected(e.dataTransfer.files[0]);
+                this.handleFilesSelected(Array.from(e.dataTransfer.files));
             }
         });
 
         dropzone.addEventListener('click', (e) => {
-            if (e.target !== fileInput && !e.target.classList.contains('btn')) {
+            if (e.target !== fileInput && e.target !== folderInput && !e.target.classList.contains('btn')) {
                 fileInput.click();
             }
         });
 
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
-                this.handleFileSelected(e.target.files[0]);
+                this.handleFilesSelected(Array.from(e.target.files));
             }
         });
+
+        if (folderInput) {
+            folderInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    this.handleFilesSelected(Array.from(e.target.files));
+                }
+            });
+        }
 
         // Trigger conversion
         startBtn.addEventListener('click', () => this.startConversion());
@@ -73,35 +82,121 @@ window.ConverterTool = {
         }
     },
 
-    handleFileSelected(file) {
-        if (!file.type.startsWith('audio/') && !file.name.endsWith('.m4a') && !file.name.endsWith('.ogg')) {
-            alert('Please select a valid audio file.');
+    handleFilesSelected(files) {
+        // Filter out non-audio files
+        const audioFiles = files.filter(file => {
+            const ext = file.name.split('.').pop().toLowerCase();
+            return file.type.startsWith('audio/') || 
+                   ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'webm', 'aac', 'aiff'].includes(ext);
+        });
+
+        if (audioFiles.length === 0) {
+            alert('Please select valid audio files.');
             return;
         }
 
-        this.selectedFile = file;
+        this.selectedFiles = audioFiles.map(file => ({
+            file: file,
+            status: 'pending',
+            progress: 0,
+            downloadUrl: '',
+            blob: null
+        }));
 
         // Update UI
-        document.getElementById('converter-file-name').textContent = `${file.name} (${this.formatBytes(file.size)})`;
+        const countEl = document.getElementById('converter-files-count');
+        if (countEl) countEl.textContent = this.selectedFiles.length;
+        
+        this.renderFileList();
         document.getElementById('converter-options-card').style.display = 'block';
         
-        // Reset download links
+        // Hide global download button since we have per-file downloads
         const downloadBtn = document.getElementById('converter-download-btn');
-        downloadBtn.style.display = 'none';
-        if (downloadBtn.href) {
-            URL.revokeObjectURL(downloadBtn.href);
-            downloadBtn.href = '';
+        if (downloadBtn) {
+            downloadBtn.style.display = 'none';
+            if (downloadBtn.href) {
+                URL.revokeObjectURL(downloadBtn.href);
+                downloadBtn.href = '';
+            }
+        }
+    },
+
+    renderFileList() {
+        const fileListContainer = document.getElementById('converter-file-list');
+        if (!fileListContainer) return;
+
+        fileListContainer.innerHTML = '';
+        this.selectedFiles.forEach((fileObj, index) => {
+            const fileRow = document.createElement('div');
+            fileRow.id = `file-row-${index}`;
+            fileRow.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;';
+
+            fileRow.innerHTML = `
+                <div style="flex: 1; min-width: 0; margin-right: 16px;">
+                    <div style="font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary);">${fileObj.file.name}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                        <span id="file-size-${index}">${this.formatBytes(fileObj.file.size)}</span> • 
+                        <span id="file-status-text-${index}" style="font-family: var(--font-mono); color: var(--text-secondary);">Pending</span>
+                    </div>
+                    <div id="file-progress-container-${index}" style="display: none; width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; margin-top: 6px;">
+                        <div id="file-progress-bar-${index}" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.15s;"></div>
+                    </div>
+                </div>
+                <div id="file-action-${index}" style="display: flex; align-items: center; gap: 8px;"></div>
+            `;
+            fileListContainer.appendChild(fileRow);
+        });
+    },
+
+    updateFileRowUI(index, statusText, progressPercent, downloadUrl = '', format = '') {
+        const statusTextEl = document.getElementById(`file-status-text-${index}`);
+        const progressContainer = document.getElementById(`file-progress-container-${index}`);
+        const progressBar = document.getElementById(`file-progress-bar-${index}`);
+        const actionEl = document.getElementById(`file-action-${index}`);
+
+        if (statusTextEl) {
+            statusTextEl.textContent = statusText;
+            if (statusText.toLowerCase().includes('error')) {
+                statusTextEl.style.color = 'var(--danger)';
+            } else if (statusText.toLowerCase().includes('done') || statusText.toLowerCase().includes('success')) {
+                statusTextEl.style.color = 'var(--accent)';
+            } else {
+                statusTextEl.style.color = 'var(--primary)';
+            }
+        }
+
+        if (progressContainer && progressBar) {
+            if (progressPercent > 0 && progressPercent < 100) {
+                progressContainer.style.display = 'block';
+                progressBar.style.width = `${progressPercent}%`;
+            } else {
+                progressContainer.style.display = 'none';
+            }
+        }
+
+        if (actionEl) {
+            if (downloadUrl) {
+                actionEl.innerHTML = `
+                    <a href="${downloadUrl}" download="${this.selectedFiles[index].file.name.substring(0, this.selectedFiles[index].file.name.lastIndexOf('.'))}.${format}" class="btn btn-secondary" style="font-size: 11px; padding: 4px 8px; line-height: 1.2; text-decoration: none; display: inline-block;">Download</a>
+                `;
+            } else if (progressPercent > 0 && progressPercent < 100) {
+                actionEl.innerHTML = `<span style="font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary);">${progressPercent}%</span>`;
+            } else if (statusText === 'Reading...' || statusText === 'Decoding...' || statusText === 'Resampling...') {
+                actionEl.innerHTML = `<span style="font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary);">...</span>`;
+            } else {
+                actionEl.innerHTML = '';
+            }
         }
     },
 
     async startConversion() {
-        if (this.isConverting || !this.selectedFile) return;
+        if (this.isConverting || !this.selectedFiles || this.selectedFiles.length === 0) return;
 
         const startBtn = document.getElementById('converter-start-btn');
+        const folderBtn = document.getElementById('converter-folder-btn');
         const statusContainer = document.getElementById('converter-status-container');
         const progressBar = document.getElementById('converter-progress-bar');
         const statusLabel = document.getElementById('converter-status-label');
-        const downloadBtn = document.getElementById('converter-download-btn');
         
         const targetFormat = document.getElementById('converter-format-select').value;
         const bitrate = parseInt(document.getElementById('converter-bitrate-select').value);
@@ -111,84 +206,116 @@ window.ConverterTool = {
 
         this.isConverting = true;
         startBtn.disabled = true;
-        downloadBtn.style.display = 'none';
+        if (folderBtn) folderBtn.disabled = true;
         statusContainer.style.display = 'flex';
         progressBar.style.width = '0%';
-        statusLabel.textContent = 'Loading File...';
+        statusLabel.textContent = 'Initializing...';
 
         try {
             if (targetFormat === 'mp3' && !this.lameLoaded) {
-                statusLabel.textContent = 'Initializing Encoders...';
+                statusLabel.textContent = 'Loading MP3 Encoder Library...';
                 await this.loadLamejs();
             }
 
-            statusLabel.textContent = 'Reading file...';
-            const arrayBuffer = await this.readFileAsArrayBuffer(this.selectedFile);
+            const total = this.selectedFiles.length;
+            for (let i = 0; i < total; i++) {
+                const fileObj = this.selectedFiles[i];
+                if (fileObj.status === 'done' || fileObj.status === 'error') continue;
 
-            statusLabel.textContent = 'Decoding...';
-            const ctx = this.app.getAudioContext();
-            const sourceBuffer = await ctx.decodeAudioData(arrayBuffer);
+                statusLabel.textContent = `Converting ${i + 1} of ${total}`;
+                progressBar.style.width = `${Math.round((i / total) * 100)}%`;
 
-            // Determine Target Settings
-            let targetSampleRate = sourceBuffer.sampleRate;
-            if (sampleRateSelect !== 'source') {
-                targetSampleRate = parseInt(sampleRateSelect);
-            }
+                fileObj.status = 'processing';
+                this.updateFileRowUI(i, 'Reading...', 5);
 
-            let targetChannels = sourceBuffer.numberOfChannels;
-            if (channelsSelect === 'stereo') {
-                targetChannels = 2;
-            } else if (channelsSelect === 'mono') {
-                targetChannels = 1;
-            }
+                try {
+                    // Read file
+                    const arrayBuffer = await this.readFileAsArrayBuffer(fileObj.file);
 
-            statusLabel.textContent = 'Resampling...';
-            // Perform high-speed offline context rendering to resample rates and mix channels
-            const offlineCtx = new OfflineAudioContext(targetChannels, sourceBuffer.duration * targetSampleRate, targetSampleRate);
-            const bufferSource = offlineCtx.createBufferSource();
-            bufferSource.buffer = sourceBuffer;
-            bufferSource.connect(offlineCtx.destination);
-            bufferSource.start(0);
+                    // Decode file
+                    this.updateFileRowUI(i, 'Decoding...', 20);
+                    const ctx = this.app.getAudioContext();
+                    const sourceBuffer = await ctx.decodeAudioData(arrayBuffer);
 
-            const decodedBuffer = await offlineCtx.startRendering();
+                    // Resample file
+                    this.updateFileRowUI(i, 'Resampling...', 40);
+                    let targetSampleRate = sourceBuffer.sampleRate;
+                    if (sampleRateSelect !== 'source') {
+                        targetSampleRate = parseInt(sampleRateSelect);
+                    }
 
-            statusLabel.textContent = 'Transcoding...';
-            let outputBlob;
+                    let targetChannels = sourceBuffer.numberOfChannels;
+                    if (channelsSelect === 'stereo') {
+                        targetChannels = 2;
+                    } else if (channelsSelect === 'mono') {
+                        targetChannels = 1;
+                    }
 
-            if (targetFormat === 'wav') {
-                outputBlob = this.encodeWav(decodedBuffer, bitDepth);
-            } else if (targetFormat === 'mp3') {
-                outputBlob = await this.encodeMp3(decodedBuffer, bitrate, (percent) => {
-                    progressBar.style.width = `${percent}%`;
-                    statusLabel.textContent = `Encoding: ${percent}%`;
-                });
-            } else if (targetFormat === 'ogg' || targetFormat === 'webm') {
-                // For OGG / WebM we can record the output stream using browser MediaRecorder
-                outputBlob = await this.encodeViaMediaRecorder(decodedBuffer, targetFormat, bitrate, (percent) => {
-                    progressBar.style.width = `${percent}%`;
-                    statusLabel.textContent = `Rendering: ${percent}%`;
-                });
+                    // Perform offline context rendering
+                    const offlineCtx = new OfflineAudioContext(targetChannels, sourceBuffer.duration * targetSampleRate, targetSampleRate);
+                    const bufferSource = offlineCtx.createBufferSource();
+                    bufferSource.buffer = sourceBuffer;
+                    bufferSource.connect(offlineCtx.destination);
+                    bufferSource.start(0);
+
+                    const decodedBuffer = await offlineCtx.startRendering();
+
+                    // Encode file
+                    this.updateFileRowUI(i, 'Transcoding...', 60);
+                    let outputBlob;
+
+                    if (targetFormat === 'wav') {
+                        outputBlob = this.encodeWav(decodedBuffer, bitDepth);
+                    } else if (targetFormat === 'mp3') {
+                        outputBlob = await this.encodeMp3(decodedBuffer, bitrate, (percent) => {
+                            const prog = 60 + Math.round(percent * 0.38); // 60% to 98%
+                            this.updateFileRowUI(i, `Encoding: ${percent}%`, prog);
+                        });
+                    } else if (targetFormat === 'ogg' || targetFormat === 'webm') {
+                        outputBlob = await this.encodeViaMediaRecorder(decodedBuffer, targetFormat, bitrate, (percent) => {
+                            const prog = 60 + Math.round(percent * 0.38);
+                            this.updateFileRowUI(i, `Rendering: ${percent}%`, prog);
+                        });
+                    }
+
+                    fileObj.status = 'done';
+                    fileObj.blob = outputBlob;
+
+                    const outputUrl = URL.createObjectURL(outputBlob);
+                    fileObj.downloadUrl = outputUrl;
+
+                    this.updateFileRowUI(i, 'Done!', 100, outputUrl, targetFormat);
+
+                    // Trigger automatic browser download
+                    const inputBaseName = fileObj.file.name.substring(0, fileObj.file.name.lastIndexOf('.'));
+                    const a = document.createElement('a');
+                    a.href = outputUrl;
+                    a.download = `${inputBaseName}.${targetFormat}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                } catch (err) {
+                    console.error(`Error converting ${fileObj.file.name}:`, err);
+                    fileObj.status = 'error';
+                    this.updateFileRowUI(i, 'Error!', 0);
+                }
+
+                // Explicitly clear references to help garbage collection release uncompressed PCM buffers
+                this.selectedFiles[i].decodedBuffer = null;
             }
 
             progressBar.style.width = '100%';
-            statusLabel.textContent = 'Done!';
-
-            // Generate Link
-            const outputUrl = URL.createObjectURL(outputBlob);
-            const inputBaseName = this.selectedFile.name.substring(0, this.selectedFile.name.lastIndexOf('.'));
-            
-            downloadBtn.href = outputUrl;
-            downloadBtn.download = `${inputBaseName}.${targetFormat}`;
-            downloadBtn.style.display = 'inline-block';
-            downloadBtn.textContent = `Download converted.${targetFormat.toUpperCase()}`;
+            statusLabel.textContent = 'Batch conversion completed!';
 
         } catch (err) {
-            console.error('Conversion error:', err);
+            console.error('Batch conversion error:', err);
             statusLabel.textContent = 'Error!';
-            alert('An error occurred during transcoding. Verify that your browser supports input audio formats.');
+            alert('An error occurred during transcoding batch.');
         } finally {
             this.isConverting = false;
             startBtn.disabled = false;
+            if (folderBtn) folderBtn.disabled = false;
         }
     },
 

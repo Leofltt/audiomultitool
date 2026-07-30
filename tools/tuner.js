@@ -331,30 +331,68 @@ window.TunerTool = {
         if (this.isPlaying) {
             this.stop();
             if (toggleBtn) {
-                toggleBtn.textContent = 'Enable Microphone';
+                toggleBtn.textContent = 'Enable Tuner';
                 toggleBtn.classList.remove('btn-danger');
                 toggleBtn.classList.add('btn-primary');
             }
-            if (statusLabel) statusLabel.textContent = 'Requires mic permission to listen to instrument pitches.';
+            if (statusLabel) statusLabel.textContent = 'Requires permission to listen to instrument pitches.';
         } else {
             this.start()
                 .then(() => {
                     if (toggleBtn) {
-                        toggleBtn.textContent = 'Disable Microphone';
+                        toggleBtn.textContent = 'Disable Tuner';
                         toggleBtn.classList.remove('btn-primary');
                         toggleBtn.classList.add('btn-danger');
                     }
-                    if (statusLabel) statusLabel.textContent = 'Listening... Play a note near your microphone.';
+                    if (statusLabel) {
+                        const sourceSelect = document.getElementById('tuner-source');
+                        const source = sourceSelect ? sourceSelect.value : 'mic';
+                        statusLabel.textContent = source === 'system' ? 'Listening to System Audio... Play audio on your computer.' : 'Listening... Play a note near your microphone.';
+                    }
                 })
                 .catch((err) => {
-                    console.error("Microphone access error for tuner:", err);
-                    if (statusLabel) statusLabel.textContent = 'Access Denied. Please enable microphone permissions.';
+                    console.error("Audio access error for tuner:", err);
+                    if (statusLabel) statusLabel.textContent = 'Access Denied or No Audio Shared. Please try again.';
                 });
         }
     },
 
     async start() {
-        this.audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        const sourceSelect = document.getElementById('tuner-source');
+        const source = sourceSelect ? sourceSelect.value : 'mic';
+
+        if (sourceSelect) {
+            sourceSelect.disabled = true;
+        }
+
+        if (source === 'mic') {
+            this.audioStream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: false,
+                    noiseSuppression: false,
+                    autoGainControl: false
+                },
+                video: false
+            });
+        } else {
+            const displayStream = await navigator.mediaDevices.getDisplayMedia({
+                video: {
+                    width: 1,
+                    height: 1
+                },
+                audio: true
+            });
+
+            const audioTracks = displayStream.getAudioTracks();
+            if (audioTracks.length === 0) {
+                displayStream.getTracks().forEach(track => track.stop());
+                throw new Error("No system audio shared in capture menu.");
+            }
+
+            displayStream.getVideoTracks().forEach(track => track.stop());
+            this.audioStream = new MediaStream(audioTracks);
+        }
+
         const ctx = this.app.getAudioContext();
 
         this.sourceNode = ctx.createMediaStreamSource(this.audioStream);
@@ -467,6 +505,11 @@ window.TunerTool = {
         this.app.isSoundActive = false;
         clearInterval(this.pitchInterval);
         this.stopReferenceTone();
+
+        const sourceSelect = document.getElementById('tuner-source');
+        if (sourceSelect) {
+            sourceSelect.disabled = false;
+        }
 
         if (this.audioStream) {
             this.audioStream.getTracks().forEach(track => track.stop());
