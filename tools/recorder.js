@@ -8,6 +8,7 @@ window.RecorderTool = {
     isRecording: false,
     startTime: 0,
     timerInterval: null,
+    currentDownloadUrl: null,
 
     init(appInstance) {
         this.app = appInstance;
@@ -16,7 +17,18 @@ window.RecorderTool = {
 
     setupEventListeners() {
         const toggleBtn = document.getElementById('recorder-toggle');
-        toggleBtn.addEventListener('click', () => this.toggle());
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => this.toggle());
+        }
+
+        const formatSelect = document.getElementById('recorder-format');
+        if (formatSelect) {
+            formatSelect.addEventListener('change', () => {
+                if (this.audioChunks && this.audioChunks.length > 0) {
+                    this.processAudioExport();
+                }
+            });
+        }
     },
 
     toggle() {
@@ -168,24 +180,115 @@ window.RecorderTool = {
     },
 
     saveRecording() {
-        const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(audioBlob);
+        this.processAudioExport();
+    },
 
-        // Update preview player
+    async processAudioExport() {
+        if (!this.audioChunks || this.audioChunks.length === 0) return;
+
+        const formatSelect = document.getElementById('recorder-format');
+        const targetFormat = formatSelect ? formatSelect.value : 'webm';
+        
         const previewPlayer = document.getElementById('recorder-audio-preview');
         const downloadBtn = document.getElementById('recorder-download-btn');
         const previewCard = document.getElementById('recorder-preview-card');
+        const statusText = document.getElementById('recorder-status-text');
 
-        previewPlayer.src = audioUrl;
-        
-        // Setup download button attributes
-        downloadBtn.href = audioUrl;
-        
-        // Generate automatic timestamp filename
-        const dateStr = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
-        downloadBtn.download = `soniclab-record-${dateStr}.webm`;
-
-        // Render preview pane
+        // Show preview card
         previewCard.style.display = 'block';
+
+        // Helper to update status
+        const updateStatus = (text) => {
+            if (text) {
+                statusText.textContent = text;
+                statusText.style.display = 'block';
+            } else {
+                statusText.style.display = 'none';
+            }
+        };
+
+        // If there's an existing object URL on the download button, revoke it
+        if (this.currentDownloadUrl) {
+            URL.revokeObjectURL(this.currentDownloadUrl);
+            this.currentDownloadUrl = null;
+        }
+
+        const dateStr = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
+        const filename = `audiomultitool-recording-${dateStr}.${targetFormat}`;
+
+        const webmBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+
+        if (targetFormat === 'webm') {
+            const audioUrl = URL.createObjectURL(webmBlob);
+            this.currentDownloadUrl = audioUrl;
+            previewPlayer.src = audioUrl;
+            downloadBtn.href = audioUrl;
+            downloadBtn.download = filename;
+            downloadBtn.removeAttribute('disabled');
+            downloadBtn.style.pointerEvents = 'auto';
+            downloadBtn.style.opacity = '1';
+            updateStatus(null);
+            return;
+        }
+
+        // We need to decode and transcode
+        downloadBtn.setAttribute('disabled', 'true');
+        downloadBtn.style.pointerEvents = 'none';
+        downloadBtn.style.opacity = '0.6';
+        updateStatus('Decoding recording...');
+
+        try {
+            const arrayBuffer = await webmBlob.arrayBuffer();
+            const ctx = this.app.getAudioContext();
+            const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+
+            let outputBlob;
+
+            if (targetFormat === 'wav') {
+                updateStatus('Encoding WAV...');
+                outputBlob = window.ConverterTool.encodeWav(audioBuffer, 16);
+            } else if (targetFormat === 'mp3') {
+                updateStatus('Loading MP3 encoder...');
+                if (!window.ConverterTool.lameLoaded) {
+                    await window.ConverterTool.loadLamejs();
+                }
+                updateStatus('Encoding MP3 (0%)...');
+                outputBlob = await window.ConverterTool.encodeMp3(audioBuffer, 192, (percent) => {
+                    updateStatus(`Encoding MP3 (${percent}%)...`);
+                });
+            } else if (targetFormat === 'ogg') {
+                updateStatus('Encoding OGG (0%)...');
+                outputBlob = await window.ConverterTool.encodeViaMediaRecorder(audioBuffer, 'ogg', 192, (percent) => {
+                    updateStatus(`Encoding OGG (${percent}%)...`);
+                });
+            }
+
+            if (outputBlob) {
+                const outputUrl = URL.createObjectURL(outputBlob);
+                this.currentDownloadUrl = outputUrl;
+                previewPlayer.src = outputUrl;
+                downloadBtn.href = outputUrl;
+                downloadBtn.download = filename;
+                downloadBtn.removeAttribute('disabled');
+                downloadBtn.style.pointerEvents = 'auto';
+                downloadBtn.style.opacity = '1';
+                updateStatus(null);
+            } else {
+                throw new Error("Transcoding failed to produce output");
+            }
+        } catch (err) {
+            console.error("Transcoding failed: ", err);
+            updateStatus('Transcoding failed. Downloading raw WebM instead.');
+            
+            // Fallback to webm
+            const audioUrl = URL.createObjectURL(webmBlob);
+            this.currentDownloadUrl = audioUrl;
+            previewPlayer.src = audioUrl;
+            downloadBtn.href = audioUrl;
+            downloadBtn.download = `audiomultitool-recording-${dateStr}.webm`;
+            downloadBtn.removeAttribute('disabled');
+            downloadBtn.style.pointerEvents = 'auto';
+            downloadBtn.style.opacity = '1';
+        }
     }
 };
