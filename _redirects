@@ -1,22 +1,23 @@
 # Cloudflare Pages URL Rewrites (200 status preserves clean browser url)
 /tonegenerator  /generator/index.html  200
 /tone-generator /generator/index.html  200
-/speaker-sweep  /sweep/index.html      200
-/speakersweep   /sweep/index.html      200
-/bpm-tapper     /metronome/index.html     200
-/bpmtapper      /metronome/index.html     200
-/metronome      /metronome/index.html     200
-/tapper         /metronome/index.html     301
+/speaker-sweep  /generator/index.html  200
+/speakersweep   /generator/index.html  200
+/bpm-tapper     /metronome/index.html  200
+/bpmtapper      /metronome/index.html  200
+/metronome      /metronome/index.html  200
+/tapper         /metronome/index.html  301
 /tuner          /tuner/index.html      200
 /recorder       /recorder/index.html   200
-/noise          /noise/index.html      200
-/decibel-meter  /noise/index.html      200
-/decibelmeter   /noise/index.html      200
-/noise-generator /noise/index.html     200
+/noise          /db-meter/index.html   200
+/decibel-meter  /db-meter/index.html   200
+/decibelmeter   /db-meter/index.html   200
+/noise-generator /db-meter/index.html  200
 /converter      /converter/index.html  200
 /audioconverter /converter/index.html  200
 /audio-converter /converter/index.html 200
 /wav-to-mp3     /converter/index.html  200
 /mp3-to-wav     /converter/index.html  200
 
-
+# Security.txt redirect standard RFC 9116
+/security.txt  /.well-known/security.txt  301
