@@ -48,10 +48,6 @@ tools.forEach(tool => {
 
     // 2. Adjust asset paths to point to parent folder
     html = html.replace('href="styles.css?v=1.1"', 'href="../styles.css?v=1.1"');
-    html = html.replace('href="privacy.html"', 'href="../privacy.html"');
-    html = html.replace('href="terms.html"', 'href="../terms.html"');
-    html = html.replace('href="contact.html"', 'href="../contact.html"');
-    html = html.replace('href="/"', 'href="../"');
     html = html.replace('src="app.js?v=1.1"', 'src="../app.js?v=1.1"');
     html = html.replace('href="favicon.png"', 'href="../favicon.png"');
     html = html.replace('href="manifest.json"', 'href="../manifest.json"');
