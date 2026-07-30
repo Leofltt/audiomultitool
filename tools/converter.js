@@ -87,7 +87,7 @@ window.ConverterTool = {
         const audioFiles = files.filter(file => {
             const ext = file.name.split('.').pop().toLowerCase();
             return file.type.startsWith('audio/') || 
-                   ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'webm', 'aac', 'aiff'].includes(ext);
+                   ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'webm', 'aac', 'aiff', 'aif'].includes(ext);
         });
 
         if (audioFiles.length === 0) {
