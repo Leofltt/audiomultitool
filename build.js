@@ -62,13 +62,13 @@ tools.forEach(tool => {
     html = html.replace(/src="tools\//g, 'src="../tools/');
 
     // 3. Set custom title and description
-    html = html.replace(/<title>.*?<\/title>/, `<title>${tool.title} - AudioMultiTool</title>`);
+    html = html.replace(/<title>.*?<\/title>/, `<title>${tool.title} - Audiomultitool</title>`);
     html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${tool.desc}">`);
     html = html.replace(/<h2 id="active-tool-title">.*?<\/h2>/, `<h2 id="active-tool-title">${tool.title}</h2>`);
     html = html.replace(/<p id="active-tool-desc">.*?<\/p>/, `<p id="active-tool-desc">${tool.desc}</p>`);
 
     // 4. Update JSON-LD structured data title
-    html = html.replace('"name": "AudioMultiTool Web Audio Suite"', `"name": "${tool.title}"`);
+    html = html.replace('"name": "Audiomultitool Web Audio Suite"', `"name": "${tool.title}"`);
 
     // 5. Update active nav button classes
     // Desktop: Remove active from generator, add active to target

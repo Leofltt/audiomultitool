@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "audiomultitool Launcher",
+  "name": "Audiomultitool",
   "version": "1.0.0",
-  "description": "Free and easy to use client-side audiomultitool audio suite (metronome, tuner, recorder, converter, noise, & dB meter).",
+  "description": "Free and easy to use client-side Audiomultitool audio suite (metronome, tuner, recorder, converter, noise, & dB meter).",
   "action": {
     "default_popup": "popup.html"
   },
