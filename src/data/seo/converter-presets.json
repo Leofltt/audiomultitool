@@ -1,0 +1,87 @@
+[
+  {
+    "slug": "wav-to-mp3",
+    "tool": "converter",
+    "title": "Convert WAV to MP3 Online – Free Audio Converter",
+    "description": "Convert WAV files to MP3 online for free. 100% client-side, no file limits, secure, and preserves high-quality audio compression.",
+    "initialConfig": {
+      "format": "mp3",
+      "bitrate": "320"
+    },
+    "content": {
+      "heading": "Convert WAV to MP3 Online with Peak Quality",
+      "bodyParagraphs": [
+        "Need to convert lossless WAV audio to a highly compatible, compressed MP3 file? Our free, fully client-side tool lets you encode WAV files to MP3 at up to 320kbps without uploading anything to external servers.",
+        "Your audio privacy is guaranteed since processing runs entirely inside your browser. Simply select or drag your WAV files, choose your desired bitrate, and download your high-quality MP3s instantly."
+      ]
+    }
+  },
+  {
+    "slug": "mp3-to-wav",
+    "tool": "converter",
+    "title": "Convert MP3 to WAV Online – Uncompressed Web Audio Converter",
+    "description": "Convert MP3 files to uncompressed WAV format for free. Web-based, no limits, 100% local browser audio transcoding.",
+    "initialConfig": {
+      "format": "wav",
+      "bitdepth": "16"
+    },
+    "content": {
+      "heading": "Convert MP3 to Lossless WAV in Your Browser",
+      "bodyParagraphs": [
+        "Transcode MP3 tracks to uncompressed WAV format for editing, recording, or compatibility with audio production hardware. Select custom bit depths (16-bit or 24-bit PCM) and sample rates directly.",
+        "Unlike other online converters, our tool runs locally using the Web Audio API offline rendering context, ensuring lightning-fast conversions without consuming internet bandwidth for file uploads."
+      ]
+    }
+  },
+  {
+    "slug": "wav-to-ogg",
+    "tool": "converter",
+    "title": "Convert WAV to OGG Online – Free OGG Vorbis Encoder",
+    "description": "Convert WAV files to OGG Vorbis format online. Fast, secure, client-side, and perfect for web and game audio development.",
+    "initialConfig": {
+      "format": "ogg",
+      "bitrate": "192"
+    },
+    "content": {
+      "heading": "Convert WAV to OGG Vorbis for Games & Web Apps",
+      "bodyParagraphs": [
+        "OGG Vorbis provides excellent audio quality at lower bitrates, making it the ideal choice for game development, web design, and media streaming. Use our local audio converter to create OGG files instantly.",
+        "No registration or email is required. Choose OGG as your target format, customize channel layouts, and convert WAV files securely in your local session."
+      ]
+    }
+  },
+  {
+    "slug": "flac-to-mp3",
+    "tool": "converter",
+    "title": "Convert FLAC to MP3 Online – Secure local transcoding",
+    "description": "Convert high-fidelity FLAC audio files to high-quality MP3 format. Local browser encoding with no uploads and premium privacy.",
+    "initialConfig": {
+      "format": "mp3",
+      "bitrate": "320"
+    },
+    "content": {
+      "heading": "Convert Lossless FLAC to Portable MP3 Audio",
+      "bodyParagraphs": [
+        "FLAC is great for archiving, but MP3 is perfect for universal compatibility. Convert your lossless FLAC files to MP3 (up to 320 kbps) for playback on any mobile device or music player.",
+        "Our converter decodes and encodes files directly on your machine. Your files never touch our servers, protecting your private recordings, soundscapes, or audio edits."
+      ]
+    }
+  },
+  {
+    "slug": "m4a-to-mp3",
+    "tool": "converter",
+    "title": "Convert M4A to MP3 Online – Free AAC/M4A Transcoder",
+    "description": "Convert Apple M4A/AAC files to MP3 format online. Secure local processing, custom bitrates, and no file size restrictions.",
+    "initialConfig": {
+      "format": "mp3",
+      "bitrate": "256"
+    },
+    "content": {
+      "heading": "Convert M4A to MP3 Audio Format Locally",
+      "bodyParagraphs": [
+        "Quickly transcode voice memos, music, or podcasts from M4A (AAC) to standard MP3. Customize the output bitrate and download converted files instantly with zero upload overhead.",
+        "Since our engine is 100% client-side, it is optimized for bulk operations and runs in seconds, preserving your data plan and audio confidentiality."
+      ]
+    }
+  }
+]

@@ -50,10 +50,7 @@
             </div>
             <nav class="nav-menu">
                 <a class="nav-item active" data-tool="generator" href="/generator/">
-                    <span class="icon">🔊</span> Signal Generator
-                </a>
-                <a class="nav-item" data-tool="sweep" href="/sweep/">
-                    <span class="icon">📈</span> Speaker Sweep
+                    <span class="icon">🔊</span> Signal & Sweep Gen
                 </a>
                 <a class="nav-item" data-tool="metronome" href="/metronome/">
                     <span class="icon">⏱️</span> Metronome
@@ -61,7 +58,7 @@
                 <a class="nav-item" data-tool="tuner" href="/tuner/">
                     <span class="icon">🎯</span> Chromatic Tuner
                 </a>
-                <a class="nav-item" data-tool="noise" href="/noise/">
+                <a class="nav-item" data-tool="db-meter" href="/db-meter/">
                     <span class="icon">🎚️</span> dB Meter
                 </a>
                 <a class="nav-item" data-tool="converter" href="/converter/">
@@ -106,117 +103,139 @@
 
             <!-- Mobile Navigation Drawer Overlay -->
             <div id="mobile-menu" class="mobile-menu-drawer">
-                <a class="mobile-nav-item active" data-tool="generator" href="/generator/">🔊 Signal Generator</a>
-                <a class="mobile-nav-item" data-tool="sweep" href="/sweep/">📈 Speaker Sweep</a>
+                <a class="mobile-nav-item active" data-tool="generator" href="/generator/">🔊 Signal & Sweep Gen</a>
                 <a class="mobile-nav-item" data-tool="metronome" href="/metronome/">⏱️ Metronome</a>
                 <a class="mobile-nav-item" data-tool="tuner" href="/tuner/">🎯 Chromatic Tuner</a>
-                <a class="mobile-nav-item" data-tool="noise" href="/noise/">🎚️ dB Meter</a>
+                <a class="mobile-nav-item" data-tool="db-meter" href="/db-meter/">🎚️ dB Meter</a>
                 <a class="mobile-nav-item" data-tool="converter" href="/converter/">🔄 Audio Converter</a>
                 <a class="mobile-nav-item" data-tool="recorder" href="/recorder/">🔴 Audio Recorder</a>
             </div>
 
             <!-- Tool Stage -->
             <section class="tool-stage">
-                <!-- Signal Generator Tool Pane -->
+                <!-- Signal & Sweep Generator Tool Pane -->
                 <div class="tool-pane active" id="pane-generator">
+                    <!-- Generator Mode Selector Card -->
+                    <div class="control-card" style="margin-bottom: 20px;">
+                        <h3>Generator Mode</h3>
+                        <div class="mode-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                            <button class="btn btn-secondary generator-mode-btn active" data-mode="tone" style="padding: 10px; font-size: 13px;">Constant Tone</button>
+                            <button class="btn btn-secondary generator-mode-btn" data-mode="sweep" style="padding: 10px; font-size: 13px;">Frequency Sweep</button>
+                            <button class="btn btn-secondary generator-mode-btn" data-mode="noise" style="padding: 10px; font-size: 13px;">Noise Colors</button>
+                            <button class="btn btn-secondary generator-mode-btn" data-mode="special" style="padding: 10px; font-size: 13px;">Special Signals</button>
+                        </div>
+                    </div>
+
                     <div class="controls-grid">
-                        <div class="control-card frequency-card" id="generator-freq-card">
-                            <h3>Frequency</h3>
-                            <div class="dial-container">
-                                <div class="freq-display"><span id="generator-freq-val">440</span><span class="unit">Hz</span></div>
+                        <!-- Column 1: Frequency / Range Settings -->
+                        <div>
+                            <!-- Constant Tone Frequency Card -->
+                            <div class="control-card frequency-card" id="generator-freq-card" style="height: 100%;">
+                                <h3>Frequency</h3>
+                                <div class="dial-container">
+                                    <div class="freq-display"><span id="generator-freq-val">440</span><span class="unit">Hz</span></div>
+                                </div>
+                                <input type="range" id="generator-freq-slider" min="0" max="1000" value="447" step="1" class="slider">
+                                <div class="quick-presets" style="margin-top: 15px;">
+                                    <button class="preset-btn" data-freq="100">100 Hz</button>
+                                    <button class="preset-btn" data-freq="440">440 Hz</button>
+                                    <button class="preset-btn" data-freq="1000">1 kHz</button>
+                                    <button class="preset-btn" data-freq="10000">10 kHz</button>
+                                </div>
                             </div>
-                            <input type="range" id="generator-freq-slider" min="0" max="1000" value="447" step="1" class="slider">
-                            <div class="quick-presets">
-                                <button class="preset-btn" data-freq="100">100 Hz</button>
-                                <button class="preset-btn" data-freq="440">440 Hz</button>
-                                <button class="preset-btn" data-freq="1000">1 kHz</button>
-                                <button class="preset-btn" data-freq="10000">10 kHz</button>
+
+                            <!-- Sweep Settings Card (Hidden by default) -->
+                            <div class="control-card" id="generator-sweep-card" style="display: none; height: 100%;">
+                                <h3>Sweep Configuration</h3>
+                                <div class="range-inputs" style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                    <div class="input-group" style="flex: 1;">
+                                        <label>Start (Hz)</label>
+                                        <input type="number" id="sweep-start" value="20" min="20" max="20000" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); padding: 8px; width: 100%;">
+                                    </div>
+                                    <div class="input-group" style="flex: 1;">
+                                        <label>End (Hz)</label>
+                                        <input type="number" id="sweep-end" value="20000" min="20" max="20000" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); padding: 8px; width: 100%;">
+                                    </div>
+                                </div>
+                                <div class="slider-group" style="margin-bottom: 20px;">
+                                    <div class="slider-label" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                                        <span>Sweep Time</span>
+                                        <span id="sweep-time-val">10s</span>
+                                    </div>
+                                    <input type="range" id="sweep-duration" min="2" max="30" value="10" step="1" class="slider">
+                                </div>
+                                <div class="input-group">
+                                    <label for="sweep-type">Sweep Curve</label>
+                                    <select id="sweep-type" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="exponential" selected>Logarithmic (Exponential)</option>
+                                        <option value="linear">Linear Sweep</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="control-card waveform-card">
-                            <h3>Signal Type</h3>
-                            <div style="margin-bottom: 14px;">
-                                <h4 style="font-size: 10px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;">Oscillator Tones</h4>
-                                <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                                    <button class="wave-btn active" data-type="sine">Sine</button>
-                                    <button class="wave-btn" data-type="square">Square</button>
-                                    <button class="wave-btn" data-type="sawtooth">Sawtooth</button>
-                                    <button class="wave-btn" data-type="triangle">Triangle</button>
+                        <!-- Column 2: Waveforms / Special Options & Volume -->
+                        <div class="control-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <!-- Constant Tone Waves Group -->
+                                <div id="generator-waves-group">
+                                    <h3>Oscillator Waveform</h3>
+                                    <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px;">
+                                        <button class="wave-btn active" data-type="sine">Sine</button>
+                                        <button class="wave-btn" data-type="square">Square</button>
+                                        <button class="wave-btn" data-type="sawtooth">Sawtooth</button>
+                                        <button class="wave-btn" data-type="triangle">Triangle</button>
+                                    </div>
+                                </div>
+
+                                <!-- Noise Colors Group (Hidden by default) -->
+                                <div id="generator-noise-group" style="display: none;">
+                                    <h3>Noise Color Spectrum</h3>
+                                    <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px;">
+                                        <button class="wave-btn" data-type="white">White</button>
+                                        <button class="wave-btn" data-type="pink">Pink</button>
+                                        <button class="wave-btn" data-type="brown">Brown</button>
+                                    </div>
+                                </div>
+
+                                <!-- Special Signals Group (Hidden by default) -->
+                                <div id="generator-special-group" style="display: none;">
+                                    <h3>Special Signal Modulations</h3>
+                                    <div class="input-group" style="margin-bottom: 20px;">
+                                        <label for="generator-special-type">Signal Type</label>
+                                        <select id="generator-special-type" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                            <option value="shepard" selected>Shepard's Tone (Infinite Rise)</option>
+                                            <option value="shepard-desc">Shepard's Tone (Infinite Fall)</option>
+                                            <option value="siren">Modulating Siren (Warble)</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="margin-bottom: 20px;">
-                                <h4 style="font-size: 10px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;">Noise Colors</h4>
-                                <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                                    <button class="wave-btn" data-type="white">White</button>
-                                    <button class="wave-btn" data-type="pink">Pink</button>
-                                    <button class="wave-btn" data-type="brown">Brown</button>
-                                </div>
-                            </div>
-                            <div class="volume-container">
+
+                            <!-- Common Volume Controls -->
+                            <div class="volume-container" style="margin-top: auto;">
                                 <h3>Volume</h3>
                                 <input type="range" id="generator-vol" min="0" max="0.5" value="0.25" step="0.01" class="slider">
                             </div>
                         </div>
                     </div>
+
+                    <!-- Progress status bar for sweeps (Hidden by default) -->
+                    <div class="sweep-progress-container" id="generator-sweep-progress-container" style="display: none; margin-bottom: 24px; background: rgba(0,0,0,0.15); border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; text-align: center;">
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 3px; overflow: hidden; position: relative; margin-bottom: 10px;">
+                            <div class="sweep-progress-bar" id="sweep-progress" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s;"></div>
+                        </div>
+                        <div class="sweep-current-freq" id="sweep-current-freq" style="font-family: var(--font-mono); font-size: 14px; color: var(--text-primary); font-weight: 600;">Ready to Sweep</div>
+                    </div>
+
                     <div class="action-bar" style="margin-bottom: 40px;">
-                        <button id="generator-toggle" class="btn btn-primary">Start Generator</button>
+                        <button id="generator-toggle" class="btn btn-primary" style="width: 200px;">Start Generator</button>
                     </div>
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is an Online Signal Generator?</h3>
-                        <p style="margin-bottom: 12px;">An online signal generator is a client-side audio utility designed to produce specific audio frequencies using four primary geometric waveforms (Sine, Square, Sawtooth, and Triangle) and three spectral noise colors (White, Pink, and Brown noise). It operates via the browser-native HTML5 Web Audio API, calculating audio waveforms locally without uploading any data to external servers.</p>
-                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Common Applications:</h4>
-                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
-                            <li><strong>Auditory Testing:</strong> Mapping personal hearing range limits, including tracking frequency cutoff thresholds.</li>
-                            <li><strong>Equipment Calibration:</strong> Aligning input and output levels on mixers, DAWs, and hardware interfaces.</li>
-                            <li><strong>White & Pink Noise:</strong> Masking background distractions (White/Brown) or performing acoustic analyzer testing (Pink).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Speaker Sweep Tool Pane -->
-                <div class="tool-pane" id="pane-sweep">
-                    <div class="controls-grid">
-                        <div class="control-card">
-                            <h3>Frequency Range</h3>
-                            <div class="range-inputs">
-                                <div class="input-group">
-                                    <label>Start (Hz)</label>
-                                    <input type="number" id="sweep-start" value="20" min="20" max="20000">
-                                </div>
-                                <div class="input-group">
-                                    <label>End (Hz)</label>
-                                    <input type="number" id="sweep-end" value="20000" min="20" max="20000">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="control-card">
-                            <h3>Duration</h3>
-                            <div class="slider-group">
-                                <div class="slider-label">
-                                    <span>Sweep Time</span>
-                                    <span id="sweep-time-val">10s</span>
-                                </div>
-                                <input type="range" id="sweep-duration" min="2" max="30" value="10" step="1" class="slider">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sweep-progress-container">
-                        <div class="sweep-progress-bar" id="sweep-progress"></div>
-                        <div class="sweep-current-freq" id="sweep-current-freq">Ready to Sweep</div>
-                    </div>
-                    <div class="action-bar" style="margin-bottom: 40px;">
-                        <button id="sweep-toggle" class="btn btn-primary">Begin Sweep</button>
-                    </div>
-
-                    <!-- Valuable Content SEO Section -->
-                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">What is a Speaker Frequency Sweep?</h3>
-                        <p style="margin-bottom: 12px;">A speaker frequency sweep plays a sliding audio pitch that shifts logarithmically between a chosen starting frequency (typically sub-bass at 20 Hz) and ending frequency (treble range up to 20,000 Hz). The sweep duration determines how fast the frequency changes.</p>
-                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">How to Test Subwoofers & Speakers:</h4>
-                        <p style="margin-bottom: 12px;">To test a subwoofer's bass response, set the sweep range from 20 Hz to 120 Hz. Watch for sudden volume drops or physical rattle sounds from the speaker casing, which helps diagnose physical structure defects or speaker cabinet vibrations.</p>
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Client-Side Signal & Sweep Generator</h3>
+                        <p style="margin-bottom: 12px;">This versatile client-side audio generator combines tone oscillators, color spectrum noise, speaker frequency sweeps, and acoustic illusions into a single Web Audio utility. Run frequency diagnostics, play infinitely rising Shepard's tones, generate pink or brown noise, and calibrate audio equipment directly inside your web browser. <strong>No audio is sent to external servers</strong>, protecting your privacy and ensuring lag-free operation.</p>
                     </div>
                 </div>
 
@@ -358,6 +377,8 @@
                                 <select id="tuner-instrument-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
                                     <option value="chromatic" selected>Chromatic (Freeform)</option>
                                     <option value="guitar">Guitar (6-String)</option>
+                                    <option value="guitar7">Guitar (7-String)</option>
+                                    <option value="guitar8">Guitar (8-String)</option>
                                     <option value="bass">Bass Guitar (4-String)</option>
                                     <option value="ukulele">Ukulele (Standard C)</option>
                                     <option value="violin">Violin / Mandolin</option>
@@ -425,7 +446,7 @@
                 </div>
 
                 <!-- Sound Level dB Meter Pane -->
-                <div class="tool-pane" id="pane-noise">
+                <div class="tool-pane" id="pane-db-meter">
                     <div class="controls-grid">
                         <!-- Main Meter Card -->
                         <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px;">

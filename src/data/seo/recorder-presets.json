@@ -1,0 +1,53 @@
+[
+  {
+    "slug": "voice-recorder-mp3",
+    "tool": "recorder",
+    "title": "Online MP3 Voice Recorder – Free Microphone Audio Capturer",
+    "description": "Record voice memos and microphone audio directly to high-quality MP3 format in your browser. 100% free, private, and client-side.",
+    "initialConfig": {
+      "source": "mic",
+      "format": "mp3"
+    },
+    "content": {
+      "heading": "Record Microphone Voice Direct to MP3 Online",
+      "bodyParagraphs": [
+        "Need to record voice memos, singing, meetings, or voiceovers directly into a portable MP3 file? Our free online microphone recorder runs fully in-browser, letting you capture crystal-clear vocals.",
+        "Your audio remains secure since all processing and encoding happen locally on your computer. Simply click record and download your MP3 file immediately."
+      ]
+    }
+  },
+  {
+    "slug": "voice-recorder-webm",
+    "tool": "recorder",
+    "title": "Online WebM Voice Recorder – Free Web-Native Audio Capturer",
+    "description": "Capture microphone voice streams and save directly to standard WebM format. Zero uploads, absolute privacy, and instant local rendering.",
+    "initialConfig": {
+      "source": "mic",
+      "format": "webm"
+    },
+    "content": {
+      "heading": "Capture Microphone Streams Directly to WebM Format",
+      "bodyParagraphs": [
+        "Record microphone audio directly into WebM containers using native browser APIs. This format is lightweight and highly optimized for modern web streaming, playback, and development.",
+        "No email signup or downloads are required. The voice encoder runs 100% locally to protect your recordings."
+      ]
+    }
+  },
+  {
+    "slug": "system-audio-recorder",
+    "tool": "recorder",
+    "title": "Online System Audio Recorder – Free Browser Capture Tool",
+    "description": "Record computer system audio or browser tab sounds directly from your browser. 100% client-side, free, and secure.",
+    "initialConfig": {
+      "source": "system",
+      "format": "mp3"
+    },
+    "content": {
+      "heading": "Record System Sounds & Tab Audio Online",
+      "bodyParagraphs": [
+        "Capture system sounds, tab media, or application audio directly from your web browser. Perfect for recording calls, presentations, or ambient audio loops locally.",
+        "Our engine manages internal browser streams securely and downloads them straight to your desktop as a standard MP3 file."
+      ]
+    }
+  }
+]

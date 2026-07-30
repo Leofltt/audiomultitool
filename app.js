@@ -43,7 +43,7 @@ const App = {
                 converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
                 recorder: 'Online voice & system audio recorder.'
             };
-            if (titleEl && descEl) {
+            if (titleEl && descEl && !document.body.dataset.seoPage) {
                 titleEl.textContent = activeNav.textContent.trim().replace(/^[^\s]+\s+/, '');
                 descEl.textContent = descriptions[this.activeTool] || '';
             }
@@ -53,10 +53,9 @@ const App = {
 
         // Initialize sub-tools
         if (window.GeneratorTool) window.GeneratorTool.init(this);
-        if (window.SweepTool) window.SweepTool.init(this);
         if (window.MetronomeTool) window.MetronomeTool.init(this);
         if (window.TunerTool) window.TunerTool.init(this);
-        if (window.NoiseTool) window.NoiseTool.init(this);
+        if (window.DbMeterTool) window.DbMeterTool.init(this);
         if (window.ConverterTool) window.ConverterTool.init(this);
         if (window.RecorderTool) window.RecorderTool.init(this);
 
@@ -273,14 +272,11 @@ const App = {
         if (window.MetronomeTool && typeof window.MetronomeTool.stop === 'function') {
             window.MetronomeTool.stop();
         }
-        if (window.SweepTool && typeof window.SweepTool.stop === 'function') {
-            window.SweepTool.stop();
-        }
         if (window.TunerTool && typeof window.TunerTool.stop === 'function') {
             window.TunerTool.stop();
         }
-        if (window.NoiseTool && typeof window.NoiseTool.stop === 'function') {
-            window.NoiseTool.stop();
+        if (window.DbMeterTool && typeof window.DbMeterTool.stop === 'function') {
+            window.DbMeterTool.stop();
         }
         if (window.ConverterTool && typeof window.ConverterTool.stop === 'function') {
             window.ConverterTool.stop();

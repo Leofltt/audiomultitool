@@ -26,6 +26,48 @@ window.MetronomeTool = {
         this.setupEventListeners();
         this.rebuildIndicators();
         this.loadQueryParams();
+        this.applyInitialConfig();
+    },
+
+    applyInitialConfig() {
+        const pane = document.getElementById('pane-metronome');
+        if (!pane) return;
+
+        const initialBpm = pane.dataset.bpm;
+        const initialSignature = pane.dataset.signature;
+        const initialSubdivision = pane.dataset.subdivision;
+        const initialSound = pane.dataset.sound;
+
+        if (initialBpm) {
+            this.setBpm(parseInt(initialBpm));
+        }
+        if (initialSignature) {
+            this.signature = parseInt(initialSignature);
+            const signatureSelect = document.getElementById('metronome-signature');
+            if (signatureSelect) {
+                const options = Array.from(signatureSelect.options).map(o => o.value);
+                if (options.includes(initialSignature)) {
+                    signatureSelect.value = initialSignature;
+                } else {
+                    signatureSelect.value = 'custom';
+                    const customContainer = document.getElementById('metronome-custom-signature-container');
+                    const customInput = document.getElementById('metronome-custom-signature');
+                    if (customContainer) customContainer.style.display = 'block';
+                    if (customInput) customInput.value = initialSignature;
+                }
+            }
+            this.rebuildIndicators();
+        }
+        if (initialSubdivision) {
+            this.subdivision = parseInt(initialSubdivision);
+            const subdivisionSelect = document.getElementById('metronome-subdivision');
+            if (subdivisionSelect) subdivisionSelect.value = initialSubdivision;
+        }
+        if (initialSound) {
+            this.soundProfile = initialSound;
+            const soundSelect = document.getElementById('metronome-sound');
+            if (soundSelect) soundSelect.value = initialSound;
+        }
     },
 
     setupEventListeners() {

@@ -1,0 +1,114 @@
+[
+  {
+    "slug": "440hz-sine-wave",
+    "tool": "generator",
+    "title": "440 Hz Sine Wave Tone Generator – Standard A4 Tuning Reference",
+    "description": "Generate a pure 440 Hz sine wave audio tone online. Use it as the standard musical tuning note A4 (A above middle C) for calibration and tuning.",
+    "initialConfig": {
+      "mode": "tone",
+      "freq": "440",
+      "type": "sine"
+    },
+    "content": {
+      "heading": "440 Hz (A4) Sine Wave Reference Tone",
+      "bodyParagraphs": [
+        "Use this online tone generator to produce a pure 440 Hz frequency sine wave. 440 Hz is the standard pitch calibration for tuning acoustic and electronic instruments in Western music, widely known as A4 or 'Stuttgart pitch'.",
+        "No downloads are required. The sine wave is synthesized in real time on your machine using your browser's Web Audio API."
+      ]
+    }
+  },
+  {
+    "slug": "1000hz-sine-wave",
+    "tool": "generator",
+    "title": "1 kHz Sine Wave Calibration Tone – Audio Reference Generator",
+    "description": "Generate a pure 1000 Hz (1 kHz) sine wave tone online. Perfect for audio testing, equipment calibration, and checking sound levels.",
+    "initialConfig": {
+      "mode": "tone",
+      "freq": "1000",
+      "type": "sine"
+    },
+    "content": {
+      "heading": "1 kHz (1000 Hz) Audio Test and Calibration Tone",
+      "bodyParagraphs": [
+        "This online tool generates a pure 1 kHz sine wave, which is the international standard reference frequency for audio engineering, tape alignment, and dB meter calibrations.",
+        "Perfect for testing your sound system's channels, checking mixer headroom, or evaluating microphone frequency response curves instantly."
+      ]
+    }
+  },
+  {
+    "slug": "pink-noise-generator",
+    "tool": "generator",
+    "title": "Online Pink Noise Generator – Free Focus & Acoustic Noise",
+    "description": "Generate pink noise online. Sound energy is distributed equally per octave, making it ideal for room calibration and productivity.",
+    "initialConfig": {
+      "mode": "noise",
+      "freq": "440",
+      "type": "pink"
+    },
+    "content": {
+      "heading": "Online Pink Noise Focus Generator",
+      "bodyParagraphs": [
+        "Pink noise has a deeper rumble compared to white noise. Because sound energy is distributed equally across octaves, it mimics natural sounds like rainfall or wind, making it excellent for masking distractions.",
+        "Acoustic engineers also use pink noise to test room acoustics and tune speaker response ranges."
+      ]
+    }
+  },
+  {
+    "slug": "speaker-test-sweep",
+    "tool": "generator",
+    "title": "20Hz - 20kHz Logarithmic Speaker Test Sweep",
+    "description": "Run a clean logarithmic speaker sweep from 20 Hz to 20,000 Hz. Verify your sound system's performance, speaker limits, and room acoustics.",
+    "initialConfig": {
+      "mode": "sweep",
+      "start": "20",
+      "end": "20000",
+      "duration": "10",
+      "sweeptype": "exponential"
+    },
+    "content": {
+      "heading": "Full Frequency Range (20Hz - 20kHz) Speaker Sweep Test",
+      "bodyParagraphs": [
+        "Test your speaker boundaries and human auditory limits with a clean logarithmic sweep. The frequency sweep begins at 20 Hz (the lower threshold of human hearing) and ascends smoothly to 20 kHz.",
+        "Perfect for detecting room resonances, evaluating crossover networks, or discovering rattle spots in speaker cabinets."
+      ]
+    }
+  },
+  {
+    "slug": "subwoofer-test-sweep",
+    "tool": "generator",
+    "title": "20Hz - 120Hz Low Frequency Bass Sweep",
+    "description": "Test subwoofers and speaker bass limits with a low-frequency sweep from 20 Hz to 120 Hz. Find bass rattles and evaluate subwoofer response.",
+    "initialConfig": {
+      "mode": "sweep",
+      "start": "20",
+      "end": "120",
+      "duration": "8",
+      "sweeptype": "exponential"
+    },
+    "content": {
+      "heading": "Subwoofer Low Frequency (20Hz - 120Hz) Bass Sweep Test",
+      "bodyParagraphs": [
+        "This sweep targets subwoofers and large bass woofers. By restricting the frequency range from 20 Hz to 120 Hz, you can closely listen to the transition between deep sub-bass and mid-bass registers.",
+        "Useful for tuning room positions, adjusting crossover cutoff filters, and locating vibrating objects in your listening room."
+      ]
+    }
+  },
+  {
+    "slug": "shepards-tone-rising",
+    "tool": "generator",
+    "title": "Rising Shepard's Tone Generator – Online Auditory Illusion",
+    "description": "Play an infinitely rising Shepard's tone online. Experience a classic auditory illusion where the sound seems to ascend in pitch forever.",
+    "initialConfig": {
+      "mode": "special",
+      "freq": "60",
+      "specialtype": "shepard"
+    },
+    "content": {
+      "heading": "Play the Shepard's Tone Infinite Rise Illusion",
+      "bodyParagraphs": [
+        "A Shepard's tone consists of multiple octave-separated sine waves playing simultaneously. As the frequencies of the tones rise, their relative volumes are dynamically adjusted by a spectral envelope.",
+        "This creates a famous psychoacoustic illusion of a pitch rising forever, commonly used in movie sound design to build tension."
+      ]
+    }
+  }
+]

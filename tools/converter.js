@@ -8,6 +8,43 @@ window.ConverterTool = {
     init(appInstance) {
         this.app = appInstance;
         this.setupEventListeners();
+        this.applyInitialConfig();
+    },
+
+    applyInitialConfig() {
+        const pane = document.getElementById('pane-converter');
+        if (!pane) return;
+
+        const initialFormat = pane.dataset.format;
+        const initialBitrate = pane.dataset.bitrate;
+        const initialBitdepth = pane.dataset.bitdepth;
+        const initialSamplerate = pane.dataset.samplerate;
+        const initialChannels = pane.dataset.channels;
+
+        if (initialFormat) {
+            const formatSelect = document.getElementById('converter-format-select');
+            if (formatSelect) {
+                formatSelect.value = initialFormat;
+                // Dispatch change event to update conditional UI groups (bitrate vs bitdepth)
+                formatSelect.dispatchEvent(new Event('change'));
+            }
+        }
+        if (initialBitrate) {
+            const bitrateSelect = document.getElementById('converter-bitrate-select');
+            if (bitrateSelect) bitrateSelect.value = initialBitrate;
+        }
+        if (initialBitdepth) {
+            const bitdepthSelect = document.getElementById('converter-bitdepth-select');
+            if (bitdepthSelect) bitdepthSelect.value = initialBitdepth;
+        }
+        if (initialSamplerate) {
+            const samplerateSelect = document.getElementById('converter-samplerate-select');
+            if (samplerateSelect) samplerateSelect.value = initialSamplerate;
+        }
+        if (initialChannels) {
+            const channelsSelect = document.getElementById('converter-channels-select');
+            if (channelsSelect) channelsSelect.value = initialChannels;
+        }
     },
 
     setupEventListeners() {

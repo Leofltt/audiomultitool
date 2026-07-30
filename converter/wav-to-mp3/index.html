@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert WAV to MP3 Online – Free Audio Converter - Audiomultitool</title>
+    <meta name="description" content="Convert WAV files to MP3 online for free. 100% client-side, no file limits, secure, and preserves high-quality audio compression.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css?v=1.1">
+    <link rel="manifest" href="../../manifest.json">
+    <link rel="icon" type="image/png" href="../../favicon.png">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388027993518928"
+         crossorigin="anonymous"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Convert WAV to MP3 Online – Free Audio Converter",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires HTML5 Web Audio API, MediaRecorder API",
+      "applicationCategory": "MultimediaApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Online Tone Generator",
+        "Speaker Bass Sweep Tester",
+        "BPM Tap Tempo Calculator",
+        "Chromatic Instrument Tuner",
+        "Decibel Sound Level Meter",
+        "Noise Color Generator",
+        "Client-side Audio Converter",
+        "Online Audio Recorder"
+      ]
+    }
+    </script>
+    <link rel="canonical" href="https://audiomultitool.com/converter/wav-to-mp3/">
+    <meta property="og:title" content="Convert WAV to MP3 Online – Free Audio Converter">
+    <meta property="og:description" content="Convert WAV files to MP3 online for free. 100% client-side, no file limits, secure, and preserves high-quality audio compression.">
+    <meta property="og:url" content="https://audiomultitool.com/converter/wav-to-mp3/">
+    <meta property="og:type" content="website">
+</head>
+<body data-seo-page="true">
+    <div class="app-container">
+        <!-- Sidebar Navigation (Desktop Only) -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-icon">🎛️</span>
+                <h1>Audiomultitool</h1>
+            </div>
+            <nav class="nav-menu">
+                <a class="nav-item" data-tool="generator" href="/generator/">
+                    <span class="icon">🔊</span> Signal & Sweep Gen
+                </a>
+                <a class="nav-item" data-tool="metronome" href="/metronome/">
+                    <span class="icon">⏱️</span> Metronome
+                </a>
+                <a class="nav-item" data-tool="tuner" href="/tuner/">
+                    <span class="icon">🎯</span> Chromatic Tuner
+                </a>
+                <a class="nav-item" data-tool="db-meter" href="/db-meter/">
+                    <span class="icon">🎚️</span> dB Meter
+                </a>
+                <a class="nav-item active" data-tool="converter" href="/converter/">
+                    <span class="icon">🔄</span> Audio Converter
+                </a>
+                <a class="nav-item" data-tool="recorder" href="/recorder/">
+                    <span class="icon">🔴</span> Audio Recorder
+                </a>
+            </nav>
+            <div class="ad-sidebar-container">
+                <div class="ad-placeholder-sidebar">
+                    <div class="ad-label">Sponsor / Advertisement</div>
+                    <!-- Interactive placeholder or standard 250x250 slot -->
+                </div>
+                <div class="legal-footer-links" style="margin-top: 15px; font-size: 11px; text-align: center; color: var(--text-secondary);">
+                    <a href="../../privacy.html" style="color: var(--text-secondary); text-decoration: none; margin-right: 10px;">Privacy Policy</a>
+                    <a href="../../terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Panel -->
+            <header class="top-bar">
+                <div class="top-bar-left" style="display: flex; align-items: center; gap: 12px;">
+                    <button id="menu-toggle" class="menu-toggle-btn" title="Toggle Menu">☰</button>
+                    <div class="active-title-container">
+                        <h2 id="active-tool-title">Convert WAV to MP3 Online with Peak Quality</h2>
+                        <p id="active-tool-desc">Convert WAV files to MP3 online for free. 100% client-side, no file limits, secure, and preserves high-quality audio compression.</p>
+                    </div>
+                </div>
+                <div class="top-bar-actions">
+                    <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
+                        <span class="theme-icon">☀️</span>
+                    </button>
+                    <div class="audio-status" id="audio-status">
+                        <span class="status-dot"></span> Audio Engine Ready
+                    </div>
+                </div>
+            </header>
+
+            <!-- Mobile Navigation Drawer Overlay -->
+            <div id="mobile-menu" class="mobile-menu-drawer">
+                <a class="mobile-nav-item" data-tool="generator" href="/generator/">🔊 Signal & Sweep Gen</a>
+                <a class="mobile-nav-item" data-tool="metronome" href="/metronome/">⏱️ Metronome</a>
+                <a class="mobile-nav-item" data-tool="tuner" href="/tuner/">🎯 Chromatic Tuner</a>
+                <a class="mobile-nav-item" data-tool="db-meter" href="/db-meter/">🎚️ dB Meter</a>
+                <a class="mobile-nav-item active" data-tool="converter" href="/converter/">🔄 Audio Converter</a>
+                <a class="mobile-nav-item" data-tool="recorder" href="/recorder/">🔴 Audio Recorder</a>
+            </div>
+
+            <!-- Tool Stage -->
+            <section class="tool-stage">
+                <!-- Signal & Sweep Generator Tool Pane -->
+                <div class="tool-pane" id="pane-generator">
+                    <!-- Generator Mode Selector Card -->
+                    <div class="control-card" style="margin-bottom: 20px;">
+                        <h3>Generator Mode</h3>
+                        <div class="mode-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                            <button class="btn btn-secondary generator-mode-btn active" data-mode="tone" style="padding: 10px; font-size: 13px;">Constant Tone</button>
+                            <button class="btn btn-secondary generator-mode-btn" data-mode="sweep" style="padding: 10px; font-size: 13px;">Frequency Sweep</button>
+                            <button class="btn btn-secondary generator-mode-btn" data-mode="noise" style="padding: 10px; font-size: 13px;">Noise Colors</button>
+                            <button class="btn btn-secondary generator-mode-btn" data-mode="special" style="padding: 10px; font-size: 13px;">Special Signals</button>
+                        </div>
+                    </div>
+
+                    <div class="controls-grid">
+                        <!-- Column 1: Frequency / Range Settings -->
+                        <div>
+                            <!-- Constant Tone Frequency Card -->
+                            <div class="control-card frequency-card" id="generator-freq-card" style="height: 100%;">
+                                <h3>Frequency</h3>
+                                <div class="dial-container">
+                                    <div class="freq-display"><span id="generator-freq-val">440</span><span class="unit">Hz</span></div>
+                                </div>
+                                <input type="range" id="generator-freq-slider" min="0" max="1000" value="447" step="1" class="slider">
+                                <div class="quick-presets" style="margin-top: 15px;">
+                                    <button class="preset-btn" data-freq="100">100 Hz</button>
+                                    <button class="preset-btn" data-freq="440">440 Hz</button>
+                                    <button class="preset-btn" data-freq="1000">1 kHz</button>
+                                    <button class="preset-btn" data-freq="10000">10 kHz</button>
+                                </div>
+                            </div>
+
+                            <!-- Sweep Settings Card (Hidden by default) -->
+                            <div class="control-card" id="generator-sweep-card" style="display: none; height: 100%;">
+                                <h3>Sweep Configuration</h3>
+                                <div class="range-inputs" style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                    <div class="input-group" style="flex: 1;">
+                                        <label>Start (Hz)</label>
+                                        <input type="number" id="sweep-start" value="20" min="20" max="20000" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); padding: 8px; width: 100%;">
+                                    </div>
+                                    <div class="input-group" style="flex: 1;">
+                                        <label>End (Hz)</label>
+                                        <input type="number" id="sweep-end" value="20000" min="20" max="20000" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); padding: 8px; width: 100%;">
+                                    </div>
+                                </div>
+                                <div class="slider-group" style="margin-bottom: 20px;">
+                                    <div class="slider-label" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                                        <span>Sweep Time</span>
+                                        <span id="sweep-time-val">10s</span>
+                                    </div>
+                                    <input type="range" id="sweep-duration" min="2" max="30" value="10" step="1" class="slider">
+                                </div>
+                                <div class="input-group">
+                                    <label for="sweep-type">Sweep Curve</label>
+                                    <select id="sweep-type" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="exponential" selected>Logarithmic (Exponential)</option>
+                                        <option value="linear">Linear Sweep</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Waveforms / Special Options & Volume -->
+                        <div class="control-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <!-- Constant Tone Waves Group -->
+                                <div id="generator-waves-group">
+                                    <h3>Oscillator Waveform</h3>
+                                    <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px;">
+                                        <button class="wave-btn active" data-type="sine">Sine</button>
+                                        <button class="wave-btn" data-type="square">Square</button>
+                                        <button class="wave-btn" data-type="sawtooth">Sawtooth</button>
+                                        <button class="wave-btn" data-type="triangle">Triangle</button>
+                                    </div>
+                                </div>
+
+                                <!-- Noise Colors Group (Hidden by default) -->
+                                <div id="generator-noise-group" style="display: none;">
+                                    <h3>Noise Color Spectrum</h3>
+                                    <div class="wave-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px;">
+                                        <button class="wave-btn" data-type="white">White</button>
+                                        <button class="wave-btn" data-type="pink">Pink</button>
+                                        <button class="wave-btn" data-type="brown">Brown</button>
+                                    </div>
+                                </div>
+
+                                <!-- Special Signals Group (Hidden by default) -->
+                                <div id="generator-special-group" style="display: none;">
+                                    <h3>Special Signal Modulations</h3>
+                                    <div class="input-group" style="margin-bottom: 20px;">
+                                        <label for="generator-special-type">Signal Type</label>
+                                        <select id="generator-special-type" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                            <option value="shepard" selected>Shepard's Tone (Infinite Rise)</option>
+                                            <option value="shepard-desc">Shepard's Tone (Infinite Fall)</option>
+                                            <option value="siren">Modulating Siren (Warble)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Common Volume Controls -->
+                            <div class="volume-container" style="margin-top: auto;">
+                                <h3>Volume</h3>
+                                <input type="range" id="generator-vol" min="0" max="0.5" value="0.25" step="0.01" class="slider">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress status bar for sweeps (Hidden by default) -->
+                    <div class="sweep-progress-container" id="generator-sweep-progress-container" style="display: none; margin-bottom: 24px; background: rgba(0,0,0,0.15); border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; text-align: center;">
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 3px; overflow: hidden; position: relative; margin-bottom: 10px;">
+                            <div class="sweep-progress-bar" id="sweep-progress" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s;"></div>
+                        </div>
+                        <div class="sweep-current-freq" id="sweep-current-freq" style="font-family: var(--font-mono); font-size: 14px; color: var(--text-primary); font-weight: 600;">Ready to Sweep</div>
+                    </div>
+
+                    <div class="action-bar" style="margin-bottom: 40px;">
+                        <button id="generator-toggle" class="btn btn-primary" style="width: 200px;">Start Generator</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Client-Side Signal & Sweep Generator</h3>
+                        <p style="margin-bottom: 12px;">This versatile client-side audio generator combines tone oscillators, color spectrum noise, speaker frequency sweeps, and acoustic illusions into a single Web Audio utility. Run frequency diagnostics, play infinitely rising Shepard's tones, generate pink or brown noise, and calibrate audio equipment directly inside your web browser. <strong>No audio is sent to external servers</strong>, protecting your privacy and ensuring lag-free operation.</p>
+                    </div>
+                </div>
+
+                <!-- BPM Tapper & Metronome Tool Pane -->
+                <div class="tool-pane" id="pane-metronome">
+                    <div class="controls-grid" style="grid-template-columns: 1.2fr 0.8fr; gap: 24px;">
+                        <!-- Metronome Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 24px;">
+                            <div style="text-align: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Tempo & Beat Output</h3>
+                                
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 16px;">
+                                    <button id="metronome-minus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0 !important; flex-shrink: 0;">−</button>
+                                    <div style="font-family: var(--font-mono); font-size: 56px; font-weight: 700; color: var(--text-primary); line-height: 1;" id="metronome-bpm-val">120</div>
+                                    <button id="metronome-plus-btn" class="btn btn-secondary" style="font-size: 18px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0 !important; flex-shrink: 0;">+</button>
+                                </div>
+
+                                <input type="range" id="metronome-bpm-slider" min="10" max="300" value="120" step="1" class="slider" style="width: 100%; margin-bottom: 16px;">
+
+                                <!-- Beat Indicators Dynamic Row -->
+                                <div class="metronome-indicators" id="metronome-indicators">
+                                    <div class="beat-dot downbeat"></div>
+                                    <div class="beat-dot"></div>
+                                    <div class="beat-dot"></div>
+                                    <div class="beat-dot"></div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; justify-content: space-between; align-items: center; width: 100%;">
+                                <button id="metronome-toggle-btn" class="btn btn-primary" style="width: 70%; font-size: 15px; padding: 14px 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Start Metronome</button>
+                                <button id="metronome-share-btn" class="btn btn-secondary" style="width: 26%; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; padding: 14px 0;" title="Copy shareable link with current configuration">
+                                    <span>🔗</span> Share
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Metronome Settings & Tap Tempo -->
+                        <div style="display: flex; flex-direction: column; gap: 20px;">
+                            <!-- Settings Card -->
+                            <div class="control-card" style="display: flex; flex-direction: column; gap: 14px;">
+                                <div class="input-group">
+                                    <label for="metronome-signature">Time Signature</label>
+                                    <select id="metronome-signature" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="2">2/4 (Duple Meter)</option>
+                                        <option value="3">3/4 (Triple Meter)</option>
+                                        <option value="4" selected>4/4 (Common Time)</option>
+                                        <option value="5">5/4 (Odd Meter)</option>
+                                        <option value="6">6/8 (Compound Duple)</option>
+                                        <option value="7">7/8 (Complex Meter)</option>
+                                        <option value="custom">Custom...</option>
+                                    </select>
+                                    <div id="metronome-custom-signature-container" style="display: none; margin-top: 8px;">
+                                        <label for="metronome-custom-signature" style="font-size: 12px; color: var(--text-secondary);">Beats per Measure</label>
+                                        <input type="number" id="metronome-custom-signature" min="1" max="32" value="4" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; box-sizing: border-box; outline: none;">
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="metronome-subdivision">Subdivision</label>
+                                    <select id="metronome-subdivision" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="1" selected>Quarter Notes (1x)</option>
+                                        <option value="2">Eighth Notes (2x)</option>
+                                        <option value="3">Triplets (3x)</option>
+                                        <option value="4">Sixteenth Notes (4x)</option>
+                                        <option value="5">Quintuplets (5x)</option>
+                                        <option value="6">Sextuplets (6x)</option>
+                                        <option value="7">Septuplets (7x)</option>
+                                        <option value="8">Thirty-Second Notes (8x)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="metronome-sound">Click Sound Profile</label>
+                                    <select id="metronome-sound" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="woodblock" selected>Classic Woodblock</option>
+                                        <option value="beep">Digital Beep</option>
+                                        <option value="rimshot">Acoustic Rimshot</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tap Tempo Trigger Card -->
+                            <div class="control-card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                                <div class="tap-area-card" id="tap-trigger-btn" style="height: 100px; border: 2px dashed rgba(79, 70, 229, 0.3); border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: all 0.2s ease; user-select: none; background: rgba(79, 70, 229, 0.02);">
+                                    <span style="font-size: 20px; margin-bottom: 2px;">👆</span>
+                                    <div class="bpm-large-display" id="tapper-bpm-val" style="font-family: var(--font-mono); font-size: 36px; font-weight: 700; color: var(--text-primary); margin: 2px 0;">--</div>
+                                    <span class="tap-instruction" style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Tap or Press Spacebar</span>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
+                                    <span>Avg: <strong id="tapper-avg" style="color: var(--text-primary);">--</strong></span>
+                                    <span>Genre: <strong id="tapper-genre" style="color: var(--text-primary);">Tap to start</strong></span>
+                                    <button id="tapper-reset" class="btn btn-secondary" style="font-size: 10px; padding: 4px 10px; line-height: 1;">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tap-history" style="margin-top: 24px; margin-bottom: 40px;">
+                        <h3 style="font-size: 12px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Tempo Tap History</h3>
+                        <ul class="history-list" id="tapper-history" style="max-height: 100px; overflow-y: auto;">
+                            <li class="empty-state">No taps recorded yet</li>
+                        </ul>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 30px;">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">High-Precision Online Metronome & BPM Tap Calculator</h3>
+                        <p style="margin-bottom: 12px;">This professional **online metronome** is built using the high-precision <strong>Web Audio API scheduler loop</strong>. Unlike basic interval timers, our online metronome engine calculates and schedules click events ahead of time, ensuring sample-accurate tempo timing that never drifts, even under heavy background computer processes.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Precision Tempo & Configuration Sharing:</h4>
+                        <p style="margin-bottom: 12px;">Click the <strong>Share Link</strong> button to generate a custom URL containing your exact configuration (BPM, signature, subdivision, click sound profile). In addition, checking the sync sharing option will synchronize the metronome start timer to the absolute Unix Epoch time grid. If two users open the same shared link, their metronomes will click in perfect sync over the network, completely without latency or server signaling required.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">How to use subdivision and accents:</h4>
+                        <p style="margin-bottom: 12px;">Choose your primary Time Signature to configure the beat-bar count (such as 4/4 or 6/8 time) or define a custom time signature to practice complex meters. Set the Subdivision multiplier to practice subdivisions (up to 8x, including quintuplets, sextuplets, septuplets, and thirty-second notes). The metronome automatically accents the first beat of each measure with a distinct higher frequency click, keeping your rhythm perfectly synchronized.</p>
+                    </div>
+                </div>
+
+                <!-- Chromatic Tuner Tool Pane -->
+                <div class="tool-pane" id="pane-tuner">
+                    <div class="controls-grid" style="grid-template-columns: 1.2fr 0.8fr; gap: 24px;">
+                        <!-- Dial & Visual Needle -->
+                        <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; position: relative;">
+                            <div class="tuner-meter" style="width: 240px; height: 120px; border-bottom: 2px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 20px;">
+                                <div class="tuner-needle" id="tuner-needle" style="width: 2px; height: 100px; background: var(--accent); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: rotate(0deg); transition: transform 0.1s ease-out;"></div>
+                                <div class="tuner-center-mark" style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: absolute; bottom: -3px; left: calc(50% - 3px);"></div>
+                                <div style="position: absolute; left: 10px; bottom: 4px; font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary);">-50c</div>
+                                <div style="position: absolute; right: 10px; bottom: 4px; font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary);">+50c</div>
+                            </div>
+                            <div class="pitch-display" style="text-align: center; margin-bottom: 12px;">
+                                <div class="note-val" id="tuner-note" style="font-size: 48px; font-weight: 700; color: var(--text-primary); line-height: 1.1;">--</div>
+                                <div class="cents-val" id="tuner-cents" style="font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary); margin-top: 4px;">0.0 Hz</div>
+                            </div>
+                            <!-- Tune Directions Helper -->
+                            <div id="tuner-direction" style="font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-top: 10px; height: 20px;">Microphone Off</div>
+                        </div>
+
+                        <!-- Options & Presets Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; gap: 16px;">
+                            <div class="input-group">
+                                <label for="tuner-instrument-select">Instrument Mode</label>
+                                <select id="tuner-instrument-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="chromatic" selected>Chromatic (Freeform)</option>
+                                    <option value="guitar">Guitar (6-String)</option>
+                                    <option value="guitar7">Guitar (7-String)</option>
+                                    <option value="guitar8">Guitar (8-String)</option>
+                                    <option value="bass">Bass Guitar (4-String)</option>
+                                    <option value="ukulele">Ukulele (Standard C)</option>
+                                    <option value="violin">Violin / Mandolin</option>
+                                    <option value="viola">Viola / Cello</option>
+                                    <option value="banjo">Banjo (5-String Open G)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group" id="tuner-tuning-group" style="display: none;">
+                                <label for="tuner-tuning-select">Tuning Template</label>
+                                <select id="tuner-tuning-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <!-- Options filled dynamically in JS -->
+                                </select>
+                            </div>
+
+                            <div class="input-group" id="tuner-custom-editor" style="display: none; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 4px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                    <label style="margin-bottom: 0;">Define String Pitches</label>
+                                    <div style="display: flex; gap: 6px;">
+                                        <button id="tuner-add-string-btn" class="btn btn-secondary" style="font-size: 11px; padding: 4px 8px; line-height: 1;">➕ String</button>
+                                        <button id="tuner-remove-string-btn" class="btn btn-secondary" style="font-size: 11px; padding: 4px 8px; line-height: 1;">➖ String</button>
+                                    </div>
+                                </div>
+                                <div id="tuner-custom-strings-inputs" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                    <!-- Dynamic note dropdown selectors -->
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tuner-calibration">A4 Calibration</label>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <input type="range" id="tuner-calibration" min="430" max="450" value="440" step="1" class="slider" style="flex: 1;">
+                                    <span id="tuner-calibration-val" style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; width: 48px; text-align: right;">440Hz</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reference String Pegs (Pitch Pipe) Card -->
+                    <div class="control-card" id="tuner-strings-card" style="margin-top: 20px; display: none; text-align: center;">
+                        <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.5px;">Reference Strings (Click to play tone)</h3>
+                        <div id="tuner-strings-container" style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                            <!-- String buttons injected dynamically -->
+                        </div>
+                        <p style="font-size: 10px; color: var(--text-secondary); margin-top: 10px;">Select a string to listen to its target pitch as an auditory reference tone.</p>
+                    </div>
+
+                    <div class="mic-controls" style="margin-top: 24px; margin-bottom: 40px; text-align: center; max-width: 320px; margin-left: auto; margin-right: auto;">
+                        <div class="input-group" style="margin-bottom: 16px; text-align: left;">
+                            <label for="tuner-source" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Input Source</label>
+                            <select id="tuner-source" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                <option value="mic">Microphone Input</option>
+                                <option value="system">Computer / System Audio</option>
+                            </select>
+                        </div>
+                        <button id="tuner-toggle" class="btn btn-primary" style="width: 100%;">Enable Tuner</button>
+                        <p class="mic-status-label" id="tuner-status" style="margin-top: 8px;">Requires permission to listen to instrument pitches.</p>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Chromatic Tuner Pitch Tracking</h3>
+                        <p style="margin-bottom: 12px;">This chromatic instrument tuner uses an <strong>auto-correlation algorithm</strong> to analyze microphone audio streams in real-time. Auto-correlation isolates the fundamental frequency of single voice or acoustic instrument pitches (like guitar, bass, or violin) by searching for repeating signal cycles in the time domain, calculating offset cents from target standard pitch scales.</p>
+                    </div>
+                </div>
+
+                <!-- Sound Level dB Meter Pane -->
+                <div class="tool-pane" id="pane-db-meter">
+                    <div class="controls-grid">
+                        <!-- Main Meter Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px;">
+                            <h3 style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px;">Sound Pressure Level</h3>
+                            
+                            <!-- Visual dB Level Gauge Bar -->
+                            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 16px; position: relative;">
+                                <div id="db-gauge-fill" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s, background-color 0.15s;"></div>
+                            </div>
+
+                            <div id="db-level-val" style="font-size: 56px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary); line-height: 1;">0.0 <span style="font-size: 18px; font-family: var(--font-sans); font-weight: 500; color: var(--text-secondary);">dB</span></div>
+                            
+                            <div id="db-environment-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin: 12px 0 16px; height: 16px;">Microphone Off</div>
+                            
+                            <div style="display: flex; gap: 24px; margin-top: 4px; font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary);">
+                                <span>MIN: <strong id="db-level-min" style="color: var(--text-primary);">--</strong> dB</span>
+                                <span>AVG: <strong id="db-level-avg" style="color: var(--text-primary);">--</strong> dB</span>
+                                <span>MAX: <strong id="db-level-max" style="color: var(--text-primary);">--</strong> dB</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Configuration & Weighting Card -->
+                        <div class="control-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <h3>Measurement Filters</h3>
+                                <div class="input-group" style="margin-bottom: 16px;">
+                                    <label for="db-weighting-select">Frequency Weighting</label>
+                                    <select id="db-weighting-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                        <option value="A">dB(A) - Human Hearing curve (Standard)</option>
+                                        <option value="Z">dB(Z) - Flat/Unweighted (Absolute Power)</option>
+                                    </select>
+                                </div>
+                                <p style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+                                    <strong>dB(A) weighting</strong> applies a curve filtering out low sub-bass and ultra-high frequencies, matching human ear perception. **dB(Z) flat** measures raw absolute pressure across all bands.
+                                </p>
+                            </div>
+                            <button id="db-toggle" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Start Measurement</button>
+                        </div>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 30px;">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Decibel Meter & Sound Level Calibrator</h3>
+                        <p style="margin-bottom: 12px;">This sound pressure level (SPL) meter checks ambient noise using your browser microphone. It supports standard **A-weighting (dBA)** filters to model human hearing frequency responses, tracking minimum, maximum, and average values in real-time. This tool is perfect for home theater calibration, workspace noise assessment, and general auditory safety monitoring.</p>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Understanding Decibel Level Safety Limits:</h4>
+                        <ul style="margin-left: 18px; list-style-type: disc;">
+                            <li><strong>30–45 dB:</strong> Very Quiet. Typical whisper, library environment, or quiet bedroom.</li>
+                            <li><strong>50–65 dB:</strong> Moderate. Normal face-to-face conversation, quiet office, or rainfall.</li>
+                            <li><strong>70–80 dB:</strong> Loud. Heavy city street traffic, vacuum cleaners, or alarm clocks.</li>
+                            <li><strong>85+ dB:</strong> Hearing Hazard. Continuous exposure above 85 dB (e.g. lawnmowers, heavy machinery, loud concerts) requires ear protection.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Audio Converter Tool Pane -->
+                <div class="tool-pane active" id="pane-converter" data-format="mp3" data-bitrate="320">
+                    <div class="controls-grid" style="grid-template-columns: 1fr;">
+                        <!-- Dropzone & File Loader -->
+                        <div class="control-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed var(--border-color); padding: 40px 20px; cursor: pointer; text-align: center; transition: border-color 0.15s;" id="converter-dropzone">
+                            <span style="font-size: 36px; margin-bottom: 12px;">📁</span>
+                            <h3 style="font-size: 16px; margin-bottom: 8px;">Drag & Drop Audio Files or Folders Here</h3>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">Supports MP3, WAV, OGG, M4A, FLAC, WebM, AIFF (Large files converted sequentially to prevent memory crash)</p>
+                            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <button class="btn btn-secondary" onclick="document.getElementById('converter-file-input').click()">Browse Files</button>
+                                <button class="btn btn-secondary" id="converter-folder-btn" onclick="document.getElementById('converter-folder-input').click()">Browse Folder</button>
+                            </div>
+                            <input type="file" id="converter-file-input" accept="audio/*,.aif,.aiff" multiple style="display: none;">
+                            <input type="file" id="converter-folder-input" accept="audio/*,.aif,.aiff" webkitdirectory directory multiple style="display: none;">
+                        </div>
+                    </div>
+
+                    <!-- File Details & Options (Hidden until loaded) -->
+                    <div id="converter-options-card" class="control-card" style="margin-top: 20px; display: none;">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 12px; font-weight: 600;">Selected Files (<span id="converter-files-count">0</span>)</h3>
+                        <div id="converter-file-list" style="margin-bottom: 24px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; background: rgba(0,0,0,0.08);"></div>
+                        
+                        <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
+                            <div class="input-group">
+                                <label for="converter-format-select">Format</label>
+                                <select id="converter-format-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="mp3">MP3 (MPEG Layer 3)</option>
+                                    <option value="wav">WAV (Waveform Audio / PCM)</option>
+                                    <option value="ogg">OGG (Ogg Vorbis)</option>
+                                    <option value="webm">WEBM (WebM Audio)</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="converter-bitrate-group">
+                                <label for="converter-bitrate-select">Bitrate Quality</label>
+                                <select id="converter-bitrate-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="96">96 kbps (Low)</option>
+                                    <option value="128">128 kbps (Standard)</option>
+                                    <option value="192">192 kbps (Medium)</option>
+                                    <option value="256">256 kbps (Good)</option>
+                                    <option value="320" selected>320 kbps (High Quality)</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="converter-bitdepth-group" style="display: none;">
+                                <label for="converter-bitdepth-select">Bit Depth</label>
+                                <select id="converter-bitdepth-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="8">8-bit PCM (Lofi)</option>
+                                    <option value="16" selected>16-bit PCM (CD Quality)</option>
+                                    <option value="24">24-bit PCM (Hi-Res)</option>
+                                    <option value="32">32-bit Float (Precision)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                            <div class="input-group">
+                                <label for="converter-samplerate-select">Sample Rate</label>
+                                <select id="converter-samplerate-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="source" selected>Keep Source Rate</option>
+                                    <option value="44100">44.1 kHz</option>
+                                    <option value="48000">48 kHz</option>
+                                    <option value="96000">96 kHz (Ultra)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="converter-channels-select">Channels</label>
+                                <select id="converter-channels-select" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="source" selected>Keep Source Channels</option>
+                                    <option value="stereo">Stereo (2 Channels)</option>
+                                    <option value="mono">Mono (1 Channel)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="action-bar" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                            <button id="converter-start-btn" class="btn btn-primary">Start Conversion</button>
+                            
+                            <div id="converter-status-container" style="display: none; align-items: center; gap: 12px; flex: 1;">
+                                <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 3px; overflow: hidden; position: relative;">
+                                    <div id="converter-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s;"></div>
+                                </div>
+                                <span id="converter-status-label" style="font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary);">Ready</span>
+                            </div>
+
+                            <a id="converter-download-btn" class="btn btn-secondary" style="display: none; text-decoration: none;">Download File</a>
+                        </div>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <article class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
+                        <h2 style="font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">Convert WAV to MP3 Online with Peak Quality</h2>
+                        <p style="margin-bottom: 12px;">Need to convert lossless WAV audio to a highly compatible, compressed MP3 file? Our free, fully client-side tool lets you encode WAV files to MP3 at up to 320kbps without uploading anything to external servers.</p>
+<p style="margin-bottom: 12px;">Your audio privacy is guaranteed since processing runs entirely inside your browser. Simply select or drag your WAV files, choose your desired bitrate, and download your high-quality MP3s instantly.</p>
+                    </article>
+
+                    <!-- Internal Linking Grid -->
+                    <div class="linking-grid-section" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 8px;">Convert to other formats:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px 16px;">
+                            <a href="../mp3-to-wav/" style="color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.15s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">Convert MP3 to WAV</a> <span style="color: var(--border-color);">|</span> <a href="../wav-to-ogg/" style="color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.15s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">Convert WAV to OGG</a> <span style="color: var(--border-color);">|</span> <a href="../flac-to-mp3/" style="color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.15s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">Convert FLAC to MP3</a> <span style="color: var(--border-color);">|</span> <a href="../m4a-to-mp3/" style="color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.15s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">Convert M4A to MP3</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Recorder Tool Pane -->
+                <div class="tool-pane" id="pane-recorder">
+                    <div class="controls-grid">
+                        <div class="control-card">
+                            <h3>Recording Source & Format</h3>
+                            <div class="input-group" style="margin-bottom: 12px;">
+                                <label for="recorder-source">Select Input Channel</label>
+                                <select id="recorder-source" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="mic">Microphone Input</option>
+                                    <option value="system">Computer / System Audio</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="recorder-format">Download Format</label>
+                                <select id="recorder-format" style="background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; padding: 10px; width: 100%; outline: none; cursor: pointer;">
+                                    <option value="mp3">MP3 (Compressed)</option>
+                                    <option value="wav">WAV (Lossless)</option>
+                                    <option value="ogg">OGG (Vorbis)</option>
+                                    <option value="webm">WebM (Default)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-card">
+                            <h3>Status & Timer</h3>
+                            <div class="recorder-status-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                                <div class="timer-display" id="recorder-timer" style="font-size: 28px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary); margin-bottom: 8px;">00:00</div>
+                                <span class="status-badge" id="recorder-badge" style="background: var(--border-color); padding: 4px 10px; border-radius: 4px; font-size: 11px; text-transform: uppercase;">Idle</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recorder-preview-container" id="recorder-preview-card" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 24px; margin-bottom: 30px; display: none; text-align: center;">
+                        <h3 style="font-size: 13px; margin-bottom: 12px; color: var(--text-secondary);">Recording Preview</h3>
+                        <audio id="recorder-audio-preview" controls style="width: 100%; margin-bottom: 16px; border-radius: 4px;"></audio>
+                        <div id="recorder-status-text" style="display: none; font-size: 13px; color: var(--accent); margin-bottom: 12px; font-family: var(--font-mono);">Transcoding...</div>
+                        <div>
+                            <a id="recorder-download-btn" class="btn btn-secondary" style="display: inline-block; text-decoration: none;">Download Audio File</a>
+                        </div>
+                    </div>
+
+                    <div class="action-bar" style="margin-bottom: 40px;">
+                        <button id="recorder-toggle" class="btn btn-primary">Start Recording</button>
+                    </div>
+
+                    <!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Easy Voice Recorder - Free Online Audio Recorder</h3>
+                        <p style="margin-bottom: 12px;">This <strong>free online recorder</strong> acts as an **easy voice recorder** that lets you capture audio directly from your microphone or record computer system sound loopbacks (e.g., video soundtracks, background music, or beats playing in other tabs) using native browser APIs. Recording occurs entirely locally inside your browser, keeping your audio private while generating a safe, instant download link.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Persistent Visualization Stage -->
+            <footer class="visualizer-bar">
+                <div class="visualizer-header">
+                    <h3>Live Waveform Analysis</h3>
+                    <div class="visualizer-options">
+                        <button class="vis-opt-btn active" data-type="oscilloscope">Oscilloscope</button>
+                        <button class="vis-opt-btn" data-type="frequency">Spectrum</button>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="visualizer-canvas"></canvas>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Tool Scripts -->
+    <script src="../../tools/generator.js?v=1.1"></script>
+    <script src="../../tools/sweep.js?v=1.1"></script>
+    <script src="../../tools/metronome.js?v=1.1"></script>
+    <script src="../../tools/tuner.js?v=1.1"></script>
+    <script src="../../tools/noise.js?v=1.1"></script>
+    <script src="../../tools/converter.js?v=1.1"></script>
+    <script src="../../tools/recorder.js?v=1.1"></script>
+
+    <!-- Global App Entry -->
+    <script src="../../app.js?v=1.1"></script>
+</body>
+</html>

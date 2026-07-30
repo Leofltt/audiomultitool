@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "guitar-tuner",
+    "tool": "tuner",
+    "title": "Online Guitar Tuner – Free 6-String EADGBE Chromatic Tuner",
+    "description": "Tune your guitar online with our free client-side guitar tuner. Uses your microphone to detect pitch and tune to standard EADGBE tuning.",
+    "initialConfig": {
+      "instrument": "guitar",
+      "tuning": "standard",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Tune Your Guitar to Standard EADGBE Online",
+      "bodyParagraphs": [
+        "This online instrument tuner is pre-configured for standard 6-string guitar tuning (E2, A2, D3, G3, B3, E4). It listens to your guitar strings using your microphone, showing the pitch offset dynamically.",
+        "Your audio signals are processed 100% locally in your browser. No data is sent to external servers."
+      ]
+    }
+  },
+  {
+    "slug": "drop-d-guitar-tuner",
+    "tool": "tuner",
+    "title": "Online Drop D Guitar Tuner – Free DADGBE Tuner Template",
+    "description": "Tune your guitar to Drop D tuning (DADGBE) online. Responsive pitch detector runs 100% locally inside your browser.",
+    "initialConfig": {
+      "instrument": "guitar",
+      "tuning": "dropd",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Tune Your Guitar to Drop D (DADGBE) Online",
+      "bodyParagraphs": [
+        "Drop D tuning lowers your lowest string by a whole step from E2 to D2, enabling heavy bass sounds and one-finger power chords. Standard guitar strings 2-6 (A2, D3, G3, B3, E4) remain unchanged.",
+        "Use our microphone pitch analyzer to drop your E string safely to a clean D pitch."
+      ]
+    }
+  },
+  {
+    "slug": "7-string-guitar-tuner",
+    "tool": "tuner",
+    "title": "Online 7-String Guitar Tuner – Free BEADGBE Tuner",
+    "description": "Tune your 7-string guitar online to standard BEADGBE tuning. Accurate local microphone frequency tracking.",
+    "initialConfig": {
+      "instrument": "guitar7",
+      "tuning": "standard",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Tune Your 7-String Guitar to Standard (BEADGBE) Online",
+      "bodyParagraphs": [
+        "7-string guitars add a low B1 string below standard E-tuning, widely popular in metal, jazz, and progressive genres. The full setup maps to B1, E2, A2, D3, G3, B3, E4.",
+        "Simply select the string and pluck it. Our tuner will guide you visually until each note is aligned perfectly."
+      ]
+    }
+  },
+  {
+    "slug": "drop-a-7-string-tuner",
+    "tool": "tuner",
+    "title": "Online Drop A 7-String Guitar Tuner – Free AEADGBE Tuner",
+    "description": "Tune your 7-string guitar to Drop A (AEADGBE) tuning online. Premium browser pitch tracking with absolute privacy.",
+    "initialConfig": {
+      "instrument": "guitar7",
+      "tuning": "dropa",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Tune Your 7-String Guitar to Drop A (AEADGBE) Online",
+      "bodyParagraphs": [
+        "Drop A drops the low B string down to A1, aligning standard interval chord shapes across your bottom strings. The strings map to A1, E2, A2, D3, G3, B3, E4.",
+        "Pluck your bottom strings and adjust them using our interactive tuning visualizer."
+      ]
+    }
+  },
+  {
+    "slug": "8-string-guitar-tuner",
+    "tool": "tuner",
+    "title": "Online 8-String Guitar Tuner – Free F#BEADGBE Tuner",
+    "description": "Tune your 8-string guitar online to standard tuning (F#BEADGBE). Premium, accurate low-frequency pitch analysis.",
+    "initialConfig": {
+      "instrument": "guitar8",
+      "tuning": "standard",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Standard 8-String Guitar Tuner (F#BEADGBE) Online",
+      "bodyParagraphs": [
+        "8-string guitars extend the lower range further by adding a low F#1 string below the B1 string, common in heavy progressive metal. Standard tuning is F#1, B1, E2, A2, D3, G3, B3, E4.",
+        "Our specialized low-pitch processing algorithm tracks low frequency cycles dynamically."
+      ]
+    }
+  },
+  {
+    "slug": "drop-e-8-string-tuner",
+    "tool": "tuner",
+    "title": "Online Drop E 8-String Guitar Tuner – Free EBEADGBE Tuner",
+    "description": "Tune your 8-string guitar to Drop E (EBEADGBE) online. Safe, local browser frequency tracking for sub-bass tuning.",
+    "initialConfig": {
+      "instrument": "guitar8",
+      "tuning": "drope",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Tune Your 8-String Guitar to Drop E (EBEADGBE) Online",
+      "bodyParagraphs": [
+        "Drop E tuning drops your lowest string down to E1, matching standard bass registers for massive heavy riffs. The full scale maps to E1, B1, E2, A2, D3, G3, B3, E4.",
+        "Calibrate your instrument's bottom strings with our high-fidelity, client-side pitch detector."
+      ]
+    }
+  },
+  {
+    "slug": "ukulele-tuner",
+    "tool": "tuner",
+    "title": "Online Ukulele Tuner – Free GCEA Soprano Tuner",
+    "description": "Tune your soprano or concert ukulele online with our free mic tuner. Pre-configured for standard GCEA tuning.",
+    "initialConfig": {
+      "instrument": "ukulele",
+      "tuning": "standard",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Standard GCEA Ukulele Tuner Online",
+      "bodyParagraphs": [
+        "Get your ukulele in tune quickly with our browser-based pitch detector. Pre-configured for standard G-C-E-A reentrant ukulele tuning.",
+        "Simply grant microphone access, pluck a string, and follow the needle to tune your instrument securely in seconds."
+      ]
+    }
+  },
+  {
+    "slug": "violin-tuner",
+    "tool": "tuner",
+    "title": "Online Violin Tuner – Free GDAE Orchestral Tuner",
+    "description": "Tune your violin online. Free chromatic pitch detection pre-configured for standard GDAE orchestral violin tuning.",
+    "initialConfig": {
+      "instrument": "violin",
+      "tuning": "standard",
+      "calibration": "440"
+    },
+    "content": {
+      "heading": "Orchestral GDAE Violin Tuner Online",
+      "bodyParagraphs": [
+        "A premium online violin tuner designed to capture strings G3, D4, A4, and E5 with absolute precision. Reference A4 pitch is calibrated at standard 440 Hz.",
+        "Features responsive visual helpers to assist string musicians in tuning violin strings cleanly."
+      ]
+    }
+  }
+]

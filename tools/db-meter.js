@@ -1,5 +1,5 @@
 // Decibel Sound Level Meter Component
-window.NoiseTool = {
+window.DbMeterTool = {
     app: null,
     dbStream: null,
     dbSource: null,
@@ -14,6 +14,21 @@ window.NoiseTool = {
     init(appInstance) {
         this.app = appInstance;
         this.setupEventListeners();
+        this.applyInitialConfig();
+    },
+
+    applyInitialConfig() {
+        const pane = document.getElementById('pane-db-meter');
+        if (!pane) return;
+
+        const initialWeighting = pane.dataset.weighting;
+
+        if (initialWeighting) {
+            const weightingSelect = document.getElementById('db-weighting-select');
+            if (weightingSelect) {
+                weightingSelect.value = initialWeighting;
+            }
+        }
     },
 
     setupEventListeners() {

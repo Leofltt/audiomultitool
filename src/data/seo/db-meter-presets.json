@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "db-meter-a-weighted",
+    "tool": "db-meter",
+    "title": "A-Weighted Decibel Meter Online – Free Sound Level Meter",
+    "description": "Measure ambient noise levels using an A-weighted decibel (dBA) sound level meter online. Simulates human ear sensitivity for noise tracking.",
+    "initialConfig": {
+      "weighting": "A"
+    },
+    "content": {
+      "heading": "Online dBA (A-Weighted) Sound Level Meter",
+      "bodyParagraphs": [
+        "A-weighting (dBA) is the most commonly used frequency weighting filter. It shapes the microphone signals to match the relative loudness perceived by the human ear, which is less sensitive to low and high frequencies.",
+        "Perfect for tracking environmental noise limits, workplace noise levels, and measuring general loudness safety standards."
+      ]
+    }
+  },
+  {
+    "slug": "db-meter-c-weighted",
+    "tool": "db-meter",
+    "title": "C-Weighted Decibel Meter Online – Free Low-Frequency Sound Meter",
+    "description": "Measure low-frequency sounds using a C-weighted decibel (dBC) sound meter online. Ideal for measuring subwoofer bass and loud peak noise.",
+    "initialConfig": {
+      "weighting": "C"
+    },
+    "content": {
+      "heading": "Online dBC (C-Weighted) Bass & Peak Sound Meter",
+      "bodyParagraphs": [
+        "C-weighting (dBC) evaluates frequencies more flatly across the spectrum, specifically including low frequencies (bass). It is typically used for measuring louder environments like concerts, engines, or speaker subwoofers.",
+        "Use this meter to analyze structural bass vibrations or monitor system thresholds during peak audio playback."
+      ]
+    }
+  }
+]

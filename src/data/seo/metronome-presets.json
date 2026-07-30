@@ -1,0 +1,306 @@
+[
+  {
+    "slug": "60-bpm",
+    "tool": "metronome",
+    "title": "60 BPM Metronome – Free Online Tempo Keeper",
+    "description": "Free online 60 BPM metronome. Pre-set to 60 beats per minute with adjustable subdivisions. Ideal for slow practice, scales, and timing.",
+    "initialConfig": {
+      "bpm": "60",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "Practice at 60 BPM (Largo / Adagio)",
+      "bodyParagraphs": [
+        "60 BPM (Beats Per Minute) represents exactly one beat per second. It is a slow, steady tempo ideal for practicing precision, mastering basic rhythms, and practicing instrument scales.",
+        "Use this preset metronome tool to build muscle memory and practice timing at a slow tempo."
+      ]
+    }
+  },
+  {
+    "slug": "70-bpm-ballad",
+    "tool": "metronome",
+    "title": "70 BPM Metronome – R&B & Pop Ballad Tempo Keeper",
+    "description": "Free online 70 BPM metronome. Pre-configured tempo optimized for practicing slow pop ballads, R&B, and emotional acoustic tracks.",
+    "initialConfig": {
+      "bpm": "70",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "70 BPM Metronome for slow R&B and Ballads",
+      "bodyParagraphs": [
+        "70 BPM is a classic tempo for emotional power ballads, slow R&B, and down-tempo soul tracks. It allows musicians to practice sustained notes and emotional timing.",
+        "Useful for training vocal pacing, guitar vibrato, and keeping a steady rhythm on slower ballads."
+      ]
+    }
+  },
+  {
+    "slug": "80-bpm-hip-hop",
+    "tool": "metronome",
+    "title": "80 BPM Metronome – Hip-Hop & Boom Bap Tempo Keeper",
+    "description": "Free online 80 BPM metronome. Ideal speed for practicing classic Hip-Hop, Boom Bap, and down-tempo grooves.",
+    "initialConfig": {
+      "bpm": "80",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "80 BPM Metronome for Hip-Hop & Boom Bap",
+      "bodyParagraphs": [
+        "80 BPM is one of the most popular tempos for classic hip-hop, boom bap beats, and slow funk grooves. It provides a relaxed, laid-back feel.",
+        "Perfect for practicing drum fills, vocal flows/freestyles, and developing a solid micro-timing swing on your instrument."
+      ]
+    }
+  },
+  {
+    "slug": "90-bpm-rap-tempo",
+    "tool": "metronome",
+    "title": "90 BPM Metronome – Rap & East Coast Hip-Hop Tempo Keeper",
+    "description": "Free online 90 BPM metronome. Optimized speed for practicing East Coast hip-hop beats, mid-tempo rap flows, and classic breakbeats.",
+    "initialConfig": {
+      "bpm": "90",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "90 BPM Metronome for Rap and Hip-Hop",
+      "bodyParagraphs": [
+        "90 BPM is the golden-era standard tempo for East Coast hip-hop, boom bap, and classic rap rhythms. It is fast enough to drive energy, yet slow enough to maintain groove.",
+        "Use this metronome to hone vocal articulation, practice drum syncopation, and master bassline timing."
+      ]
+    }
+  },
+  {
+    "slug": "100-bpm-reggae",
+    "tool": "metronome",
+    "title": "100 BPM Metronome – Reggae & Dancehall Tempo Keeper",
+    "description": "Free online 100 BPM metronome. Configured tempo optimized for practicing reggae skank patterns, dancehall beats, and pop-rock grooves.",
+    "initialConfig": {
+      "bpm": "100",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "100 BPM Metronome for Reggae and Dancehall",
+      "bodyParagraphs": [
+        "100 BPM is a versatile mid-tempo standard widely used in Reggae, Dancehall, and upbeat Pop music. It provides a bouncy, syncopated rhythm.",
+        "Perfect for guitarists practicing offbeat 'skank' chords, bassists holding down reggae grooves, and percussionists practicing syncopated beats."
+      ]
+    }
+  },
+  {
+    "slug": "110-bpm-synthwave",
+    "tool": "metronome",
+    "title": "110 BPM Metronome – Synthwave & Nu-Disco Tempo Keeper",
+    "description": "Free online 110 BPM metronome. Configured tempo optimized for synthwave basslines, disco grooves, and mid-tempo pop-rock songs.",
+    "initialConfig": {
+      "bpm": "110",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "110 BPM Metronome for Synthwave and Disco",
+      "bodyParagraphs": [
+        "110 BPM is the standard tempo for retro Synthwave, Nu-Disco, and classic 80s pop music. It drives a driving, four-on-the-floor groove.",
+        "Ideal for practicing steady arpeggiated basslines, syncopated rhythm guitars, or electronic drum fills."
+      ]
+    }
+  },
+  {
+    "slug": "120-bpm",
+    "tool": "metronome",
+    "title": "120 BPM Metronome – Free Online Tempo Keeper",
+    "description": "Free online 120 BPM metronome. Pre-set to 120 beats per minute with custom time signatures and subdivision clicks.",
+    "initialConfig": {
+      "bpm": "120",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "Practice at 120 BPM (Allegro)",
+      "bodyParagraphs": [
+        "120 BPM is a very common standard tempo in pop, rock, electronic, and dance music. It represents exactly 2 beats per second.",
+        "Perfect for practicing syncopation, building endurance, or practicing drum rudiments and guitar picking patterns cleanly."
+      ]
+    }
+  },
+  {
+    "slug": "124-bpm-house-music",
+    "tool": "metronome",
+    "title": "124 BPM Metronome – House & Techno Tempo Keeper",
+    "description": "Free online 124 BPM metronome. Pre-set tempo optimized for House, Techno, and electronic club music production and practice.",
+    "initialConfig": {
+      "bpm": "124",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "124 BPM Metronome for House & Techno",
+      "bodyParagraphs": [
+        "124 BPM is the quintessential speed of standard House, Tech House, and Deep House tracks. It is perfect for aligning steady four-on-the-floor kick patterns.",
+        "Excellent for practicing groove timing, synthesizer transitions, and bassline syncopation cleanly."
+      ]
+    }
+  },
+  {
+    "slug": "128-bpm-edm",
+    "tool": "metronome",
+    "title": "128 BPM Metronome – EDM & Electro House Tempo Keeper",
+    "description": "Free online 128 BPM metronome. Optimized speed for practicing EDM, Electro House, and festival dance anthems.",
+    "initialConfig": {
+      "bpm": "128",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "128 BPM Metronome for EDM and Electro House",
+      "bodyParagraphs": [
+        "128 BPM is the industry standard tempo for EDM, Electro House, and progressive house tracks. It delivers high kinetic energy and driving rhythms.",
+        "Use this metronome to practice electronic synth leads, high-speed kick patterns, or double-time build-ups."
+      ]
+    }
+  },
+  {
+    "slug": "130-bpm-dubstep-trap",
+    "tool": "metronome",
+    "title": "130 BPM Metronome – Trap & Dubstep Tempo Keeper",
+    "description": "Free online 130 BPM metronome. Pre-configured speed optimized for trap beats, heavy dubstep, and bass music practice.",
+    "initialConfig": {
+      "bpm": "130",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "130 BPM Metronome for Trap & Dubstep",
+      "bodyParagraphs": [
+        "130 BPM is a standard tempo for trap, modern dubstep, and heavy bass music. Often played with a half-time feel, it provides a strong, syncopated rhythm.",
+        "Great for practicing fast hi-hat rolls, syncopated sub-bass hits, and rhythmic vocal deliveries."
+      ]
+    }
+  },
+  {
+    "slug": "140-bpm",
+    "tool": "metronome",
+    "title": "140 BPM Metronome – Free Online Tempo Keeper",
+    "description": "Free online 140 BPM metronome. Pre-set to 140 beats per minute for high-tempo music practice.",
+    "initialConfig": {
+      "bpm": "140",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "Practice at 140 BPM (Vivace)",
+      "bodyParagraphs": [
+        "140 BPM is a lively tempo popular in double-time music, techno, dubstep, and fast acoustic pieces.",
+        "Practice at 140 BPM to increase speed, finger dexterity, and timing coordination."
+      ]
+    }
+  },
+  {
+    "slug": "160-bpm-jungle-dnb",
+    "tool": "metronome",
+    "title": "160 BPM Metronome – Jungle & Drum & Bass Tempo Keeper",
+    "description": "Free online 160 BPM metronome. Pre-configured speed optimized for practicing fast breakbeats, Jungle, and Drum & Bass patterns.",
+    "initialConfig": {
+      "bpm": "160",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "160 BPM Metronome for Jungle & Drum and Bass",
+      "bodyParagraphs": [
+        "160 BPM is the sweet-spot tempo for classic 90s Jungle, Drum and Bass, and fast breakbeat music. It requires fast hand speed and precise syncopated timing.",
+        "Use this preset metronome to practice bassline grooves, syncopated drum patterns, or rapid instrument picking exercises."
+      ]
+    }
+  },
+  {
+    "slug": "174-bpm-dnb",
+    "tool": "metronome",
+    "title": "174 BPM Metronome – Drum and Bass Tempo Keeper",
+    "description": "Free online 174 BPM metronome. Pre-set tempo optimized for Drum and Bass, liquid funk, and high-speed breakbeat exercises.",
+    "initialConfig": {
+      "bpm": "174",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "174 BPM Metronome for Drum and Bass",
+      "bodyParagraphs": [
+        "174 BPM is the modern standard tempo for Drum and Bass (DnB) tracks, including liquid, neurofunk, and jump-up subgenres.",
+        "Perfect for practicing rapid-fire double-time drumming patterns, liquid basslines, or complex guitar picking exercises."
+      ]
+    }
+  },
+  {
+    "slug": "180-bpm-punk-metal",
+    "tool": "metronome",
+    "title": "180 BPM Metronome – Punk & Thrash Metal Tempo Keeper",
+    "description": "Free online 180 BPM metronome. High-tempo speed optimized for thrash metal, punk rock, and rapid scale exercises.",
+    "initialConfig": {
+      "bpm": "180",
+      "signature": "4",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "180 BPM Metronome for Punk and Thrash Metal",
+      "bodyParagraphs": [
+        "180 BPM is an intense, high-velocity tempo typical in punk rock, thrash metal, and speed metal. It requires exceptional speed and rhythmic discipline.",
+        "Use this metronome to practice down-picking endurance, blast beats, and rapid scalar solo sections."
+      ]
+    }
+  },
+  {
+    "slug": "5-4-time-metronome",
+    "tool": "metronome",
+    "title": "5/4 Time Signature Metronome – Odd Meter Practice Click",
+    "description": "Free online metronome configured for 5/4 odd time signature. Practice quintuple meter music easily in your browser.",
+    "initialConfig": {
+      "bpm": "120",
+      "signature": "5",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "Practice in 5/4 Odd Time Signature",
+      "bodyParagraphs": [
+        "5/4 time signature (quintuple meter) consists of five quarter-note beats per measure, famously heard in jazz classics like 'Take Five' and progressive rock/soundtracks.",
+        "Our metronome clicks on the downbeat of each measure, helping you stay oriented through irregular rhythmic groupings like 3+2 or 2+3."
+      ]
+    }
+  },
+  {
+    "slug": "7-8-time-metronome",
+    "tool": "metronome",
+    "title": "7/8 Time Signature Metronome – Odd Time Rhythm Click",
+    "description": "Free online metronome pre-set to 7/8 time signature. Master complex odd meter rhythms and subdivisions online.",
+    "initialConfig": {
+      "bpm": "144",
+      "signature": "7",
+      "subdivision": "1",
+      "sound": "woodblock"
+    },
+    "content": {
+      "heading": "Practice in 7/8 Complex Time Signature",
+      "bodyParagraphs": [
+        "7/8 time signature contains seven eighth-notes per measure, creating an asymmetrical rhythmic pulse. It is frequently grouped as 2+2+3 or 3+2+2.",
+        "Use this odd meter metronome to build confidence playing complex progressive riffs, classical pieces, or folk rhythms."
+      ]
+    }
+  }
+]

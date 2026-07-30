@@ -7,13 +7,8 @@ const mainHtml = fs.readFileSync(mainHtmlPath, 'utf8');
 const tools = [
     {
         name: 'generator',
-        title: 'Online Tone Generator & Oscillator',
-        desc: 'Generate pure audio frequencies (sine, square, sawtooth, triangle waves) in your browser.'
-    },
-    {
-        name: 'sweep',
-        title: 'Speaker Frequency Sweep & Subwoofer Test',
-        desc: 'Test your subwoofers and speaker frequency limits with clean logarithmic tone sweeps.'
+        title: 'Online Signal & Sweep Generator',
+        desc: 'Generate pure audio tones, run speaker frequency sweeps, or play Shepard\'s tones and focus noise colors.'
     },
     {
         name: 'metronome',
@@ -26,9 +21,9 @@ const tools = [
         desc: 'Free chromatic tuner using your microphone to tune guitars, violins, ukuleles, and more.'
     },
     {
-        name: 'noise',
-        title: 'Online Decibel Meter & Noise Generator',
-        desc: 'Measure sound volume pressure levels with a dB meter and generate focus white, pink, or brownian noise.'
+        name: 'db-meter',
+        title: 'Online Decibel Sound Level Meter',
+        desc: 'Measure ambient sound volume pressure levels with a real-time dBA and dBC weighted decibel meter.'
     },
     {
         name: 'converter',
@@ -98,3 +93,6 @@ tools.forEach(tool => {
 });
 
 console.log('Static routing sub-pages built successfully.');
+
+// Run programmatic SEO pages build script
+require('./build-seo-pages.js');

@@ -35,6 +35,22 @@ window.TunerTool = {
                 custom: { name: "Custom Tuning...", notes: ["E2", "A2", "D3", "G3", "B3", "E4"] }
             }
         },
+        guitar7: {
+            name: "Guitar (7-String)",
+            tunings: {
+                standard: { name: "Standard (B E A D G B E)", notes: ["B1", "E2", "A2", "D3", "G3", "B3", "E4"] },
+                dropa: { name: "Drop A (A E A D G B E)", notes: ["A1", "E2", "A2", "D3", "G3", "B3", "E4"] },
+                custom: { name: "Custom Tuning...", notes: ["B1", "E2", "A2", "D3", "G3", "B3", "E4"] }
+            }
+        },
+        guitar8: {
+            name: "Guitar (8-String)",
+            tunings: {
+                standard: { name: "Standard (F# B E A D G B E)", notes: ["F#1", "B1", "E2", "A2", "D3", "G3", "B3", "E4"] },
+                drope: { name: "Drop E (E B E A D G B E)", notes: ["E1", "B1", "E2", "A2", "D3", "G3", "B3", "E4"] },
+                custom: { name: "Custom Tuning...", notes: ["F#1", "B1", "E2", "A2", "D3", "G3", "B3", "E4"] }
+            }
+        },
         bass: {
             name: "Bass Guitar",
             tunings: {
@@ -77,6 +93,39 @@ window.TunerTool = {
         this.app = appInstance;
         this.setupEventListeners();
         this.populateTunings();
+        this.updateTunerStringsCard();
+        this.applyInitialConfig();
+    },
+
+    applyInitialConfig() {
+        const pane = document.getElementById('pane-tuner');
+        if (!pane) return;
+
+        const initialInstrument = pane.dataset.instrument;
+        const initialTuning = pane.dataset.tuning;
+        const initialCalibration = pane.dataset.calibration;
+
+        if (initialInstrument) {
+            const instrumentSelect = document.getElementById('tuner-instrument-select');
+            if (instrumentSelect) {
+                instrumentSelect.value = initialInstrument;
+                // Update tuning options based on instrument
+                this.populateTunings();
+            }
+        }
+        if (initialTuning) {
+            const tuningSelect = document.getElementById('tuner-tuning-select');
+            if (tuningSelect) {
+                tuningSelect.value = initialTuning;
+            }
+        }
+        if (initialCalibration) {
+            this.a4Frequency = parseInt(initialCalibration);
+            const calibrationInput = document.getElementById('tuner-calibration');
+            const calibrationVal = document.getElementById('tuner-cal-val');
+            if (calibrationInput) calibrationInput.value = initialCalibration;
+            if (calibrationVal) calibrationVal.textContent = initialCalibration;
+        }
         this.updateTunerStringsCard();
     },
 

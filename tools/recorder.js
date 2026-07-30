@@ -13,6 +13,24 @@ window.RecorderTool = {
     init(appInstance) {
         this.app = appInstance;
         this.setupEventListeners();
+        this.applyInitialConfig();
+    },
+
+    applyInitialConfig() {
+        const pane = document.getElementById('pane-recorder');
+        if (!pane) return;
+
+        const initialSource = pane.dataset.source;
+        const initialFormat = pane.dataset.format;
+
+        if (initialSource) {
+            const sourceSelect = document.getElementById('recorder-source');
+            if (sourceSelect) sourceSelect.value = initialSource;
+        }
+        if (initialFormat) {
+            const formatSelect = document.getElementById('recorder-format');
+            if (formatSelect) formatSelect.value = initialFormat;
+        }
     },
 
     setupEventListeners() {
