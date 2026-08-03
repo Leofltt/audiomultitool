@@ -5,10 +5,9 @@ const ASSETS = [
   '/styles.css',
   '/app.js',
   '/tools/generator.js',
-  '/tools/sweep.js',
   '/tools/metronome.js',
   '/tools/tuner.js',
-  '/tools/noise.js',
+  '/tools/db-meter.js',
   '/tools/converter.js',
   '/tools/recorder.js'
 ];
