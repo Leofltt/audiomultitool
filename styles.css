@@ -24,7 +24,7 @@
 }
 
 /* Light Theme overrides */
-body.light-theme {
+.light-theme {
     --bg-main: #F9FAFB;
     --bg-sidebar: #F3F4F6;
     --bg-surface: #FFFFFF;
@@ -48,6 +48,10 @@ body.light-theme {
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+}
+
+html {
+    background-color: var(--bg-main);
 }
 
 body {
