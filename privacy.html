@@ -43,11 +43,15 @@
         .back-link:hover {
             color: var(--primary-hover);
         }
+        body {
+            height: auto !important;
+            overflow: auto !important;
+        }
     </style>
 </head>
 <body class="light-theme"> <!-- Defaults to light-theme for legal readability, adapts via localstorage -->
     <div class="legal-container">
-        <a href="/" class="back-link">← Back to AudioMultiTool</a>
+        <a href="#" onclick="if(document.referrer && document.referrer.includes(window.location.hostname)){history.back();return false;}else{window.location.href='/';}" class="back-link">← Back to AudioMultiTool</a>
         <h1>Privacy Policy</h1>
         <p>Last updated: July 2026</p>
         

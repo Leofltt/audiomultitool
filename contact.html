@@ -73,14 +73,15 @@
             font-size: 14px;
             font-weight: 600;
         }
-        body.light-theme .form-group input, body.light-theme .form-group textarea {
-            background: rgba(0, 0, 0, 0.02);
+        body {
+            height: auto !important;
+            overflow: auto !important;
         }
     </style>
 </head>
 <body class="light-theme">
     <div class="legal-container">
-        <a href="/" class="back-link">← Back to AudioMultiTool</a>
+        <a href="#" onclick="if(document.referrer && document.referrer.includes(window.location.hostname)){history.back();return false;}else{window.location.href='/';}" class="back-link">← Back to AudioMultiTool</a>
         <h1>Contact Us</h1>
         <p>Have a question, feedback, feature request, or security vulnerability to disclose? Submit the form below to reach us.</p>
         

@@ -79,6 +79,7 @@
                     <!-- Interactive placeholder or standard 250x250 slot -->
                 </div>
                 <div class="legal-footer-links" style="margin-top: 15px; font-size: 11px; text-align: center; color: var(--text-secondary);">
+                    <a href="/about.html" style="color: var(--text-secondary); text-decoration: none; margin-right: 10px;">About</a>
                     <a href="/privacy.html" style="color: var(--text-secondary); text-decoration: none; margin-right: 10px;">Privacy Policy</a>
                     <a href="/terms.html" style="color: var(--text-secondary); text-decoration: none; margin-right: 10px;">Terms of Service</a>
                     <a href="/contact.html" style="color: var(--text-secondary); text-decoration: none;">Contact</a>
@@ -240,8 +241,38 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Client-Side Signal & Sweep Generator</h3>
-                        <p style="margin-bottom: 12px;">This versatile client-side audio generator combines tone oscillators, color spectrum noise, speaker frequency sweeps, and acoustic illusions into a single Web Audio utility. Run frequency diagnostics, play infinitely rising Shepard's tones, generate pink or brown noise, and calibrate audio equipment directly inside your web browser. <strong>No audio is sent to external servers</strong>, protecting your privacy and ensuring lag-free operation.</p>
+                        <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">Online Client-Side Signal & Sweep Generator Guide</h3>
+                        <p style="margin-bottom: 12px;">This versatile client-side audio generator combines tone oscillators, color spectrum noise, speaker frequency sweeps, and acoustic illusions into a single Web Audio utility. Run frequency diagnostics, play infinitely rising <a href="https://en.wikipedia.org/wiki/Shepard_tone" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Shepard's tones</a>, generate pink or brown noise, and calibrate audio equipment directly inside your web browser. <strong>No audio is sent to external servers</strong>, protecting your privacy and ensuring lag-free operation.</p>
+                        
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Understanding Oscillator Waveforms</h4>
+                        <p style="margin-bottom: 12px;">The generator utilizes native browser oscillators to synthesize four primary wave shapes, each with distinct harmonic properties (read more on <a href="https://en.wikipedia.org/wiki/Sine_wave" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">oscillators and sine waves</a>):</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>Sine Wave:</strong> A pure fundamental frequency with no additional harmonics. Ideal for low-frequency testing, clean calibrations, and tuning forks.</li>
+                            <li><strong>Square Wave:</strong> Rich in odd harmonics (1st, 3rd, 5th, etc.) resulting in a buzzy, bright digital timbre. Commonly used in electronic synthesis and digital clocking tests.</li>
+                            <li><strong>Triangle Wave:</strong> Contains only odd harmonics, but their amplitude decays exponentially. The result is a softer, rounder tone similar to a flute.</li>
+                            <li><strong>Sawtooth Wave:</strong> Features both even and odd harmonics decaying linearly. It has a sharp, brassy sound perfect for modeling stringed instruments.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequency Sweeps & Speaker Calibration</h4>
+                        <p style="margin-bottom: 12px;">A frequency sweep continuously sweeps across a range of frequencies (e.g., from 20 Hz to 20 kHz). This is invaluable for finding room resonances, identifying physical cabinet rattles, and mapping speaker crossover frequencies. <strong>Logarithmic (exponential) sweeps</strong> are recommended for speaker testing as they spend proportional time in each musical octave, matching how humans perceive pitch.</p>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Color Spectrums of Noise</h4>
+                        <p style="margin-bottom: 12px;">Noise colors correspond to different spectral energy densities across the audio band (see <a href="https://en.wikipedia.org/wiki/Colors_of_noise" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Wikipedia's noise color definitions</a>):</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>White Noise:</strong> Equal energy per Hertz. Sounds like a sharp, bright hiss. Excellent for testing room responses or sound-masking.</li>
+                            <li><strong>Pink Noise:</strong> Equal energy per octave. Because our hearing scales logarithmically, pink noise sounds balanced and flat, mimicking natural waterfalls or rainfall. Perfect for sound system calibration.</li>
+                            <li><strong>Brown Noise (Brownian):</strong> Power density decreases by 6 dB per octave. It has a warm, deep rumble resembling distant thunder or ocean waves. Ideal for meditation and focus.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequently Asked Questions</h4>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Are these frequencies safe for my speakers and ears?</strong>
+                            <span>Yes, provided you start at low volumes. Pure high-frequency sweeps (above 10 kHz) can carry high electrical power without sounding very loud to humans, which can overheat speaker tweeters if played too loudly. Always start low.</span>
+                        </div>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Why can't I hear the sweep at 20 Hz or 20,000 Hz?</strong>
+                            <span>The typical range of human hearing is 20 Hz to 20,000 Hz. However, age, environment, and speaker limitations reduce this range. Most desktop speakers or laptop drivers cannot reproduce sub-bass frequencies below 50 Hz.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -347,11 +378,34 @@
                     </div>
 
                     <!-- Valuable Content SEO Section -->
-                    <article class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
                         <h2 style="font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">90 BPM Metronome for Rap and Hip-Hop</h2>
                         <p style="margin-bottom: 12px;">90 BPM is the golden-era standard tempo for East Coast hip-hop, boom bap, and classic rap rhythms. It is fast enough to drive energy, yet slow enough to maintain groove.</p>
 <p style="margin-bottom: 12px;">Use this metronome to hone vocal articulation, practice drum syncopation, and master bassline timing.</p>
-                    </article>
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Precision Tempo & Configuration Sharing</h4>
+                        <p style="margin-bottom: 12px;">Click the <strong>Share Link</strong> button to generate a custom URL containing your exact configuration (BPM, signature, subdivision, click sound profile). In addition, checking the sync sharing option will synchronize the metronome start timer to the absolute <a href="https://en.wikipedia.org/wiki/Unix_time" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Unix Epoch timeline</a>. If two users open the same shared link, their metronomes will click in perfect sync over the network, completely without latency or server signaling required.</p>
+                        
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">How to Use Subdivision and Accents</h4>
+                        <p style="margin-bottom: 12px;">Choose your primary Time Signature to configure the beat-bar count (such as 4/4 or 6/8 time) or define a custom time signature to practice complex meters. Set the Subdivision multiplier to practice subdivisions (up to 8x, including quintuplets, sextuplets, septuplets, and thirty-second notes). The metronome automatically accents the first beat of each measure with a distinct higher frequency click, keeping your rhythm perfectly synchronized.</p>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">The Importance of Rhythm Training</h4>
+                        <p style="margin-bottom: 12px;">Developing a strong sense of internal pulse is critical for any musician. Practice techniques include:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>Slow Practice:</strong> Set the BPM to 60-80% of the target speed to perfect finger movements before speeding up.</li>
+                            <li><strong>Speed Bursts:</strong> Practice difficult passages at high speed in short bursts, returning to a slower baseline.</li>
+                            <li><strong>Subdivision Control:</strong> Switch from quarter notes to triplets or sixteenth notes to master rhythmic subdivisions without changing the underlying tempo.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequently Asked Questions</h4>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Why does a standard browser timer drift?</strong>
+                            <span>Traditional web timers like `setTimeout` or `setInterval` run on the browser's main JavaScript thread. If the page is scrolling, rendering, or executing background scripts, the thread is blocked, delaying the timer. The Web Audio API operates on a separate high-priority hardware clock thread, scheduling beats independently of rendering.</span>
+                        </div>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">What is a BPM Tap Calculator?</strong>
+                            <span>Our Tap Tempo tool allows you to tap any key (or click the button) in rhythm with a song you are listening to. The system calculates the average time between taps to tell you the exact beats per minute (BPM) and estimate the musical genre.</span>
+                        </div>
+                    </div>
 
                     <!-- Internal Linking Grid -->
                     <div class="linking-grid-section" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
@@ -451,8 +505,30 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Chromatic Tuner Pitch Tracking</h3>
-                        <p style="margin-bottom: 12px;">This chromatic instrument tuner uses an <strong>auto-correlation algorithm</strong> to analyze microphone audio streams in real-time. Auto-correlation isolates the fundamental frequency of single voice or acoustic instrument pitches (like guitar, bass, or violin) by searching for repeating signal cycles in the time domain, calculating offset cents from target standard pitch scales.</p>
+                        <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">Online Chromatic Tuner & Pitch Pipe Guide</h3>
+                        <p style="margin-bottom: 12px;">This chromatic instrument tuner uses a high-precision <a href="https://en.wikipedia.org/wiki/Autocorrelation" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">auto-correlation pitch tracking algorithm</a> to analyze microphone audio streams in real-time. By searching for repeating signal cycles in the time-domain data, it isolates the fundamental frequency of single voice or acoustic instrument pitches, comparing them against standardized target notes to calculate tuning offsets in <a href="https://en.wikipedia.org/wiki/Cent_(music)" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">cents</a>.</p>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Understanding Pitch Detection & Cents</h4>
+                        <p style="margin-bottom: 12px;">Pitches are mapped to the standard chromatic scale where an octave is split into 12 semitones. Each semitone is further divided into 100 cents. A cents deviation of 0 indicates the note is perfectly in tune. If the cents value is negative, the string is flat (needs tightening). If it is positive, the string is sharp (needs loosening).</p>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">How to Tune Your Instrument</h4>
+                        <p style="margin-bottom: 12px;">Follow these simple steps for quick instrument alignment:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li>Select your instrument mode (e.g., standard 6-string Guitar, 4-string Bass, Ukulele, or Violin) or keep it in **Chromatic** for a freeform frequency sweep.</li>
+                            <li>Pluck a single string clearly, keeping other strings muted to avoid harmonic interference.</li>
+                            <li>Watch the dial needle: if the needle rests left of center, tighten the string peg. If it sits to the right, loosen it.</li>
+                            <li>For reference tuning, click on the string pegs in the visual container to play pure reference audio tones for ear-tuning training.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequently Asked Questions</h4>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">What is A4 Calibration?</strong>
+                            <span>A4 Calibration sets the standard pitch reference frequency for middle A (A4). While standard modern tuning calibrates A4 to the <a href="https://en.wikipedia.org/wiki/A440_(pitch_standard)" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">A440 pitch standard</a> (440 Hz), certain orchestras and baroque setups prefer 442 Hz, 443 Hz, or historical 415 Hz/432 Hz frequencies. Slide the calibration controller to shift the reference grid.</span>
+                        </div>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Is my microphone audio safe and private?</strong>
+                            <span>Yes, absolutely. The tuner functions 100% client-side inside your browser. Audio buffers are captured, analyzed in real-time in temporary RAM, and immediately discarded. No audio data is recorded or transmitted to any server.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -500,15 +576,34 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 30px;">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Decibel Meter & Sound Level Calibrator</h3>
-                        <p style="margin-bottom: 12px;">This sound pressure level (SPL) meter checks ambient noise using your browser microphone. It supports standard **A-weighting (dBA)** filters to model human hearing frequency responses, tracking minimum, maximum, and average values in real-time. This tool is perfect for home theater calibration, workspace noise assessment, and general auditory safety monitoring.</p>
-                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Understanding Decibel Level Safety Limits:</h4>
-                        <ul style="margin-left: 18px; list-style-type: disc;">
-                            <li><strong>30–45 dB:</strong> Very Quiet. Typical whisper, library environment, or quiet bedroom.</li>
-                            <li><strong>50–65 dB:</strong> Moderate. Normal face-to-face conversation, quiet office, or rainfall.</li>
-                            <li><strong>70–80 dB:</strong> Loud. Heavy city street traffic, vacuum cleaners, or alarm clocks.</li>
-                            <li><strong>85+ dB:</strong> Hearing Hazard. Continuous exposure above 85 dB (e.g. lawnmowers, heavy machinery, loud concerts) requires ear protection.</li>
+                        <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">Online Decibel Meter & Sound Level Calibrator Guide</h3>
+                        <p style="margin-bottom: 12px;">This sound pressure level (SPL) meter checks ambient noise using your browser microphone. It supports standard <a href="https://en.wikipedia.org/wiki/A-weighting" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">A-weighting (dBA)</a> and Z-weighting (flat) filters to model environmental loudness and human ear frequency responses, tracking minimum, maximum, and average values in real-time. This tool is perfect for home theater calibration, workspace noise assessment, and general auditory safety monitoring.</p>
+                        
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Understanding dB Weighting Curves</h4>
+                        <p style="margin-bottom: 12px;">Frequency weighting filters shape the input signal before calculating <a href="https://en.wikipedia.org/wiki/Decibel" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">decibels</a> to suit specific applications:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>dB(A) Weighting:</strong> Matches the frequency response of the human ear, which is naturally less sensitive to extremely low frequencies (bass) and extremely high frequencies at moderate volumes. This is the global standard for environmental noise assessments and <a href="https://www.osha.gov/noise" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">OSHA workplace noise regulations</a>.</li>
+                            <li><strong>dB(Z) Flat Weighting:</strong> Zero weighting. Measures the absolute acoustic power evenly from 10 Hz to 20 kHz. Essential for sound system diagnostics, measuring subwoofer peak bass pressures, and calibrating mixing consoles.</li>
                         </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Decibel Safety Thresholds & Guidelines</h4>
+                        <p style="margin-bottom: 12px;">Noise exposure risk levels depend on absolute decibel volume and time duration:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>30–45 dB:</strong> Safe & Quiet. Typical whisper, library environment, or a peaceful bedroom at night.</li>
+                            <li><strong>50–65 dB:</strong> Moderate. Normal face-to-face conversation, quiet office space, or light rainfall.</li>
+                            <li><strong>70–80 dB:</strong> Loud. Heavy city street traffic, vacuum cleaners, hair dryers, or standard alarm clocks.</li>
+                            <li><strong>85+ dB:</strong> Hearing Hazard. Continuous exposure above 85 dB (e.g., lawnmowers, factory equipment, loud music events) requires ear protection to prevent long-term damage.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequently Asked Questions</h4>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">How accurate is this online decibel meter?</strong>
+                            <span>While the mathematical calculation of Root Mean Square (RMS) decibels is exact, the absolute accuracy depends on the calibration of your device's built-in microphone. Most consumer phone and laptop microphones have automatic gain controls (AGC) or noise-canceling filters built-in at the OS level, meaning this tool is excellent for relative measurements but shouldn't replace certified hardware decibel meters for legal disputes.</span>
+                        </div>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Does my device save my audio recordings?</strong>
+                            <span>No. The tool processes audio buffers instantaneously in real-time RAM using the Web Audio API's AnalyserNode. The stream is never saved, cached, or sent to external servers, securing your audio privacy.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -601,13 +696,34 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Online Client-Side Audio Converter</h3>
+                        <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">Online Client-Side Audio Converter Guide</h3>
                         <p style="margin-bottom: 12px;">This client-side audio file converter lets you transcode music files, sound clips, and voice tracks directly inside your browser. By utilizing native HTML5 Web Audio decoding and local chunk-encoding script compressors, all file processing happens entirely on your computer. <strong>Your audio is never uploaded to any external server</strong>, guaranteeing 100% privacy, instant conversion speeds, and zero bandwidth or file size limits.</p>
-                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 6px;">Supported Formats:</h4>
-                        <ul style="margin-left: 18px; margin-bottom: 12px; list-style-type: disc;">
-                            <li><strong>Decoding Inputs:</strong> Read files in MP3, WAV, OGG, M4A, FLAC, AAC, WebM, and AIFF audio formats.</li>
-                            <li><strong>Encoding Outputs:</strong> Convert files into MP3 (bitrates up to 320 kbps), WAV (bit depth up to 32-bit Float), OGG (Vorbis), and WEBM (WebM Audio).</li>
+                        
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Supported Codecs & File Formats</h4>
+                        <p style="margin-bottom: 12px;">This tool supports standard high-fidelity and compressed formats for reading and writing (see <a href="https://en.wikipedia.org/wiki/Audio_file_format" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Wikipedia's audio format guide</a>):</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>WAV (<a href="https://en.wikipedia.org/wiki/WAV" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Waveform Audio File Format</a>):</strong> Uncompressed LPCM format. It retains absolute mathematical fidelity but has larger file sizes. Supports bit depths from 8-bit lofi up to 32-bit floating point precision.</li>
+                            <li><strong>MP3 (<a href="https://en.wikipedia.org/wiki/MP3" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">MPEG-1 Audio Layer III</a>):</strong> The classic <a href="https://en.wikipedia.org/wiki/Lossy_compression" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">lossy compression</a> standard. Shrinks files to ~10% of their size by stripping frequencies less audible to the human ear. Selectable bitrates range from 96 kbps up to 320 kbps (highest quality).</li>
+                            <li><strong>OGG (Vorbis):</strong> An open-source, patent-free alternative to MP3. Typically offers better sound quality than MP3 at similar medium bitrates.</li>
+                            <li><strong>WEBM (WebM Audio):</strong> Standard format built for modern web browsers, providing highly efficient compression profiles.</li>
                         </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Sample Rates & Channels</h4>
+                        <p style="margin-bottom: 12px;">When converting files, you can modify the following parameters:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>Sample Rate:</strong> The frequency of audio samples captured per second. Standard values include 44.1 kHz (CD quality) and 48 kHz (video/film standard). Downsampling (e.g., to 22.05 kHz) reduces file size, while upsampling to 96 kHz is supported for high-definition playback.</li>
+                            <li><strong>Channels:</strong> Convert stereo tracks (left and right channels) into a single combined mono track to save space, or preserve original spatial definitions.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequently Asked Questions</h4>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Are my private files sent to a remote server?</strong>
+                            <span>No. Unlike online file conversion websites that upload your files to external cloud servers, this tool works entirely locally. The file decoding, parameter mapping, and compression steps are executed inside your browser thread using WebAssembly and Javascript engines, meaning your audio files never leave your computer.</span>
+                        </div>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Why did my browser crash on a very large file?</strong>
+                            <span>Since all processing occurs in local RAM, converting extremely large audio files (like full podcasts or DJ sets exceeding 500 MB) can exceed browser tab memory allocations. To prevent this, the converter processes multiple uploaded files sequentially rather than in parallel.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -657,8 +773,34 @@
 
                     <!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                        <h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; text-transform: none; letter-spacing: 0;">Easy Voice Recorder - Free Online Audio Recorder</h3>
+                        <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">Easy Voice Recorder - Free Online Audio Recorder Guide</h3>
                         <p style="margin-bottom: 12px;">This <strong>free online recorder</strong> acts as an **easy voice recorder** that lets you capture audio directly from your microphone or record computer system sound loopbacks (e.g., video soundtracks, background music, or beats playing in other tabs) using native browser APIs. Recording occurs entirely locally inside your browser, keeping your audio private while generating a safe, instant download link.</p>
+                        
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Capturing High-Quality Audio Online</h4>
+                        <p style="margin-bottom: 12px;">The tool provides multiple recording setups depending on your needs:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>Microphone Input:</strong> Captures physical audio from your system's default or selected microphone. Excellent for voice notes, vocals, or acoustic instrument recordings.</li>
+                            <li><strong>System Sound Loopback:</strong> Record internal computer audio streams (such as video presentations, game sounds, or music playing in background tabs) directly into standard web files.</li>
+                            <li><strong>Output Codecs:</strong> Export your completed audio track to standard high-fidelity formats like uncompressed **WAV**, compressed **MP3**, open-source **OGG**, or browser-optimized **WEBM** files.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Recording Best Practices</h4>
+                        <p style="margin-bottom: 12px;">To ensure professional-sounding recordings, consider these tips:</p>
+                        <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                            <li><strong>Mic Placement:</strong> Position your microphone 6-12 inches away from your mouth to reduce harsh <a href="https://en.wikipedia.org/wiki/Plosive" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">plosive sounds</a> (T, P consonants) and clip distortion.</li>
+                            <li><strong>Manage Gain:</strong> Keep an eye on system audio settings. If your voice sounds raspy or crackles, lower your mic input volume inside OS preferences.</li>
+                            <li><strong>Minimize Reflection:</strong> Record in a carpeted room or a space with soft furnishings (like couches or drapes) to minimize ambient echo and room reverberations.</li>
+                        </ul>
+
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Frequently Asked Questions</h4>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Are my microphone recordings private and secure?</strong>
+                            <span>Yes. The audio stream is piped directly into local RAM via the browser's native <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">MediaStream and MediaRecorder APIs</a>. No recording segments or voice data are uploaded to external clouds, making the tool 100% private and offline-compatible.</span>
+                        </div>
+                        <div class="faq-item" style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-primary); display: block;">Why is my system loopback audio silent?</strong>
+                            <span>For security reasons, Chrome and standard modern browsers require explicit user confirmation to record tab or screen audio. When selecting "System Audio", make sure to check the "Share audio" checkbox inside the browser's screen-sharing permission pop-up before proceeding.</span>
+                        </div>
                     </div>
                 </div>
             </section>

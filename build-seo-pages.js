@@ -11,6 +11,35 @@ function getTodayDate() {
     return `${yyyy}-${mm}-${dd}`;
 }
 
+function findClosingDivIndex(html, startIndex) {
+    const divStart = html.indexOf('<div', startIndex);
+    if (divStart === -1) return -1;
+    
+    let depth = 1;
+    let pos = divStart + 4;
+    
+    while (depth > 0 && pos < html.length) {
+        const nextOpen = html.indexOf('<div', pos);
+        const nextClose = html.indexOf('</div>', pos);
+        
+        if (nextClose === -1) {
+            return -1; // malformed HTML
+        }
+        
+        if (nextOpen !== -1 && nextOpen < nextClose) {
+            depth++;
+            pos = nextOpen + 4;
+        } else {
+            depth--;
+            pos = nextClose + 6;
+            if (depth === 0) {
+                return nextClose;
+            }
+        }
+    }
+    return -1;
+}
+
 const mainHtmlPath = path.join(__dirname, 'index.html');
 if (!fs.existsSync(mainHtmlPath)) {
     console.error('Error: index.html not found in root.');
@@ -121,14 +150,32 @@ presets.forEach(preset => {
         converter: 'Convert to other formats:',
         recorder: 'Other recording options:'
     };
-    const linkingHeading = headingsMap[preset.tool] || 'Related tools:';
+    const linkingHeading = headingsMap[preset.tool] || 'Related tools:';    const toolPaneMarker = `id="pane-${preset.tool}"`;
+    const toolPaneIndex = html.indexOf(toolPaneMarker);
+    if (toolPaneIndex !== -1) {
+        const startMarker = '<!-- Valuable Content SEO Section -->';
+        const startIndex = html.indexOf(startMarker, toolPaneIndex);
+        if (startIndex !== -1) {
+            const endIndex = findClosingDivIndex(html, startIndex + startMarker.length);
+            if (endIndex !== -1) {
+                const totalLength = (endIndex + 6) - startIndex;
+                const defaultSeoSection = html.substr(startIndex, totalLength);
 
-    // 10. Replace main tool description block with semantic custom heading + paragraphs & linking grid
-    const customContentHtml = `<!-- Valuable Content SEO Section -->
-                    <article class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
+                // Extract educational guides and FAQs from the default template section
+                const guideIndex = defaultSeoSection.indexOf('<h4');
+                let guideHtml = '';
+                if (guideIndex !== -1) {
+                    guideHtml = defaultSeoSection.substring(guideIndex);
+                } else {
+                    // Fallback to closing tag if no guide sections exist
+                    guideHtml = '</div>';
+                }
+
+                const customContentHtml = `<!-- Valuable Content SEO Section -->
+                    <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
                         <h2 style="font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">${preset.content.heading}</h2>
                         ${preset.content.bodyParagraphs.map(p => `<p style="margin-bottom: 12px;">${p}</p>`).join('\n')}
-                    </article>
+                        ${guideHtml}
 
                     <!-- Internal Linking Grid -->
                     <div class="linking-grid-section" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
@@ -138,17 +185,6 @@ presets.forEach(preset => {
                         </div>
                     </div>`;
 
-    const toolPaneMarker = `id="pane-${preset.tool}"`;
-    const toolPaneIndex = html.indexOf(toolPaneMarker);
-    if (toolPaneIndex !== -1) {
-        const startMarker = '<!-- Valuable Content SEO Section -->';
-        const startIndex = html.indexOf(startMarker, toolPaneIndex);
-        if (startIndex !== -1) {
-            const endTag = '</div>';
-            const endIndex = html.indexOf(endTag, startIndex + startMarker.length);
-            if (endIndex !== -1) {
-                const totalLength = (endIndex + endTag.length) - startIndex;
-                const defaultSeoSection = html.substr(startIndex, totalLength);
                 html = html.replace(defaultSeoSection, customContentHtml);
             }
         }
@@ -242,6 +278,12 @@ let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
     <lastmod>${todayStr}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://audiomultitool.com/about.html</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://audiomultitool.com/contact.html</loc>
