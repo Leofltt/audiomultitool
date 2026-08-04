@@ -110,5 +110,23 @@
         "This creates a famous psychoacoustic illusion of a pitch rising forever, commonly used in movie sound design to build tension."
       ]
     }
+  },
+  {
+    "slug": "noise-riser-generator",
+    "tool": "generator",
+    "title": "Online Noise Riser Generator – EDM Build-Up Transition Tool",
+    "description": "Generate custom noise risers online. Synthesize white or pink noise transitions with sweeping bandpass filters for EDM build-ups and sound effects.",
+    "initialConfig": {
+      "mode": "special",
+      "freq": "60",
+      "specialtype": "riser"
+    },
+    "content": {
+      "heading": "Online Audio Noise Riser and Transition Sweep",
+      "bodyParagraphs": [
+        "A noise riser is a staple sound effect in music production, particularly in electronic dance music (EDM), house, and techno. It is created by generating white or pink noise and sweeping a bandpass or highpass filter's cutoff frequency upward over a set duration.",
+        "Use this online synthesizer to customize and play real-time noise risers directly in your browser. Perfect for transition reference, sound design practice, or generating buildup samples offline."
+      ]
+    }
   }
 ]

@@ -406,6 +406,47 @@ window.GeneratorTool = {
                         this.oscillator.frequency.setValueAtTime(currentFreq, ctx.currentTime);
                     }
                 }, 30);
+            } else if (specialType === 'riser') {
+                const bufferSize = 2 * ctx.sampleRate;
+                const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                this.noiseNode = ctx.createBufferSource();
+                this.noiseNode.buffer = noiseBuffer;
+                this.noiseNode.loop = true;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.Q.value = 3.0;
+
+                const duration = 8; // 8 second riser buildup
+                filter.frequency.setValueAtTime(80, ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(15000, ctx.currentTime + duration);
+
+                const volumeNode = ctx.createGain();
+                volumeNode.gain.setValueAtTime(0.008, ctx.currentTime);
+                volumeNode.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + duration);
+
+                this.noiseNode.connect(filter);
+                filter.connect(volumeNode);
+                volumeNode.connect(this.gainNode);
+
+                this.noiseNode.start();
+                this.gainNodes = [volumeNode];
+
+                this.sweepInterval = setInterval(() => {
+                    const elapsed = (Date.now() - this.startTime) / 1000;
+                    if (freqDisplay) {
+                        const freq = Math.round(80 * Math.pow(187.5, Math.min(1, elapsed / duration)));
+                        freqDisplay.textContent = `Cutoff: ${freq} Hz (${Math.min(100, Math.round(elapsed / duration * 100))}% completed)`;
+                    }
+                    if (elapsed >= duration) {
+                        this.toggle();
+                    }
+                }, 30);
             }
         }
     },
