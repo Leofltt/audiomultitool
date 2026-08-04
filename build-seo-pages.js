@@ -68,6 +68,131 @@ if (fs.existsSync(seoDataDir)) {
 
 console.log(`Loaded ${presets.length} programmatic SEO presets.`);
 
+function generateDynamicCalculations(preset) {
+    if (preset.tool === 'metronome') {
+        const bpm = parseInt(preset.initialConfig.bpm || preset.slug.match(/\d+/)?.[0] || '120');
+        const clicksPerSec = (bpm / 60).toFixed(2);
+        const intervalMs = (60000 / bpm).toFixed(2);
+        
+        let genreContext = '';
+        if (bpm >= 120 && bpm <= 130) {
+            genreContext = ' This tempo range is the global standard for <strong>House, Techno, and Dance Music</strong>, providing a driving dancefloor groove.';
+        } else if (bpm >= 60 && bpm <= 80) {
+            genreContext = ' This slower pace is perfect for practice sessions, ballads, slow rock, and developing deep rhythmic control.';
+        } else if (bpm >= 80 && bpm <= 100) {
+            genreContext = ' This mid-tempo range represents the classic rhythm pocket for <strong>Hip-Hop, Rap, and Funk</strong>.';
+        } else if (bpm > 130 && bpm <= 150) {
+            genreContext = ' This energetic tempo is widely used in Trance, Dubstep, and modern Pop build-ups.';
+        } else if (bpm > 150) {
+            genreContext = ' This high-speed tempo matches the frantic pace of <strong>Drum and Bass (DnB), Jungle, and Punk/Metal</strong>.';
+        }
+
+        return `
+        <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Rhythmic Mathematics for ${bpm} BPM</h4>
+        <p style="margin-bottom: 12px;">Practicing at <strong>${bpm} BPM</strong> (Beats Per Minute) means the metronome engine schedules a sound trigger exactly every <strong>${intervalMs} milliseconds</strong>, translating to exactly <strong>${clicksPerSec} clicks per second</strong>.${genreContext}</p>
+        `;
+    }
+
+    if (preset.tool === 'tuner') {
+        let stringData = '';
+        if (preset.slug.includes('guitar-tuner') || preset.slug.includes('drop-d')) {
+            const isDropD = preset.slug.includes('drop-d');
+            stringData = `
+            <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                <li><strong>String 6 (Low ${isDropD ? 'D' : 'E'}):</strong> ${isDropD ? 'D2 (73.42 Hz)' : 'E2 (82.41 Hz)'}</li>
+                <li><strong>String 5 (A):</strong> A2 (110.00 Hz)</li>
+                <li><strong>String 4 (D):</strong> D3 (146.83 Hz)</li>
+                <li><strong>String 3 (G):</strong> G3 (196.00 Hz)</li>
+                <li><strong>String 2 (B):</strong> B3 (246.94 Hz)</li>
+                <li><strong>String 1 (High E):</strong> E4 (329.63 Hz)</li>
+            </ul>`;
+        } else if (preset.slug.includes('7-string')) {
+            const isDropA = preset.slug.includes('drop-a');
+            stringData = `
+            <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                <li><strong>String 7 (Low ${isDropA ? 'A' : 'B'}):</strong> ${isDropA ? 'A1 (55.00 Hz)' : 'B1 (61.74 Hz)'}</li>
+                <li><strong>String 6 (Low E):</strong> E2 (82.41 Hz)</li>
+                <li><strong>String 5 (A):</strong> A2 (110.00 Hz)</li>
+                <li><strong>String 4 (D):</strong> D3 (146.83 Hz)</li>
+                <li><strong>String 3 (G):</strong> G3 (196.00 Hz)</li>
+                <li><strong>String 2 (B):</strong> B3 (246.94 Hz)</li>
+                <li><strong>String 1 (High E):</strong> E4 (329.63 Hz)</li>
+            </ul>`;
+        } else if (preset.slug.includes('8-string')) {
+            const isDropE = preset.slug.includes('drop-e');
+            stringData = `
+            <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                <li><strong>String 8 (Low ${isDropE ? 'E' : 'F#'}):</strong> ${isDropE ? 'E1 (41.20 Hz)' : 'F#1 (46.25 Hz)'}</li>
+                <li><strong>String 7 (Low B):</strong> B1 (61.74 Hz)</li>
+                <li><strong>String 6 (Low E):</strong> E2 (82.41 Hz)</li>
+                <li><strong>String 5 (A):</strong> A2 (110.00 Hz)</li>
+                <li><strong>String 4 (D):</strong> D3 (146.83 Hz)</li>
+                <li><strong>String 3 (G):</strong> G3 (196.00 Hz)</li>
+                <li><strong>String 2 (B):</strong> B3 (246.94 Hz)</li>
+                <li><strong>String 1 (High E):</strong> E4 (329.63 Hz)</li>
+            </ul>`;
+        } else if (preset.slug.includes('ukulele')) {
+            stringData = `
+            <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                <li><strong>String 4 (G):</strong> G4 (392.00 Hz)</li>
+                <li><strong>String 3 (C):</strong> C4 (261.63 Hz)</li>
+                <li><strong>String 2 (E):</strong> E4 (329.63 Hz)</li>
+                <li><strong>String 1 (A):</strong> A4 (440.00 Hz)</li>
+            </ul>`;
+        } else if (preset.slug.includes('violin')) {
+            stringData = `
+            <ul style="margin-left: 18px; margin-bottom: 16px; list-style-type: disc;">
+                <li><strong>String 4 (G):</strong> G3 (196.00 Hz)</li>
+                <li><strong>String 3 (D):</strong> D4 (293.66 Hz)</li>
+                <li><strong>String 2 (A):</strong> A4 (440.00 Hz)</li>
+                <li><strong>String 1 (E):</strong> E5 (659.25 Hz)</li>
+            </ul>`;
+        }
+
+        if (stringData) {
+            return `
+            <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Target Frequencies for ${preset.title.split('–')[0].trim()}</h4>
+            <p style="margin-bottom: 12px;">Tune your strings to the following exact frequencies:</p>
+            ${stringData}
+            `;
+        }
+    }
+
+    if (preset.tool === 'generator') {
+        if (preset.initialConfig.mode === 'tone') {
+            const freq = parseFloat(preset.initialConfig.freq || '440');
+            const period = (1000 / freq).toFixed(2);
+            const wavelengthCm = (34300 / freq).toFixed(2);
+            return `
+            <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Physical Properties of the ${freq} Hz Tone</h4>
+            <p style="margin-bottom: 12px;">At a frequency of <strong>${freq} Hz</strong>, the synthesized sound wave completes one full compression-rarefaction cycle every <strong>${period} milliseconds</strong>. Travelling through standard room-temperature air (343 m/s), the physical size of this sound wave measures approximately <strong>${wavelengthCm} centimeters</strong> from peak to peak.</p>
+            `;
+        } else if (preset.initialConfig.mode === 'sweep') {
+            const start = preset.initialConfig.start;
+            const end = preset.initialConfig.end;
+            const dur = preset.initialConfig.duration;
+            return `
+            <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Sweep Parameter Breakdown</h4>
+            <p style="margin-bottom: 12px;">This audio sweep performs an acoustic frequency modulation starting at <strong>${start} Hz</strong> and scaling exponentially up to <strong>${end} Hz</strong> over a span of <strong>${dur} seconds</strong>. The exponential progression maps logically to human musical octave perception.</p>
+            `;
+        }
+    }
+
+    if (preset.tool === 'converter') {
+        const parts = preset.slug.split('-to-');
+        if (parts.length === 2) {
+            const fromFmt = parts[0].toUpperCase();
+            const toFmt = parts[1].toUpperCase();
+            return `
+            <h4 style="font-size: 13px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px;">Conversion Dynamics: ${fromFmt} to ${toFmt}</h4>
+            <p style="margin-bottom: 12px;">Transcoding from <strong>${fromFmt}</strong> to <strong>${toFmt}</strong> processes your local audio container stream. Depending on whether you choose high-definition bitrates or space-saving profiles, files can be compressed significantly while preserving high acoustic detail.</p>
+            `;
+        }
+    }
+
+    return '';
+}
+
 presets.forEach(preset => {
     let html = mainHtml;
 
@@ -171,10 +296,13 @@ presets.forEach(preset => {
                     guideHtml = '</div>';
                 }
 
+                const dynamicCalcHtml = generateDynamicCalculations(preset);
+
                 const customContentHtml = `<!-- Valuable Content SEO Section -->
                     <div class="tool-info-section" style="border-top: 1px solid var(--border-color); padding-top: 24px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 40px;">
                         <h2 style="font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-transform: none; letter-spacing: 0;">${preset.content.heading}</h2>
                         ${preset.content.bodyParagraphs.map(p => `<p style="margin-bottom: 12px;">${p}</p>`).join('\n')}
+                        ${dynamicCalcHtml}
                         ${guideHtml}
 
                     <!-- Internal Linking Grid -->
