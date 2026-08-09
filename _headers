@@ -1,2 +1,3 @@
 /*
   Link: </.well-known/api-catalog.json>; rel="api-catalog"; type="application/json"
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://pagead2.googlesyndication.com https://adservice.google.com; font-src 'self' https://fonts.gstatic.com; frame-src https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://tpc.googlesyndication.com; connect-src 'self';
