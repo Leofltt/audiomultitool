@@ -1,3 +1,2 @@
 /*
   Link: </.well-known/api-catalog.json>; rel="api-catalog"; type="application/json"
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googlesyndication.com https://*.google.com https://*.gstatic.com https://*.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.googlesyndication.com https://*.google.com; img-src 'self' data: https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.gstatic.com; font-src 'self' data: https://fonts.gstatic.com https://*.gstatic.com; frame-src 'self' https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com; connect-src 'self' https://*.google.com https://*.googlesyndication.com;
