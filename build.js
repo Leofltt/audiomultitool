@@ -22,7 +22,7 @@ const tools = [
     },
     {
         name: 'db-meter',
-        title: 'Online Decibel Sound Level Meter',
+        title: 'Online Decibel & Sound Level Meter',
         desc: 'Measure ambient sound volume pressure levels with a real-time dBA and dBC weighted decibel meter.'
     },
     {
@@ -58,6 +58,12 @@ tools.forEach(tool => {
     // 3. Set custom title and description
     html = html.replace(/<title>.*?<\/title>/, `<title>${tool.title} - Audiomultitool</title>`);
     html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${tool.desc}">`);
+    
+    // Set canonical link
+    const canonicalUrl = `https://audiomultitool.com/${tool.name}/`;
+    const headExtra = `    <link rel="canonical" href="${canonicalUrl}">`;
+    html = html.replace('</head>', `${headExtra}\n</head>`);
+
     html = html.replace(/<h2 id="active-tool-title">.*?<\/h2>/, `<h2 id="active-tool-title">${tool.title}</h2>`);
     html = html.replace(/<p id="active-tool-desc">.*?<\/p>/, `<p id="active-tool-desc">${tool.desc}</p>`);
 
@@ -85,7 +91,10 @@ tools.forEach(tool => {
     html = html.replace(`id="pane-${tool.name}" class="tool-pane"`, `id="pane-${tool.name}" class="tool-pane active"`);
     html = html.replace(`class="tool-pane" id="pane-${tool.name}"`, `class="tool-pane active" id="pane-${tool.name}"`);
 
-    // 7. Write index.html in the subdirectory
+    // 7. Inject dataset attribute to body to signal to client script to NOT overwrite text
+    html = html.replace('<body', '<body data-seo-page="true"');
+
+    // 8. Write index.html in the subdirectory
     const outputPath = path.join(dir, 'index.html');
     fs.writeFileSync(outputPath, html, 'utf8');
     console.log(`Generated: ${tool.name}/index.html`);

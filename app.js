@@ -39,7 +39,7 @@ const App = {
                 sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
                 metronome: 'A precision metronome and manual tap tempo calculator.',
                 tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
-                noise: 'Calibrate monitors with a dB sound level meter and generate white, pink, or brownian noise.',
+                'db-meter': 'Measure ambient sound volume pressure levels with a real-time dBA and dBC weighted decibel meter.',
                 converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
                 recorder: 'Online voice & system audio recorder.'
             };
@@ -191,7 +191,7 @@ const App = {
             sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
             metronome: 'A precision metronome and manual tap tempo calculator.',
             tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
-            noise: 'Calibrate monitors with a dB sound level meter.',
+            'db-meter': 'Measure ambient sound volume pressure levels with a real-time dBA and dBC weighted decibel meter.',
             converter: 'Convert audio files to MP3 or WAV format 100% client-side.',
             recorder: 'Online voice & system audio recorder.'
         };

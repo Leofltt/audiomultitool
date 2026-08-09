@@ -1,23 +1,19 @@
-# Cloudflare Pages URL Rewrites (200 status preserves clean browser url)
-/tonegenerator  /generator/index.html  200
-/tone-generator /generator/index.html  200
-/speaker-sweep  /generator/index.html  200
-/speakersweep   /generator/index.html  200
-/bpm-tapper     /metronome/index.html  200
-/bpmtapper      /metronome/index.html  200
-/metronome      /metronome/index.html  200
-/tapper         /metronome/index.html  301
-/tuner          /tuner/index.html      200
-/recorder       /recorder/index.html   200
-/noise          /db-meter/index.html   200
-/decibel-meter  /db-meter/index.html   200
-/decibelmeter   /db-meter/index.html   200
-/noise-generator /db-meter/index.html  200
-/converter      /converter/index.html  200
-/audioconverter /converter/index.html  200
-/audio-converter /converter/index.html 200
-/wav-to-mp3     /converter/index.html  200
-/mp3-to-wav     /converter/index.html  200
+# Cloudflare Pages 301 redirects for legacy URLs to preserve SEO link equity
+/tonegenerator   /generator/ 301
+/tone-generator  /generator/ 301
+/speaker-sweep   /generator/speaker-test-sweep/ 301
+/speakersweep    /generator/speaker-test-sweep/ 301
+/bpm-tapper      /metronome/ 301
+/bpmtapper       /metronome/ 301
+/tapper          /metronome/ 301
+/noise           /db-meter/ 301
+/decibel-meter   /db-meter/ 301
+/decibelmeter    /db-meter/ 301
+/noise-generator /db-meter/ 301
+/audioconverter  /converter/ 301
+/audio-converter /converter/ 301
+/wav-to-mp3      /converter/wav-to-mp3/ 301
+/mp3-to-wav      /converter/mp3-to-wav/ 301
 
 # Security.txt redirect standard RFC 9116
-/security.txt  /.well-known/security.txt  301
+/security.txt    /.well-known/security.txt 301
