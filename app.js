@@ -35,7 +35,7 @@ const App = {
             const titleEl = document.getElementById('active-tool-title');
             const descEl = document.getElementById('active-tool-desc');
             const descriptions = {
-                generator: 'Generate pure audio frequencies with custom wave types.',
+                generator: "Generate pure audio tones, run speaker frequency sweeps, or play Shepard's tones and focus noise colors.",
                 sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
                 metronome: 'A precision metronome and manual tap tempo calculator.',
                 tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
@@ -187,7 +187,7 @@ const App = {
         const menuToggle = document.getElementById('menu-toggle');
 
         const descriptions = {
-            generator: 'Generate pure audio frequencies with custom wave types.',
+            generator: "Generate pure audio tones, run speaker frequency sweeps, or play Shepard's tones and focus noise colors.",
             sweep: 'Test speaker boundaries and room acoustics with frequency sweeps.',
             metronome: 'A precision metronome and manual tap tempo calculator.',
             tuner: 'Tune your guitar, violin, or other instruments via microphone pitch analysis.',
