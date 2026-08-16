@@ -1,6 +1,51 @@
 const fs = require('fs');
 const path = require('path');
 
+function findClosingDivIndex(html, startIndex) {
+    const divStart = html.indexOf('<div', startIndex);
+    if (divStart === -1) return -1;
+    
+    let depth = 1;
+    let pos = divStart + 4;
+    
+    while (depth > 0 && pos < html.length) {
+        const nextOpen = html.indexOf('<div', pos);
+        const nextClose = html.indexOf('</div>', pos);
+        
+        if (nextClose === -1) {
+            return -1; // malformed HTML
+        }
+        
+        if (nextOpen !== -1 && nextOpen < nextClose) {
+            depth++;
+            pos = nextOpen + 4;
+        } else {
+            depth--;
+            pos = nextClose + 6;
+            if (depth === 0) {
+                return nextClose;
+            }
+        }
+    }
+    return -1;
+}
+
+// Load all presets from src/data/seo/
+const seoDataDir = path.join(__dirname, 'src', 'data', 'seo');
+let presets = [];
+if (fs.existsSync(seoDataDir)) {
+    const files = fs.readdirSync(seoDataDir);
+    files.forEach(file => {
+        if (file.endsWith('.json')) {
+            const filePath = path.join(seoDataDir, file);
+            const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            if (Array.isArray(content)) {
+                presets = presets.concat(content);
+            }
+        }
+    });
+}
+
 const mainHtmlPath = path.join(__dirname, 'index.html');
 const mainHtml = fs.readFileSync(mainHtmlPath, 'utf8');
 
@@ -90,6 +135,52 @@ tools.forEach(tool => {
     // Add active class to the current tool's pane
     html = html.replace(`id="pane-${tool.name}" class="tool-pane"`, `id="pane-${tool.name}" class="tool-pane active"`);
     html = html.replace(`class="tool-pane" id="pane-${tool.name}"`, `class="tool-pane active" id="pane-${tool.name}"`);
+
+    // Generate linking grid for internal presets
+    const toolPaneMarker = `id="pane-${tool.name}"`;
+    const toolPaneIndex = html.indexOf(toolPaneMarker);
+    if (toolPaneIndex !== -1) {
+        const startMarker = '<!-- Valuable Content SEO Section -->';
+        const startIndex = html.indexOf(startMarker, toolPaneIndex);
+        if (startIndex !== -1) {
+            const endIndex = findClosingDivIndex(html, startIndex + startMarker.length);
+            if (endIndex !== -1) {
+                const totalLength = (endIndex + 6) - startIndex;
+                const defaultSeoSection = html.substr(startIndex, totalLength);
+
+                const toolPresets = presets.filter(p => p.tool === tool.name);
+                if (toolPresets.length > 0) {
+                    const linksHtml = toolPresets.map(p => {
+                        const linkLabel = p.title.split('–')[0].trim().replace('Online', '').trim();
+                        return `<a href="${p.slug}/" style="color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.15s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">${linkLabel}</a>`;
+                    }).join(' <span style="color: var(--border-color);">|</span> ');
+
+                    const headingsMap = {
+                        generator: 'Popular signals & sweeps:',
+                        metronome: 'Popular tempos & practice presets:',
+                        tuner: 'Instrument tuning configurations:',
+                        'db-meter': 'Sound level meter settings:',
+                        converter: 'Audio conversion formats:',
+                        recorder: 'Recording presets:'
+                    };
+                    const linkingHeading = headingsMap[tool.name] || 'Presets:';
+
+                    const linkingGridHtml = `
+                    <!-- Internal Linking Grid -->
+                    <div class="linking-grid-section" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
+                        <h4 style="font-size: 13px; color: var(--text-primary); margin-bottom: 8px;">${linkingHeading}</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px 16px;">
+                            ${linksHtml}
+                        </div>
+                    </div>`;
+
+                    // Insert right before the closing </div> of defaultSeoSection
+                    const updatedSeoSection = defaultSeoSection.slice(0, defaultSeoSection.length - 6) + linkingGridHtml + '\n                    </div>';
+                    html = html.replace(defaultSeoSection, updatedSeoSection);
+                }
+            }
+        }
+    }
 
     // 7. Inject dataset attribute to body to signal to client script to NOT overwrite text
     html = html.replace('<body', '<body data-seo-page="true"');
