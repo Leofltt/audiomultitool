@@ -222,8 +222,9 @@ presets.forEach(preset => {
     // Replace meta description
     html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${preset.description}">`);
     
-    // Inject canonical and OpenGraph tags before </head>
+    // Inject canonical, noindex, and OpenGraph tags before </head>
     const headExtra = `    <link rel="canonical" href="${canonicalUrl}">
+    <meta name="robots" content="noindex, follow">
     <meta property="og:title" content="${preset.title}">
     <meta property="og:description" content="${preset.description}">
     <meta property="og:url" content="${canonicalUrl}">
@@ -419,8 +420,28 @@ let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://audiomultitool.com/guides/studio-monitor-calibration/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://audiomultitool.com/guides/guitar-tuning-frequencies/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://audiomultitool.com/guides/metronome-practice-guide/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 `;
 
+// Temporarily exclude programmatic pages from sitemap during AdSense review
+/*
 presets.forEach(preset => {
     sitemapContent += `  <url>
     <loc>https://audiomultitool.com/${preset.tool}/${preset.slug}/</loc>
@@ -429,6 +450,7 @@ presets.forEach(preset => {
     <priority>0.6</priority>
   </url>\n`;
 });
+*/
 
 sitemapContent += `</urlset>\n`;
 

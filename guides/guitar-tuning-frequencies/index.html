@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+                document.documentElement.classList.add('light-theme');
+            } else {
+                document.documentElement.classList.remove('light-theme');
+            }
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Guitar Tuning & Pitch Frequencies - AudioMultiTool</title>
+    <meta name="description" content="An in-depth guide to instrument tuning frequencies, standard pitch tracking physics, auto-correlation algorithms, and alternate tunings like Drop D.">
+    <link rel="canonical" href="https://audiomultitool.com/guides/guitar-tuning-frequencies/">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎛️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        .legal-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.8;
+        }
+        .legal-container h1 {
+            font-size: 36px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .legal-container h2 {
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        .legal-container h3 {
+            font-size: 18px;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .legal-container p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        .legal-container ul, .legal-container ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        .legal-container li {
+            margin-bottom: 8px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            color: var(--primary-hover);
+        }
+        .meta-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+        .frequency-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            color: var(--text-primary);
+        }
+        .frequency-table th, .frequency-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        .frequency-table th {
+            background-color: var(--bg-sidebar);
+            font-weight: 600;
+        }
+        body {
+            height: auto !important;
+            overflow: auto !important;
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+                document.body.classList.add('light-theme');
+            } else {
+                document.body.classList.remove('light-theme');
+            }
+        })();
+    </script>
+    <div class="legal-container">
+        <a href="../../" class="back-link">← Back to AudioMultiTool</a>
+        <h1>Understanding Guitar Tuning & Pitch Frequencies</h1>
+        <div class="meta-info">
+            <span>Published: August 16, 2026</span>
+            <span>Category: Instrument Acoustics</span>
+            <span>Reading Time: 7 min</span>
+        </div>
+
+        <p>Tuning a musical instrument is one of the most fundamental tasks a musician must perform, yet the physics behind it are highly complex. When you pluck a string, you initiate a sound wave that vibrates at a specific frequency measured in Hertz (cycles per second). An online chromatic tuner uses your device’s microphone to isolate these vibrations and translate them into musical notes.</p>
+
+        <p>In this guide, we will explore standard pitch references (such as A440), the mathematical relationships between notes, the exact frequencies of standard and alternate guitar tunings, and how pitch detection algorithms work in real time.</p>
+
+        <h2>The A440 Standard and Twelve-Tone Equal Temperament</h2>
+        <p>Modern Western music is calibrated to a reference pitch known as **A4 = 440 Hz**. This frequency, established globally in the mid-20th century, defines the pitch of the A note above middle C. All other notes are calculated relative to this standard using a mathematical system called **Twelve-Tone Equal Temperament** (12-TET).</p>
+        <p>Under 12-TET, an octave (which doubles the frequency) is divided into 12 semitones. The frequency of any note is calculated using the formula:</p>
+        <p style="font-family: var(--font-mono); font-size: 14px; background: var(--bg-surface); padding: 12px; border-radius: 4px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+            Frequency = Reference Frequency * 2^(n/12)
+        </p>
+        <p>where <span style="font-family: var(--font-mono);">n</span> represents the number of semitones away from the reference note (A440).</p>
+
+        <h2>Standard Guitar Tuning Frequencies</h2>
+        <p>A standard 6-string guitar is tuned to E-A-D-G-B-E, spanning over two octaves. The table below outlines the exact notes, scientific pitch notation, and Hz frequency values for standard guitar tuning:</p>
+
+        <table class="frequency-table">
+            <thead>
+                <tr>
+                    <th>String Number</th>
+                    <th>Note</th>
+                    <th>Scientific Pitch Notation</th>
+                    <th>Frequency (Hz)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>String 6 (Thickest)</td>
+                    <td>E</td>
+                    <td>E2</td>
+                    <td>82.41 Hz</td>
+                </tr>
+                <tr>
+                    <td>String 5</td>
+                    <td>A</td>
+                    <td>A2</td>
+                    <td>110.00 Hz</td>
+                </tr>
+                <tr>
+                    <td>String 4</td>
+                    <td>D</td>
+                    <td>D3</td>
+                    <td>146.83 Hz</td>
+                </tr>
+                <tr>
+                    <td>String 3</td>
+                    <td>G</td>
+                    <td>G3</td>
+                    <td>196.00 Hz</td>
+                </tr>
+                <tr>
+                    <td>String 2</td>
+                    <td>B</td>
+                    <td>B3</td>
+                    <td>246.94 Hz</td>
+                </tr>
+                <tr>
+                    <td>String 1 (Thinnest)</td>
+                    <td>E</td>
+                    <td>E4</td>
+                    <td>329.63 Hz</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Common Alternate Guitar Tunings</h2>
+        <p>Musicians use alternate tunings to alter the instrument's resonance, make specific chords easier to play, or change the register of the strings:</p>
+
+        <h3>1. Drop D Tuning</h3>
+        <p>Drop D tuning is achieved by lowering the low E string (String 6) by a full step (two semitones) to D. The rest of the strings remain in standard tuning. This creates a low, heavy register and allows one-finger power chords across the three lowest strings.</p>
+        <ul>
+            <li><strong>Drop D Configuration:</strong> D2 (73.42 Hz) - A2 (110.00 Hz) - D3 (146.83 Hz) - G3 (196.00 Hz) - B3 (246.94 Hz) - E4 (329.63 Hz)</li>
+        </ul>
+
+        <h3>2. DADGAD Tuning</h3>
+        <p>Highly popular in Celtic and folk music, DADGAD features a modal, open-sounding character. To achieve DADGAD, the 1st, 2nd, and 6th strings are detuned down by a full step.</p>
+        <ul>
+            <li><strong>DADGAD Configuration:</strong> D2 (73.42 Hz) - A2 (110.00 Hz) - D3 (146.83 Hz) - G3 (196.00 Hz) - A3 (220.00 Hz) - D4 (293.66 Hz)</li>
+        </ul>
+
+        <h3>3. Open G Tuning</h3>
+        <p>Frequently used in blues and slide guitar, Open G sounds a G major chord when all strings are strummed open. The 1st, 5th, and 6th strings are detuned down a full step.</p>
+        <ul>
+            <li><strong>Open G Configuration:</strong> D2 (73.42 Hz) - G2 (98.00 Hz) - D3 (146.83 Hz) - G3 (196.00 Hz) - B3 (246.94 Hz) - D4 (293.66 Hz)</li>
+        </ul>
+
+        <h2>How Digital Pitch Tracking Works</h2>
+        <p>The chromatic tuner in AudioMultiTool processes raw audio frames from your microphone using the Web Audio API. Standard Fast Fourier Transforms (FFT) are often too coarse for precise bass tuning because they divide frequencies into rigid "bins" which lack cent-level resolution at lower ranges (like low E at 82.4 Hz).</p>
+        <p>To overcome this, our tuner uses a **Time-Domain Auto-Correlation Algorithm**:</p>
+        <ol>
+            <li>The incoming wave signal is copied and shifted by varying time delays (lags).</li>
+            <li>The shifted signal is multiplied by the original signal to measure similarity.</li>
+            <li>When the delay matches the exact period of the pitch, the auto-correlation score peaks.</li>
+            <li>The fundamental frequency is calculated as the inverse of that time delay.</li>
+        </ol>
+        <p>This allows cent-level precision (1 cent is 1/100th of a semitone), providing real-time visual feedback that shows you exactly how sharp or flat your string is relative to the target Hz pitch.</p>
+
+        <h2>Conclusion</h2>
+        <p>Whether you're tuning to standard E or experimenting with heavy drop tunings, knowing the physical Hz values helps you diagnose intonation issues and understand how your instrument generates sound. Use the Chromatic Tuner on AudioMultiTool to configure custom tuning setups and keep your instrument sounding perfect.</p>
+    </div>
+</body>
+</html>
